@@ -1,0 +1,11 @@
+{
+  "name": "cbc-altecbackend",
+  "version": "1.0.0",
+  "description": "cbc alteck software backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "YourIt Department",
+  "license": "ISC"
+}
