@@ -4,12 +4,16 @@
   "description": "cbc alteck software backend",
   "main": "index.js",
   "scripts": {
+    "run": "node index.js",
+    "dev": "nodemon index.js",
     "test": "test"
   },
   "author": "YourIt Department",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "nodemon": "^2.0.12",
+    "sequelize": "^6.6.5"
   }
 }
