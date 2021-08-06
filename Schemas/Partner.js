@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const db = require('../Apis/sqConnection')
 
 
-const Partner = db.define('Clients', {
+const Partner = db.define('Partner', {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
