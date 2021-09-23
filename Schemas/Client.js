@@ -1,7 +1,5 @@
 const Sequelize = require('sequelize');
 const db = require('../Apis/sqConnection')
-
-
 const Client = db.define('Clients', {
     id: {
         type: Sequelize.INTEGER,
@@ -18,7 +16,7 @@ const Client = db.define('Clients', {
         unique: true,
         allowNull: false
     },
-    password: {
+    hashedPassword: {
         type: Sequelize.STRING,
         allowNull: false,
     },
@@ -29,7 +27,13 @@ const Client = db.define('Clients', {
     stat: {
         type: Sequelize.INTEGER,
         allowNull: false
+    },
+    type:{
+        type: Sequelize.INTEGER,
+        allowNull: false
     }
 });
+
+db.sync()
 
 module.exports = Client;

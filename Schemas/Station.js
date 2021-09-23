@@ -4,9 +4,8 @@ const db = require('../Apis/sqConnection')
 
 const Station = db.define('Station', {
     id : {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         primaryKey: true,
-        autoIncrement: true
     },
     currentPartner : {
         type: Sequelize.INTEGER,
@@ -17,6 +16,8 @@ const Station = db.define('Station', {
         allowNull: false
     }
 });
+
+db.sync()
 
 
 module.exports = Station;
