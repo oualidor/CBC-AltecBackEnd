@@ -7,7 +7,6 @@ const router = express.Router();
 const Station = require('../Schemas/Station');
 const Validator = require("../Apis/dataValidator");
 const {TCP_SERVER} = require("../Apis/Config");
-
 const  AdminStationRouters = {
         create : router.post('/create',  async (req, res) => {
             let {id, currentPartner, stat} = req.body;
@@ -26,7 +25,6 @@ const  AdminStationRouters = {
                 }
             }
         }),
-
         getAll : router.get('/getAll/:offset/:limit',  async (req, res) => {
             var {offset, limit} = req.params;
             limit = parseInt(limit);
@@ -40,7 +38,6 @@ const  AdminStationRouters = {
                     res.send({'finalResult': false, 'error': err})
                 );
         }),
-
         getOne: router.get('/getOne/:id', async (req, res) => {
             const {id} = req.params
 
@@ -55,7 +52,6 @@ const  AdminStationRouters = {
                 res.send({'finalResult': false, 'error': err})
             }
         }),
-
         getRealTimeInfo: router.get('/getRealTimeInfo/:id', async (req, res) => {
             let requestAddress = TCP_SERVER+'queryPowerBankInfo'
             try {
@@ -65,7 +61,6 @@ const  AdminStationRouters = {
                 res.send({finalResult: false, error: e})
             }
         }),
-
         rentPowerBank: router.get('/rentPowerBank/:id', async (req, res) => {
             let requestAddress = TCP_SERVER+'rent/RL3H082007680121'
             try {
@@ -75,7 +70,6 @@ const  AdminStationRouters = {
                 res.send({finalResult: false, error: e})
             }
         })
-
 }
 
 
