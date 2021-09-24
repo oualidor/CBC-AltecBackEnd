@@ -53,7 +53,8 @@ const  AdminStationRouters = {
             }
         }),
         getRealTimeInfo: router.get('/getRealTimeInfo/:id', async (req, res) => {
-            let requestAddress = TCP_SERVER+'queryPowerBankInfo'
+            let {boxId} = req.params
+            let requestAddress = TCP_SERVER+'Station/QueryInfo/'+boxId
             try {
                 const request  = await axios({url: requestAddress, method: "get", responseType: 'json'})
                 res.send(request.data)

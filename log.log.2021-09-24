@@ -1261,3 +1261,4 @@
 (GET) /Admin/Station/getRealTimeInfo/fsdfsdfsdf => 304 ::1
 (GET) /Admin/Station/getOne/RL3H082007680121 => 200 ::ffff:127.0.0.1
 (GET) /Admin/Station/getRealTimeInfo/RL3H082007680121 => 200 ::ffff:127.0.0.1
+(GET) /Admin/Station/getRealTimeInfo/fsdfsdfsdf => 200 ::1
