@@ -55,10 +55,12 @@ const  AdminStationRouters = {
         getRealTimeInfo: router.get('/getRealTimeInfo/:id', async (req, res) => {
             let {boxId} = req.params
             let requestAddress = TCP_SERVER+'Station/QueryInfo/'+boxId
+            console.log(requestAddress)
             try {
                 const request  = await axios({url: requestAddress, method: "get", responseType: 'json'})
                 res.send(request.data)
             }catch (e){
+                console.log(requestAddress)
                 res.send({finalResult: false, error: e})
             }
         }),
