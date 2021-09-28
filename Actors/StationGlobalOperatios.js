@@ -72,16 +72,14 @@ const StationGlobalRouters = {
     },
 
     getRealTimeInfo:  async (req, res) => {
-    let {id} = req.params
-    let requestAddress = TCP_SERVER+'Station/QueryInfo/'+id
-    console.log(requestAddress)
-    try {
-        const request  = await axios({url: requestAddress, method: "get", responseType: 'json'})
-        res.send(request.data)
-    }catch (e){
-        console.log(requestAddress)
-        res.send({finalResult: false, error: e})
-    }
+        let {id} = req.params
+        let requestAddress = TCP_SERVER+'Station/QueryInfo/'+id
+        try {
+            const request  = await axios({url: requestAddress, method: "get", responseType: 'json'})
+            res.send(request.data)
+        }catch (e){
+            res.send({finalResult: false, error: e})
+        }
 },
 
     rentPowerBank: async (req, res) => {
