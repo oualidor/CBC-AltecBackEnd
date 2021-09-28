@@ -38,14 +38,34 @@ const StationGlobalRouters = {
 
     getOne: async (req, res) => {
         const {id} = req.params
-
         try {
             let station = await Station.findByPk(id);
             if (station != null) {
                 res.send({'finalResult': true, 'result': station})
             } else {
-                res.send({'finalResult': false, 'error': {}})
+                res.send({'finalResult': false, 'error': "no station found with id: " +id})
             }
+        } catch (err) {
+            res.send({'finalResult': false, 'error': err})
+        }
+    },
+
+    getOneByPublicId: async (req, res) => {
+        const {id} = req.params
+
+        try {
+            let stations = await Station.findAll();
+            if(stations.length > 0){
+                let station  = stations[0]
+                if (station != null) {
+                    res.send({'finalResult': true, 'result': station})
+                } else {
+                    res.send({'finalResult': false, 'error': "no station found with id: " +id})
+                }
+            }else {
+                res.send({'finalResult': false, 'error': "no station found with id: " +id})
+            }
+
         } catch (err) {
             res.send({'finalResult': false, 'error': err})
         }
