@@ -18,7 +18,7 @@ const Partner = db.define('Partner', {
         unique: true,
         allowNull: false
     },
-    password: {
+    hashedPassword: {
         type: Sequelize.STRING,
         allowNull: false,
     },
@@ -27,14 +27,6 @@ const Partner = db.define('Partner', {
         allowNull: false
     },
     stat: {
-        type: Sequelize.INTEGER,
-        allowNull: false
-    },
-    wilayaId : {
-        type: Sequelize.INTEGER,
-        allowNull: false
-    },
-    communeId : {
         type: Sequelize.INTEGER,
         allowNull: false
     },

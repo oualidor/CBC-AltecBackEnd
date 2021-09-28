@@ -1,9 +1,11 @@
 const express = require('express');
 const jwt  = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const AdminStationRouters = require("../InternEndPoints/StationRouters");
-const AdminClientRouters = require("../InternEndPoints/ClientRouters");
+const AdminStationRouters = require("../InternEndPoints/Admin/AdminStationRouters");
+const AdminClientRouters = require("../InternEndPoints/Admin/AdminClientRouters");
+const AdminPartnerRouters = require("../InternEndPoints/Admin/AdminPartnerRouters");
 const Validator = require("../Apis/dataValidator");
+const {yitAuthenticator} = require("../Apis/yitAuthenticator");
 const {jwtPrivateKey} = require("../Apis/Config");
 const {adminPassword} = require("../Apis/Config");
 const {adminMail} = require("../Apis/Config");
@@ -38,8 +40,10 @@ adminRouters.post('/login', async (req, res) => {
     }
 });
 
-adminRouters.use("/Station",  AdminStationRouters.create)
-adminRouters.use("/Client",  AdminClientRouters.create)
+//Station
+adminRouters.use("/Station",  yitAuthenticator.authAdmin, AdminStationRouters.create)
+adminRouters.use("/Client",  yitAuthenticator.authAdmin, AdminClientRouters.create)
+adminRouters.use("/Partner",   AdminPartnerRouters.create)
 
 
 
