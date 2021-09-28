@@ -17,6 +17,11 @@ const  AdminStationRouters = {
         async (req, res) => {
             await StationGlobalRouters.getOne(req, res)
         }),
+
+    getOneByPublicId: router.get('/getOneByPublicId/:id',
+        async (req, res) => {
+            await StationGlobalRouters.getOneByPublicId(req, res)
+        }),
     getRealTimeInfo: router.get('/getRealTimeInfo/:id',
         async (req, res) => {
             await StationGlobalRouters.getRealTimeInfo(req, res)
