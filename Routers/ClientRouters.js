@@ -9,6 +9,7 @@ const {yitAuthenticator} = require("../Apis/yitAuthenticator");
 const {jwtPrivateKey} = require("../Apis/Config");
 const {adminPassword} = require("../Apis/Config");
 const Client = require("../Schemas/Client");
+const ClientClientRouters = require("../InternEndPoints/Client/ClientClientRouters");
 const {ClientGlobalRouters} = require("../Actors/ClientGlobalOperations");
 const clientRouter = express.Router();
 //Client Login
@@ -40,7 +41,7 @@ clientRouter.post('/login', async (req, res) => {
             if(clients.length > 0){
                 let client = clients[0]
                 if(bcrypt.compareSync(password, client.hashedPassword)) {
-                    const accessToken = jwt.sign({mail: mail, userType:"Client"}, jwtPrivateKey);
+                    const accessToken = jwt.sign({id: client.id, mail: mail, userType:"Client"}, jwtPrivateKey);
                     await res.json({"finalResult": true, token: accessToken})
                 } else {
                     res.json({finalResult: false, error: "wrong email or password"})
@@ -61,9 +62,15 @@ clientRouter.post('/create',
         await ClientGlobalRouters.create(req, res)
     })
 
-clientRouter.get('/HeartBit', (req, res) =>{
-    res.send({finalResult: true, result: "hi there"})
+clientRouter.get('/heartBit',  yitAuthenticator.authClient, (req, res) =>{
+    res.send({finalResult: true, result: "Hh there"})
 })
+
+
+//Station
+//clientRouter.use("/Station",  yitAuthenticator.authAdmin, AdminStationRouters.create)
+clientRouter.use("/Client",  yitAuthenticator.authClient, ClientClientRouters.getOne)
+//clientRouter.use("/Partner",   AdminPartnerRouters.create)
 
 
 

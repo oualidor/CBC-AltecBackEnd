@@ -65,8 +65,8 @@ const  ClientGlobalRouters = {
             );
     },
 
-    getOne :  async (req, res) => {
-        const id = parseInt(req.params.id);
+    getOne :  async (req, res, id) => {
+
         Client.findByPk(id)
             .then(customer =>
                 res.send({'finalResult': true, 'result': customer})

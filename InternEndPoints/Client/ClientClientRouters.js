@@ -11,53 +11,15 @@ const {UpdateData} = require("../../Apis/UpdateData");
 
 const  ClientClientRouters = {
 
-    update : router.post('/update/:id',
+    update : router.post('/update/',
             async (req, res) => {
             await  ClientGlobalRouters.update(req, res)
         }),
 
-    getOne : router.get('/getOne/:id',  async (req, res) => {
-        await ClientGlobalRouters.getOne(req, res)
+    getOne : router.get('/getOne/',  async (req, res) => {
+        const id = parseInt(req.body.id);
+        await ClientGlobalRouters.getOne(req, res, id)
     }),
-
-    getOneByAttribute : router.get('/getOne/:id/:attribute',  async (req, res) => {
-        await ClientGlobalRouters.getOneByAttribute(req, res)
-    }),
-
-    validate : router.get('/validate/:id',  async (req, res) => {
-        await ClientGlobalRouters.validate(req, res)
-    }),
-
-    searchBy : router.get('/SearchBy/:attribute/:key',  async (req, res) => {
-        const {attribute, key} = req.params;
-        let data = {where : { [attribute] : { [seq.Op.like] : '%' + key + '%' } }};
-        try{
-            let customer = await Client.findAll(data);
-            res.send({'finalResult': true, 'result': customer})
-        }catch (e) {
-            res.send({'finalResult': false, 'error': e})
-        }
-    }),
-
-
-    delete : router.get('/delete/:id',  async (req, res) => {
-        const id = parseInt(req.params.id);
-        try {
-            let customer = await Client.findByPk(id);
-            if(customer != null){
-                try {
-                    await customer.destroy();
-                    res.send({'finalResult': true, 'result': "Client deleted"})
-                }catch (ee) {
-                    res.send({'finalResult': false, 'error': ee})
-                }
-            }else{
-                res.send({'finalResult': false, 'error': "No customer with the provided Id"})
-            }
-        }catch (e){
-            res.send({'finalResult': false, 'error': e})
-        }
-    })
 }
 
 

@@ -26,6 +26,7 @@ const  AdminClientRouters = {
         }),
 
         getOne : router.get('/getOne/:id',  async (req, res) => {
+            const id = parseInt(req.params.id);
             await ClientGlobalRouters.getOne(req, res)
         }),
 
