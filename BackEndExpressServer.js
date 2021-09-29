@@ -6,6 +6,7 @@ const {yitAuthenticator} = require("./Apis/yitAuthenticator");
 
 const {adminRouters} = require("./Routers/AdminRouters");
 const swaggerFile = require('./swagger_output.json')
+const {clientRouter} = require("./Routers/ClientRouters");
 
 const PORT = process.env.PORT || 8080;
 ;
@@ -53,13 +54,11 @@ class BackEndExpressServer extends EventEmitter{
     }
 
     setRouters(){
-        this.app.use("/Admin",  adminRouters)
-        this.app.get("/",  (req, res)=>{
-            res.send("Server running")
-        })
         this.app.get("/HeartBit", (req, res)=>{
             res.send({finalResult : true, result: true})
         })
+        this.app.use("/Admin",  adminRouters)
+        this.app.use("/Client",  clientRouter)
 
     }
 }
