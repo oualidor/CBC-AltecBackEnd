@@ -84,7 +84,7 @@ const StationGlobalRouters = {
         let requestAddress = TCP_SERVER + 'Station/rent/'+id
         try {
             const request = await axios({url: requestAddress, method: "get", responseType: 'json'})
-            return request
+            return request.data
         } catch (e) {
             return {finalResult: false, error: e}
         }
