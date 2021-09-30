@@ -29,7 +29,6 @@ const  ClientStationRouters = {
         let StationId = req.params.id;
         try{
             let rentResult = await StationGlobalRouters.rentPowerBank(StationId)
-            console.log(rentResult)
             if(rentResult.finalResult === true){
                 await RentTransaction.create({StationId, clientId, powerBankId: rentResult.data.powerBankId,  type: "01"});
             }else {
