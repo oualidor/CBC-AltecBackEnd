@@ -11,7 +11,6 @@ const RentTransaction = db.define('RentTransactions',
         },
         StationId : {
             type: Sequelize.STRING,
-            primaryKey: true,
             allowNull: false
         },
         clientId : {

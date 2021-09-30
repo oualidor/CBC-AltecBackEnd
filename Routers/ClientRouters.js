@@ -11,6 +11,7 @@ const {adminPassword} = require("../Apis/Config");
 const Client = require("../Schemas/Client");
 const ClientClientRouters = require("../InternEndPoints/Client/ClientClientRouters");
 const ClientStationRouters = require("../InternEndPoints/Client/ClientStationRouters");
+const ClientRentTransactionRouters = require("../InternEndPoints/Client/ClientRentTransactionRouters");
 const {ClientGlobalRouters} = require("../Actors/ClientGlobalOperations");
 const clientRouter = express.Router();
 //Client Login
@@ -71,6 +72,7 @@ clientRouter.get('/heartBit',  yitAuthenticator.authClient, (req, res) =>{
 //Station
 clientRouter.use("/Station",  yitAuthenticator.authClient, ClientStationRouters.getOne)
 clientRouter.use("/Client",  yitAuthenticator.authClient, ClientClientRouters.getOne)
+clientRouter.use("/RentTransaction",  yitAuthenticator.authClient, ClientRentTransactionRouters.getOne)
 //clientRouter.use("/Partner",   AdminPartnerRouters.create)
 
 

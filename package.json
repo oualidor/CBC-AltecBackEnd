@@ -24,6 +24,7 @@
     "morgan": "^1.10.0",
     "mysql2": "^2.3.0",
     "nodemon": "^2.0.12",
+    "pg": "^8.7.1",
     "sequelize": "^6.6.5",
     "swagger-autogen": "^2.11.2",
     "swagger-ui-express": "^4.1.6",

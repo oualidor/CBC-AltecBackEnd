@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="cbc-altec" uuid="2be04e78-4ee7-4245-a652-a4a6ca527bce">
+    <data-source source="LOCAL" name="local, mysql" uuid="2be04e78-4ee7-4245-a652-a4a6ca527bce">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306/cbc-altec</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="remote, postgres" uuid="6726cd73-e07d-42f2-9161-f932903d91c5">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://164.132.59.129:5432/ppdb</jdbc-url>
     </data-source>
   </component>
 </project>
