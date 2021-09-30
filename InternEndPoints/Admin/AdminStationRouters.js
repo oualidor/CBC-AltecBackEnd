@@ -44,11 +44,11 @@ const  AdminStationRouters = {
             })
             if(rentTransactionsResults === true){
                 res.send( res.send({'finalResult': true, result: "Power bank returned successfully"}))
-
             }else {
-                res.send( res.send({'finalResult': false, error: "failed to crate transaction"}))
+                res.send( res.send({'finalResult': false, error: "failed to create transaction"}))
             }
         }catch (e){
+            console.log(e)
             res.send({'finalResult': false, 'error': e})
         }
     }),
