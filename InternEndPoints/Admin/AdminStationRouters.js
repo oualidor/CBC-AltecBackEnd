@@ -41,11 +41,7 @@ const  AdminStationRouters = {
         try{
             let rentTransactionsResults = await RentTransactionGlobalRouters.create(
                 StationId, clientId, powerBankId,  RentTransactionTypes.return)
-            if(rentTransactionsResults.finalResult === true){
-                res.send( rentTransactionsResults)
-            }else {
-                res.send( rentTransactionsResults)
-            }
+            res.send(rentTransactionsResults)
         }catch (e){
             console.log(e)
             res.send({'finalResult': false, 'error': e})
