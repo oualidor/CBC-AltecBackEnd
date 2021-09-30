@@ -35,10 +35,10 @@ const  AdminStationRouters = {
     }),
 
     returnPowerBank: router.post('/returnPowerBank/', async (req, res) => {
-        let {clientId, stationId, powerBankId } = req.body
+        let {clientId, StationId, powerBankId } = req.body
         try{
             let rentTransactionsResults = await RentTransactionGlobalRouters.create(
-                stationId, clientId, powerBankId,  RentTransactionTypes.return)
+                StationId, clientId, powerBankId,  RentTransactionTypes.return)
             res.send(rentTransactionsResults)
         }catch (e){
             console.log(e)
