@@ -1,5 +1,6 @@
 const Client = require("../Schemas/Client");
 const Validator = require("../Apis/dataValidator");
+const bcrypt = require("bcrypt");
 const {UpdateData} = require("../Apis/UpdateData");
 
 
