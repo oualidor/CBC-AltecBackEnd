@@ -42,10 +42,10 @@ const  AdminStationRouters = {
             let rentTransactionsResults = await RentTransactionGlobalRouters.create({
                 StationId, clientId, powerBankId, type: RentTransactionTypes.return
             })
-            if(rentTransactionsResults === true){
-                res.send( {'finalResult': true, result: "Power bank returned successfully"})
+            if(rentTransactionsResults.finalResult === true){
+                res.send( rentTransactionsResults)
             }else {
-                res.send( {'finalResult': false, error: "failed to create transaction"})
+                res.send( rentTransactionsResults)
             }
         }catch (e){
             console.log(e)
