@@ -5,18 +5,17 @@ const {TCP_SERVER} = require("../Apis/Config");
 
 
 const RentTransactionGlobalRouters = {
-    create : async (req, res) => {
-        let { StationId, clientId, powerBankId,  type} = req.body;
+    create : async (StationId, clientId, powerBankId,  type) => {
         let validatedData = true;
         let dataError = "";
         if (!validatedData) {
-            res.send({'finalResult': false, 'error': dataError});
+            return {'finalResult': false, 'error': dataError};
         } else {
             try {
                 await RentTransaction.create({StationId, clientId, powerBankId,  type});
-                res.send({'finalResult': true, 'result': true})
+                return {'finalResult': true, 'result': true}
             } catch (e) {
-                res.send({'finalResult': false, 'error': e})
+                return {'finalResult': false, 'error': e}
             }
         }
     },
@@ -70,26 +69,6 @@ const RentTransactionGlobalRouters = {
         }
     },
 
-    getRealTimeInfo:  async (req, res) => {
-        let {id} = req.params
-        let requestAddress = TCP_SERVER+'Station/QueryInfo/'+id
-        try {
-            const request  = await axios({url: requestAddress, method: "get", responseType: 'json'})
-            res.send(request.data)
-        }catch (e){
-            res.send({finalResult: false, error: e})
-        }
-},
-
-    rentPowerBank: async (req, res) => {
-        let requestAddress = TCP_SERVER + 'Station/rent/RL3H082007680121'
-        try {
-            const request = await axios({url: requestAddress, method: "get", responseType: 'json'})
-            res.send(request.data)
-        } catch (e) {
-            res.send({finalResult: false, error: e})
-        }
-    }
 }
 
 module.exports = {RentTransactionGlobalRouters}
