@@ -80,13 +80,13 @@ const StationGlobalRouters = {
         }
 },
 
-    rentPowerBank: async (req, res) => {
-        let requestAddress = TCP_SERVER + 'Station/rent/RL3H082007680121'
+    rentPowerBank: async (id) => {
+        let requestAddress = TCP_SERVER + 'Station/rent/'+id
         try {
             const request = await axios({url: requestAddress, method: "get", responseType: 'json'})
-            res.send(request.data)
+            return request
         } catch (e) {
-            res.send({finalResult: false, error: e})
+            return {finalResult: false, error: e}
         }
     }
 }

@@ -1,4 +1,5 @@
 const express = require('express');
+const RentTransaction = require("../../Schemas/RentTransaction");
 
 const router = express.Router();
 
@@ -23,9 +24,19 @@ const  ClientStationRouters = {
             await StationGlobalRouters.getRealTimeInfo(req, res)
 
         }),
-    rentPowerBank: router.get('/rentPowerBank/:id',
-        async (req, res) => {
-            await StationGlobalRouters.rentPowerBank(req, res)
+    rentPowerBank: router.get('/rentPowerBank/:id', async (req, res) => {
+        let {clientId} = req.body.id;
+        let StationId = req.params.id;
+        try{
+            let rentResult = await StationGlobalRouters.rentPowerBank(req, res)
+            if(rentResult.finalResult != false){
+                await RentTransaction.create({StationId, clientId, powerBankId: rentResult.data.powerBankId,  type: "01"});
+            }else {
+
+            }
+        }catch (e){
+
+        }
     }),
 }
 
