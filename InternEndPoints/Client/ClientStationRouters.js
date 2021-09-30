@@ -32,10 +32,10 @@ const  ClientStationRouters = {
             if(rentResult.finalResult != false){
                 await RentTransaction.create({StationId, clientId, powerBankId: rentResult.data.powerBankId,  type: "01"});
             }else {
-
+                res.send({'finalResult': false, 'error': "Could not rent teh power bank"})
             }
         }catch (e){
-
+            res.send({'finalResult': false, 'error': e})
         }
     }),
 }
