@@ -23,7 +23,7 @@ const  PartnerGlobalOperations = {
             res.send({'finalResult': false,  'error': dataError});
         }else{
             const hashedPassword  = bcrypt.hashSync(password, 10);
-            let data = {mail, phone, 'password' : hashedPassword, name, image, x, y};
+            let data = {mail, phone,  hashedPassword, name, image, x, y};
             try {
                 await Partner.create(data);
                 res.send({'finalResult': true, 'result': true})
