@@ -43,9 +43,9 @@ const  AdminStationRouters = {
                 StationId, clientId, powerBankId, type: RentTransactionTypes.return
             })
             if(rentTransactionsResults === true){
-                res.send( res.send({'finalResult': true, result: "Power bank returned successfully"}))
+                res.send( {'finalResult': true, result: "Power bank returned successfully"})
             }else {
-                res.send( res.send({'finalResult': false, error: "failed to create transaction"}))
+                res.send( {'finalResult': false, error: "failed to create transaction"})
             }
         }catch (e){
             console.log(e)
