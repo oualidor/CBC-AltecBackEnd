@@ -35,7 +35,7 @@ const  ClientStationRouters = {
                 res.send(rentResult)
             }
         }catch (e){
-            res.send({'finalResult': false, 'error': e})
+            res.send({'finalResult': false, 'error': "Could not rent due to an error try again later"})
         }
     }),
 }
