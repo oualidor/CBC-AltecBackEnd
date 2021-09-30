@@ -10,6 +10,7 @@ const {jwtPrivateKey} = require("../Apis/Config");
 const {adminPassword} = require("../Apis/Config");
 const Client = require("../Schemas/Client");
 const ClientClientRouters = require("../InternEndPoints/Client/ClientClientRouters");
+const ClientStationRouters = require("../InternEndPoints/Client/ClientStationRouters");
 const {ClientGlobalRouters} = require("../Actors/ClientGlobalOperations");
 const clientRouter = express.Router();
 //Client Login
@@ -68,7 +69,7 @@ clientRouter.get('/heartBit',  yitAuthenticator.authClient, (req, res) =>{
 
 
 //Station
-//clientRouter.use("/Station",  yitAuthenticator.authAdmin, AdminStationRouters.create)
+clientRouter.use("/Station",  yitAuthenticator.authClient, ClientStationRouters.getOne)
 clientRouter.use("/Client",  yitAuthenticator.authClient, ClientClientRouters.getOne)
 //clientRouter.use("/Partner",   AdminPartnerRouters.create)
 
