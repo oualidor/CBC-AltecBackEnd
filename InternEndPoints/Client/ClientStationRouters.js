@@ -26,16 +26,13 @@ const  ClientStationRouters = {
         }),
     rentPowerBank: router.get('/rentPowerBank/:id', async (req, res) => {
         let clientId = req.body.id;
-
         let StationId = req.params.id;
-        console.log(StationId)
         try{
-            let rentResult = await StationGlobalRouters.rentPowerBank(req, res)
-            console.log(rentResult)
+            let rentResult = await StationGlobalRouters.rentPowerBank(StationId)
             if(rentResult.finalResult != false){
                 await RentTransaction.create({StationId, clientId, powerBankId: rentResult.data.powerBankId,  type: "01"});
             }else {
-                res.send({'finalResult': false, 'error': "Could not rent teh power bank"})
+                res.send(rentResult)
             }
         }catch (e){
             res.send({'finalResult': false, 'error': e})
