@@ -39,9 +39,8 @@ const  AdminStationRouters = {
         let StationId = "1";
         let powerBankId = "11"
         try{
-            let rentTransactionsResults = await RentTransactionGlobalRouters.create({
-                StationId, clientId, powerBankId, type: RentTransactionTypes.return
-            })
+            let rentTransactionsResults = await RentTransactionGlobalRouters.create(
+                StationId, clientId, powerBankId,  RentTransactionTypes.return)
             if(rentTransactionsResults.finalResult === true){
                 res.send( rentTransactionsResults)
             }else {
