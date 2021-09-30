@@ -26,7 +26,7 @@ const  ClientStationRouters = {
     rentPowerBank: router.get('/rentPowerBank/:id',
         async (req, res) => {
             await StationGlobalRouters.rentPowerBank(req, res)
-        }),
+    }),
 }
 
 

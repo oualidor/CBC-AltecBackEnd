@@ -8,6 +8,11 @@ const PowerBank = db.define('PowerBank', {
         primaryKey: true,
         autoIncrement: true
     },
+    publicId : {
+        type: Sequelize.STRING,
+        unique: true,
+        allowNull: false
+    },
     currentStation : {
         type: Sequelize.INTEGER,
         allowNull: false
@@ -17,6 +22,5 @@ const PowerBank = db.define('PowerBank', {
         allowNull: false
     }
 });
-
 
 module.exports = PowerBank;
