@@ -1,4 +1,6 @@
 const express = require('express');
+const RentTransactionTypes = require("../../Structures/RentTransactionTypes");
+const {RentTransactionGlobalRouters} = require("../../Actors/RentTransactionGlobalOperatios");
 
 const router = express.Router();
 
@@ -33,26 +35,23 @@ const  AdminStationRouters = {
     }),
 
     returnPowerBank: router.get('/returnPowerBank/:stationId', async (req, res) => {
-        let clientId = req.body.id;
-        let StationId = req.params.id;
-        let powerBankId = req.body.powerBankId
+        let clientId = "1";
+        let StationId = "1";
+        let powerBankId = "11"
         try{
-
             let rentTransactionsResults = await RentTransactionGlobalRouters.create({
                 StationId, clientId, powerBankId, type: RentTransactionTypes.return
             })
             if(rentTransactionsResults === true){
-                res.send( res.send({'finalResult': true, result: "Power bank rented successfully"}))
+                res.send( res.send({'finalResult': true, result: "Power bank returned successfully"}))
 
             }else {
-                res.send( res.send({'finalResult': false, error: "power bank rented but failed to crate transaction"}))
+                res.send( res.send({'finalResult': false, error: "failed to crate transaction"}))
             }
-
         }catch (e){
-            res.send({'finalResult': false, 'error': "Could not rent due to an error try again later"})
+            res.send({'finalResult': false, 'error': e})
         }
     }),
-
 }
 
 
