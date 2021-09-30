@@ -8,7 +8,7 @@ const {UpdateData} = require("../Apis/UpdateData");
 const  ClientGlobalRouters = {
 
     create : async (req, res) => {
-        let {mail, phone, password, fullName, stat, x, y} = req.body;
+        let {mail, phone, password, fullName, stat, type} = req.body;
         if (password == null){
             password = "";
         }
@@ -22,7 +22,7 @@ const  ClientGlobalRouters = {
             res.send({'finalResult': false,  'error': dataError});
         }else{
             const hashedPassword  = bcrypt.hashSync(password, 10);
-            let data = {mail, phone,  hashedPassword, fullName, stat, x, y};
+            let data = {mail, phone,  hashedPassword, fullName, stat, type};
             try {
                 await Client.create(data);
                 res.send({'finalResult': true, 'result': true})
