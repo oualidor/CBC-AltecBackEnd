@@ -2,6 +2,7 @@ const axios = require("axios");
 const Partner = require("../Schemas/Partner");
 const Validator = require("../Apis/dataValidator");
 const Station = require("../Schemas/Station");
+const bcrypt = require("bcrypt");
 const {UpdateData} = require("../Apis/UpdateData");
 Partner.hasMany(Station, {as : 'Stations', foreignKey : 'currentPartner'});
 
