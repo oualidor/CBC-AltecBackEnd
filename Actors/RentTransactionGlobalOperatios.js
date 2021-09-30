@@ -6,14 +6,14 @@ const {TCP_SERVER} = require("../Apis/Config");
 
 const RentTransactionGlobalRouters = {
     create : async (req, res) => {
-        //let {id, currentPartner, stat} = req.body;
+        let { StationId, clientId, powerBankId,  type} = req.body;
         let validatedData = true;
         let dataError = "";
         if (!validatedData) {
             res.send({'finalResult': false, 'error': dataError});
         } else {
             try {
-                await RentTransaction.create(req.body);
+                await RentTransaction.create({StationId, clientId, powerBankId,  type});
                 res.send({'finalResult': true, 'result': true})
             } catch (e) {
                 res.send({'finalResult': false, 'error': e})
