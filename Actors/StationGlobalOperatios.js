@@ -6,15 +6,13 @@ const {TCP_SERVER} = require("../Apis/Config");
 
 const StationGlobalRouters = {
     create : async (req, res) => {
-        let {id, currentPartner, stat} = req.body;
         let validatedData = true;
         let dataError = "";
         if (!validatedData) {
             res.send({'finalResult': false, 'error': dataError});
         } else {
-            let data = {id, currentPartner, stat};
             try {
-                await Station.create(data);
+                await Station.create(req.body);
                 res.send({'finalResult': true, 'result': true})
             } catch (e) {
                 res.send({'finalResult': false, 'error': e})
