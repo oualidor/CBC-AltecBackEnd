@@ -26,6 +26,7 @@ const  ClientStationRouters = {
         }),
     rentPowerBank: router.get('/rentPowerBank/:id', async (req, res) => {
         let {clientId} = req.body.id;
+        console.log(clientId)
         let StationId = req.params.id;
         try{
             let rentResult = await StationGlobalRouters.rentPowerBank(req, res)
