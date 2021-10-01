@@ -20,7 +20,8 @@ const  AdminStationRouters = {
     getOneByPublicId: router.get('/getOneByPublicId/:id', async (req, res) => {
             await StationGlobalRouters.getOneByPublicId(req, res)
         }),
-    getRealTimeInfo: router.get('/getRealTimeInfo/:id', async (req, res) => {await StationGlobalRouters.getRealTimeInfo(req, res)
+    getRealTimeInfo: router.get('/getRealTimeInfo/:id', async (req, res) => {
+        await StationGlobalRouters.getRealTimeInfo(req, res)
 
         }),
     rentPowerBank: router.get('/rentPowerBank/:stationId', async (req, res) => {
@@ -44,6 +45,11 @@ const  AdminStationRouters = {
             console.log(e)
             res.send({'finalResult': false, 'error': e})
         }
+    }),
+
+    queryAPNNs: router.get('/queryAPNNs/:stationId/:index', async (req, res) => {
+        let {stationId, index} = req.params
+        await StationGlobalRouters.queryAPNNs(stationId, index)
     }),
 }
 

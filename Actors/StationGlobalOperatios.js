@@ -91,7 +91,20 @@ const StationGlobalRouters = {
             console.log(e)
             return {finalResult: false, error: e}
         }
+    },
+
+    queryAPNNs: async (stationId, index) => {
+        let requestAddress = TCP_SERVER + 'Station/QueryAPN/'+stationId+"/"+index
+        try {
+            const request = await axios({url: requestAddress, method: "get", responseType: 'json'})
+            return request.data
+        } catch (e) {
+
+            console.log(e)
+            return {finalResult: false, error: e}
+        }
     }
+
 }
 
 module.exports = {StationGlobalRouters}
