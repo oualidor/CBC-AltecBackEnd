@@ -49,7 +49,12 @@ const  AdminStationRouters = {
 
     queryAPNNs: router.get('/queryAPNNs/:stationId/:index', async (req, res) => {
         let {stationId, index} = req.params
-        await StationGlobalRouters.queryAPNNs(stationId, index)
+        try{
+            let results = await StationGlobalRouters.queryAPNNs(stationId, index)
+            res.send(results)
+        }catch (e){
+            res.send({finalResult: false, error: e})
+        }
     }),
 }
 
