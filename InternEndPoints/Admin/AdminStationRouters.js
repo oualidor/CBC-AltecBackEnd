@@ -24,6 +24,7 @@ const  AdminStationRouters = {
         await StationGlobalRouters.getRealTimeInfo(req, res)
 
         }),
+
     rentPowerBank: router.get('/rentPowerBank/:stationId', async (req, res) => {
         let {stationId} = req.params
 
