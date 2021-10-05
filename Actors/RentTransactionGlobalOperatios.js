@@ -11,7 +11,6 @@ const RentTransactionGlobalRouters = {
         let dataError = "";
         if (!validatedData) {
             return GlOpResult(false, dataError)
-            return {'finalResult': false, 'error': dataError};
         } else {
             try {
                 let rentTransaction  = await RentTransaction.create({StationId, clientId, powerBankId,  type});

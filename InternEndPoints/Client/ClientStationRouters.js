@@ -54,8 +54,10 @@ const  ClientStationRouters = {
                                     rentResult.data.powerBankId,
                                     RentTransactionTypes.rent
                                 )
+                                console.log(rentResult.data.powerBankId)
+                                console.log(RentTransactionTypes.rent)
                                 if(rentTransactionsResults.finalResult === true){
-                                    res.send( res.send({'finalResult': true, result: "Power bank rented successfully"}))
+                                    AnswerHttpRequest.done(res, "Power bank rented successfully")
                                 }else {
                                     //TODO write log entry for transaction write failure
                                     console.log(rentTransactionsResults.error)
