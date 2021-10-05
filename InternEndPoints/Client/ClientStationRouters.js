@@ -32,7 +32,6 @@ const  ClientStationRouters = {
     rentPowerBank: router.post('/rentPowerBank/', async (req, res) => {
         try{
             let clientId = req.body.id;
-
             let StationId = req.body.StationId
             let gor = await ClientGlobalOperations.findByPk(clientId)
             if(gor.finalResult){
@@ -50,14 +49,16 @@ const  ClientStationRouters = {
                             let rentResult = await StationGlobalRouters.rentPowerBank(StationId)
                             if(rentResult.finalResult === true){
                                 let rentTransactionsResults = await RentTransactionGlobalRouters.create(
-                                    {
-                                    StationId, clientId, powerBankId: rentResult.data.powerBankId,  type: RentTransactionTypes.rent
-                                    }
-                                    )
+                                    StationId,
+                                    clientId,
+                                    rentResult.data.powerBankId,
+                                    RentTransactionTypes.rent
+                                )
                                 if(rentTransactionsResults === true){
                                     res.send( res.send({'finalResult': true, result: "Power bank rented successfully"}))
 
                                 }else {
+                                    //TODO write log entry for transaction write failure
                                     res.send( res.send({'finalResult': false, error: "power bank rented but failed to crate transaction"}))
                                 }
                             }else {
@@ -77,7 +78,7 @@ const  ClientStationRouters = {
                 AnswerHttpRequest.wrong(res, gor.error)
             }
         }catch (e){
-            AnswerHttpRequest.wrong(res, "Unable to rent")
+            AnswerHttpRequest.wrong(res, "request failed")
         }
     }),
 
