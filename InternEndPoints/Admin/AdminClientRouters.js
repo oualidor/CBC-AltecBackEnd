@@ -5,50 +5,45 @@ const Client = require('../../Schemas/Client');
 const Validator = require('../../Apis/dataValidator');
 
 const bcrypt = require('bcrypt');
-const {ClientGlobalRouters} = require("../../Actors/ClientGlobalOperations");
+const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
+const {ClientGlobalOperations} = require("../../Actors/ClientGlobalOperations");
 const {UpdateData} = require("../../Apis/UpdateData");
 
 
 const  AdminClientRouters = {
 
-        create : router.post('/create',
-            async (req, res) => {
-            await ClientGlobalRouters.create(req, res)
+        create : router.post('/create', async (req, res) => {
+            let gor = await ClientGlobalOperations.create(req.body)
+            if(gor.finalResult){
+                AnswerHttpRequest.done(res, gor.result)
+            }else {
+                AnswerHttpRequest.wrong(res, gor.error)
+            }
         }),
 
-        update : router.post('/update/:id',
-            async (req, res) => {
-            await  ClientGlobalRouters.update(req, res)
+        update : router.post('/update/:id', async (req, res) => {
+            const id = parseInt(req.params.id);
+            let gor = await ClientGlobalOperations.update(id, req.body)
+            if(gor.finalResult){
+                AnswerHttpRequest.done(res, gor.result)
+            }else {
+                AnswerHttpRequest.wrong(res, gor.error)
+            }
         }),
 
         getAll : router.get('/getAll/:offset/:limit',  async (req, res) => {
-            await ClientGlobalRouters.getAll(req, res)
+            await ClientGlobalOperations.getAll(req, res)
         }),
 
         getOne : router.get('/getOne/:id',  async (req, res) => {
             const id = parseInt(req.params.id);
-            await ClientGlobalRouters.getOne(req, res)
-        }),
-
-        getOneByAttribute : router.get('/getOne/:id/:attribute',  async (req, res) => {
-            await ClientGlobalRouters.getOneByAttribute(req, res)
-        }),
-
-        validate : router.get('/validate/:id',  async (req, res) => {
-            await ClientGlobalRouters.validate(req, res)
-        }),
-
-        searchBy : router.get('/SearchBy/:attribute/:key',  async (req, res) => {
-            const {attribute, key} = req.params;
-            let data = {where : { [attribute] : { [seq.Op.like] : '%' + key + '%' } }};
-            try{
-                let customer = await Client.findAll(data);
-                res.send({'finalResult': true, 'result': customer})
-            }catch (e) {
-                res.send({'finalResult': false, 'error': e})
+            let gor = await ClientGlobalOperations.findByPk(id)
+            if(gor.finalResult){
+                AnswerHttpRequest.done(res, gor.result)
+            }else {
+                AnswerHttpRequest.wrong(res, gor.error)
             }
         }),
-
 
         delete : router.get('/delete/:id',  async (req, res) => {
             const id = parseInt(req.params.id);
@@ -69,10 +64,6 @@ const  AdminClientRouters = {
             }
         })
     }
-
-
-
-
 
 module.exports = AdminClientRouters;
 

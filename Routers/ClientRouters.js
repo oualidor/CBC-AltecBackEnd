@@ -1,17 +1,22 @@
+const { Op } = require("sequelize");
 const express = require('express');
 const jwt  = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const AdminStationRouters = require("../InternEndPoints/Admin/AdminStationRouters");
-const AdminClientRouters = require("../InternEndPoints/Admin/AdminClientRouters");
-const AdminPartnerRouters = require("../InternEndPoints/Admin/AdminPartnerRouters");
+const RechargeCode = require("../Schemas/RechargeCode");
+const  ClientWallet  = require("../Schemas/ClientWallet");
 const Validator = require("../Apis/dataValidator");
 const {yitAuthenticator} = require("../Apis/yitAuthenticator");
 const {jwtPrivateKey} = require("../Apis/Config");
-const {adminPassword} = require("../Apis/Config");
 const Client = require("../Schemas/Client");
 const ClientClientRouters = require("../InternEndPoints/Client/ClientClientRouters");
-const ClientStationRouters = require("../InternEndPoints/Client/ClientStationRouters");const {ClientGlobalRouters} = require("../Actors/ClientGlobalOperations");
+const ClientStationRouters = require("../InternEndPoints/Client/ClientStationRouters");
+const AnswerHttpRequest = require("../Structures/AnswerHttpRequest");
+const {RechargeCodeOperations} = require("../Actors/RechargeCodeOperations");
+const {ClientWalletGlobalOperations} = require("../Actors/ClientWalletOperations");
+const {ClientGlobalOperations} = require("../Actors/ClientGlobalOperations");
 const clientRouter = express.Router();
+
+
 //Client Login
 clientRouter.post('/login', async (req, res) => {
     const {mail, password} = req.body;
@@ -56,21 +61,94 @@ clientRouter.post('/login', async (req, res) => {
     }
 });
 
+
 //Client SignUp
-clientRouter.post('/create',
-    async (req, res) => {
-        await ClientGlobalRouters.create(req, res)
-    })
+clientRouter.post('/create', async (req, res) => {
+    let data = req.body
+    let gor = await ClientGlobalOperations.create(data)
+    if(gor.finalResult === false){
+        AnswerHttpRequest.wrong(res, gor.error)
+    }else {
+        let client = gor.result
+        let wallet = ClientWalletGlobalOperations.create(client.id)
+        if(wallet != false){
+            AnswerHttpRequest.done(res, client)
+        }else {
+            client.destroy()
+            AnswerHttpRequest.wrong(res, "Could not create user")
+        }
+        AnswerHttpRequest.done(res, client)
+    }
+})
+
+
+//Recharge
+clientRouter.post('/recharge', async (req, res) => {
+    try{
+        const {mail, hashedCode} = req.body;
+        let rechargeCode = await RechargeCode.findOne({where: {hashedCode: hashedCode}})
+        if(rechargeCode === null){
+            AnswerHttpRequest.wrong(res, "RechargeCode unknown")
+        }else {
+            switch (rechargeCode.stat){
+                case 0:
+                    AnswerHttpRequest.wrong(res, "RechargeCode unknown")
+                    break;
+                case 1:
+                    let client = await ClientGlobalOperations.findOne({
+                        where: {
+                            mail: {
+                                [Op.eq]: mail
+                            }
+                        },
+                        include : [
+                            {
+                                model: ClientWallet,
+                                as: "Wallet",
+                            }
+                        ],
+                    })
+                    if(client === null){
+                        AnswerHttpRequest.wrong(res, "client not found")
+                    }else {
+                        let gor = await RechargeCodeOperations.update(rechargeCode.id, {stat: 2})
+                        if (gor.finalResult) {
+                            let newBalance = parseInt(client.Wallet.balance) + rechargeCode.amount
+                            let gor = await ClientWalletGlobalOperations.update(client.Wallet.id, {balance: newBalance})
+                            if (gor.finalResult) {
+                                AnswerHttpRequest.done(res, gor.result)
+                            }else {
+                                //TODO treat code accepted wallet not updated
+                                AnswerHttpRequest.wrong(res, gor.error)
+                            }
+                        }else {
+                            AnswerHttpRequest.wrong(res, "Try again later please")
+                        }
+                    }
+                    break;
+                case 2:
+                    AnswerHttpRequest.wrong(res, "RechargeCode unknown")
+                    break;
+                default:
+                    AnswerHttpRequest.wrong(res, "blocking user")
+            }
+        }
+    }catch (error){
+        console.log(error)
+        AnswerHttpRequest.wrong(res, "Request failed")
+    }
+});
+
 
 clientRouter.get('/heartBit',  yitAuthenticator.authClient, (req, res) =>{
-    res.send({finalResult: true, result: "Hh there"})
+    AnswerHttpRequest.done(res, "Hi there")
 })
 
 
 //Station
 clientRouter.use("/Station",  yitAuthenticator.authClient, ClientStationRouters.getOne)
 clientRouter.use("/Client",  yitAuthenticator.authClient, ClientClientRouters.getOne)
-//clientRouter.use("/Partner",   AdminPartnerRouters.create)
+
 
 
 

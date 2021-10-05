@@ -1,6 +1,10 @@
 const express = require('express');
 const RentTransaction = require("../../Schemas/RentTransaction");
 const RentTransactionTypes = require("../../Structures/RentTransactionTypes");
+const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
+const {ClientWalletGlobalOperations} = require("../../Actors/ClientWalletOperations");
+const {ClientGlobalOperations} = require("../../Actors/ClientGlobalOperations");
+const {RechargeCodeOperations} = require("../../Actors/RechargeCodeOperations");
 const {RentTransactionGlobalRouters} = require("../../Actors/RentTransactionGlobalOperatios");
 
 const router = express.Router();
@@ -25,26 +29,55 @@ const  ClientStationRouters = {
 
         }),
 
-    rentPowerBank: router.get('/rentPowerBank/:id', async (req, res) => {
-        let clientId = req.body.id;
-        let StationId = req.params.id;
+    rentPowerBank: router.post('/rentPowerBank/', async (req, res) => {
         try{
-            let rentResult = await StationGlobalRouters.rentPowerBank(StationId)
-            if(rentResult.finalResult === true){
-                let rentTransactionsResults = await RentTransactionGlobalRouters.create({
-                    StationId, clientId, powerBankId: rentResult.data.powerBankId,  type: RentTransactionTypes.rent
-                })
-                if(rentTransactionsResults === true){
-                    res.send( res.send({'finalResult': true, result: "Power bank rented successfully"}))
+            let clientId = req.body.id;
+
+            let StationId = req.body.StationId
+            let gor = await ClientGlobalOperations.findByPk(clientId)
+            if(gor.finalResult){
+                //TODO Check for station type
+                if(false){
 
                 }else {
-                    res.send( res.send({'finalResult': false, error: "power bank rented but failed to crate transaction"}))
+                    let currentClient = gor.result
+                    let currentBalance  = parseInt(currentClient.Wallet.balance)
+                    let rentFees = 50;
+                    if(currentBalance >= rentFees){
+                        let newBalance = currentBalance - rentFees
+                        let gor = await ClientWalletGlobalOperations.update(currentClient.Wallet.id, {balance: newBalance})
+                        if(gor.finalResult){
+                            let rentResult = await StationGlobalRouters.rentPowerBank(StationId)
+                            if(rentResult.finalResult === true){
+                                let rentTransactionsResults = await RentTransactionGlobalRouters.create(
+                                    {
+                                    StationId, clientId, powerBankId: rentResult.data.powerBankId,  type: RentTransactionTypes.rent
+                                    }
+                                    )
+                                if(rentTransactionsResults === true){
+                                    res.send( res.send({'finalResult': true, result: "Power bank rented successfully"}))
+
+                                }else {
+                                    res.send( res.send({'finalResult': false, error: "power bank rented but failed to crate transaction"}))
+                                }
+                            }else {
+                                newBalance = newBalance + rentFees
+                                let gor = await ClientWalletGlobalOperations.update(currentClient.Wallet.id, {balance: newBalance})
+                                //TODO write heavy log if wallet refund fails
+                                AnswerHttpRequest.wrong(res, "Could not rent the power bank")
+                            }
+                        }else {
+                            AnswerHttpRequest.wrong(res, gor.error)
+                        }
+                    }else {
+                        AnswerHttpRequest.wrong(res, "Insufficient balance")
+                    }
                 }
             }else {
-                res.send(rentResult)
+                AnswerHttpRequest.wrong(res, gor.error)
             }
         }catch (e){
-            res.send({'finalResult': false, 'error': "Could not rent due to an error try again later"})
+            AnswerHttpRequest.wrong(res, "Unable to rent")
         }
     }),
 

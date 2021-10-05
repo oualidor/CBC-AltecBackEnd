@@ -27,7 +27,6 @@ const  AdminStationRouters = {
 
     rentPowerBank: router.get('/rentPowerBank/:stationId', async (req, res) => {
         let {stationId} = req.params
-
         try {
             let rentResults = await StationGlobalRouters.rentPowerBank(stationId)
             res.send(rentResults)

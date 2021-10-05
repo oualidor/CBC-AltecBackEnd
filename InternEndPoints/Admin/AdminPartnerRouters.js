@@ -29,15 +29,6 @@ const  AdminPartnerRouters = {
             await PartnerGlobalOperations.getOne(req, res)
         }),
 
-        getOneByAttribute : router.get('/getOne/:id/:attribute',  async (req, res) => {
-            await PartnerGlobalOperations.getOneByAttribute(req, res)
-        }),
-
-        validate : router.get('/validate/:id',  async (req, res) => {
-            await PartnerGlobalOperations.validate(req, res)
-        }),
-
-
     }
 
 

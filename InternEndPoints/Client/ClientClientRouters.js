@@ -5,9 +5,9 @@ const Client = require('../../Schemas/Client');
 const Validator = require('../../Apis/dataValidator');
 
 const bcrypt = require('bcrypt');
+const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
+const {ClientGlobalOperations} = require("../../Actors/ClientGlobalOperations");
 const {ClientGlobalRouters} = require("../../Actors/ClientGlobalOperations");
-const {UpdateData} = require("../../Apis/UpdateData");
-
 
 const  ClientClientRouters = {
 
@@ -18,12 +18,19 @@ const  ClientClientRouters = {
 
     getOne : router.get('/getOne/',  async (req, res) => {
         const id = parseInt(req.body.id);
-        await ClientGlobalRouters.getOne(req, res, id)
+        let gor = await ClientGlobalOperations.findByPk(id)
+        if(gor.finalResult){
+            let client = gor.result
+            if(client != false){
+                AnswerHttpRequest.done(res, client)
+            }else {
+                AnswerHttpRequest.wrong(res, "client not found")
+            }
+        }else {
+            AnswerHttpRequest.wrong(res, gor.error)
+        }
     }),
 }
-
-
-
 
 
 module.exports = ClientClientRouters;

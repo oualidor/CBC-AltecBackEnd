@@ -52,7 +52,11 @@ const StationGlobalRouters = {
         const {id} = req.params
 
         try {
-            let stations = await Station.findAll();
+            let stations = await Station.findAll({
+                where: {
+                    id: id
+                }
+            });
             if(stations.length > 0){
                 let station  = stations[0]
                 if (station != null) {
@@ -81,7 +85,6 @@ const StationGlobalRouters = {
 },
 
     rentPowerBank: async (id) => {
-        console.log(id)
         let requestAddress = TCP_SERVER + 'Station/rent/'+id
         try {
             const request = await axios({url: requestAddress, method: "get", responseType: 'json'})

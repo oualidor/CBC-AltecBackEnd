@@ -8,22 +8,25 @@ const ClientWallet = db.define('ClientWallet', {
         autoIncrement: true
     },
     clientId: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         unique: true,
         allowNull: false
     },
     balance: {
         type: Sequelize.STRING,
         unique: true,
-        allowNull: false
+        allowNull: false,
+        defaultValue: "0"
     },
     stat: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
+        defaultValue: "0"
     },
     hashedPassword: {
         type: Sequelize.STRING,
         allowNull: false,
+        defaultValue: 0
     },
 });
 

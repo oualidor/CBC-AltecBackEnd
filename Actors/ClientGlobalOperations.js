@@ -1,54 +1,57 @@
+const { Op } = require("sequelize");
 const Client = require("../Schemas/Client");
 const Validator = require("../Apis/dataValidator");
 const bcrypt = require("bcrypt");
+const GlOpResult = require("../Structures/GlOpResult");
+const ClientWallet = require("../Schemas/ClientWallet");
 const {UpdateData} = require("../Apis/UpdateData");
+Client.hasOne(ClientWallet, {as : 'Wallet', foreignKey : 'clientId'});
 
 
+const  ClientGlobalOperations = {
 
-const  ClientGlobalRouters = {
-
-    create : async (req, res) => {
-        let {mail, phone, password, fullName, stat, type} = req.body;
-        if (password == null){
-            password = "";
-        }
-        let validatedData = true;
-        let dataError = "";
-        if(!Validator.email(mail)){
-            validatedData = false;
-            dataError = dataError+'email: wrong email';
-        }
-        if(!validatedData){
-            res.send({'finalResult': false,  'error': dataError});
-        }else{
-            const hashedPassword  = bcrypt.hashSync(password, 10);
-            let data = {mail, phone,  hashedPassword, fullName, stat, type};
-            try {
-                await Client.create(data);
-                res.send({'finalResult': true, 'result': true})
-            }catch (e) {
-                res.send({'finalResult': false, 'error': e})
+    create : async (data) => {
+        try {
+            let {mail, phone, password, fullName, stat, type} = data;
+            if (password == null){
+                password = "";
             }
+            let validatedData = true;
+            let dataError = "";
+            if(!Validator.email(data.mail)){
+                validatedData = false;
+                dataError = dataError+'email: wrong email';
+            }
+            if(!validatedData){
+                return GlOpResult(false, dataError)
+            }else {
+                const hashedPassword = bcrypt.hashSync(password, 10);
+                let data = {mail, phone, hashedPassword, fullName, stat, type};
+                let client = await Client.create(data);
+                return GlOpResult(true, client)
+            }
+        }catch (error) {
+            console.log(error)
+            return GlOpResult(false, "Request failed")
         }
     },
 
-    update : async (req, res) => {
-        const id = parseInt(req.params.id);
-        const preparedData = UpdateData(req.body)
+    update : async (id, data) => {
+        const preparedData = UpdateData(data)
         try {
-            let customer = await Client.findByPk(id);
-            if(customer != null){
+            let currentActor = await Client.findByPk(id);
+            if(currentActor != null){
                 try {
-                    await customer.update(preparedData);
-                    res.send({'finalResult': true, 'result': "Client Information updated"})
-                }catch (ee) {
-                    res.send({'finalResult': false, 'error': ee})
+                    await currentActor.update(preparedData);
+                    return GlOpResult(true, "Client Information updated")
+                }catch (error) {
+                    return GlOpResult(false, "Could not update teh client")
                 }
             }else{
-                res.send({'finalResult': false, 'error': "No Client with the provided Id"})
+                return GlOpResult(false, "No Client with the provided Id")
             }
-        }catch (e){
-            res.send({'finalResult': false, 'error': "some thing went wrong"})
+        }catch (error){
+            return GlOpResult(false, "Request failed")
         }
     },
 
@@ -66,15 +69,43 @@ const  ClientGlobalRouters = {
             );
     },
 
-    getOne :  async (req, res, id) => {
+    findByPk :  async (id, options) => {
+        try{
+            if(options === undefined) options = {
+                include : [
+                    {
+                        model: ClientWallet,
+                        as: "Wallet",
+                    }
+                ],
 
-        Client.findByPk(id)
-            .then(customer =>
-                res.send({'finalResult': true, 'result': customer})
-            )
-            .catch(err =>
-                res.send({'finalResult': false, 'error': err})
-            );
+            }
+            let client = await Client.findByPk(id, options)
+            if(client != null)     return GlOpResult(true, client)
+            return GlOpResult(false, "User not found")
+        }catch (e){
+            console.log(e)
+            return GlOpResult(false, "request failed")
+        }
+    },
+
+    findOne :  async (options) => {
+        try{
+            if(options === undefined) options = {
+                include : [
+                    {
+                        model: ClientWallet,
+                        as: "Wallet",
+                    }
+                ],
+            }
+            let client = await Client.findOne(options)
+            if(client != null) return client
+            return false
+        }catch (e){
+            console.log(e)
+            return false
+        }
     },
 
     getOneByAttribute : async (req, res) => {
@@ -110,4 +141,4 @@ const  ClientGlobalRouters = {
     },
 }
 
-module.exports = {ClientGlobalRouters}
+module.exports = {ClientGlobalOperations}
