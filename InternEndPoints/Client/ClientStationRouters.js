@@ -54,14 +54,12 @@ const  ClientStationRouters = {
                                     rentResult.data.powerBankId,
                                     RentTransactionTypes.rent
                                 )
-                                if(rentTransactionsResults === true){
+                                if(rentTransactionsResults.finalResult === true){
                                     res.send( res.send({'finalResult': true, result: "Power bank rented successfully"}))
-
                                 }else {
                                     //TODO write log entry for transaction write failure
                                     console.log(rentTransactionsResults.error)
                                     AnswerHttpRequest.wrong(res, "power bank rented but failed to crate transaction")
-
                                 }
                             }else {
                                 newBalance = newBalance + rentFees

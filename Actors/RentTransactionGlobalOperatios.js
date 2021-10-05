@@ -1,5 +1,6 @@
 const axios = require("axios");
 const RentTransaction = require("../Schemas/RentTransaction");
+const GlOpResult = require("../Structures/GlOpResult");
 
 const {TCP_SERVER} = require("../Apis/Config");
 
@@ -9,13 +10,14 @@ const RentTransactionGlobalRouters = {
         let validatedData = true;
         let dataError = "";
         if (!validatedData) {
+            return GlOpResult(false, dataError)
             return {'finalResult': false, 'error': dataError};
         } else {
             try {
-                await RentTransaction.create({StationId, clientId, powerBankId,  type});
-                return {'finalResult': true, 'result': true}
-            } catch (e) {
-                return {'finalResult': false, 'error': e}
+                let rentTransaction  = await RentTransaction.create({StationId, clientId, powerBankId,  type});
+                return GlOpResult(true, rentTransaction)
+            } catch (error) {
+                return GlOpResult(false, dataError)
             }
         }
     },
