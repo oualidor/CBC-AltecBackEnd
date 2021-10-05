@@ -43,9 +43,18 @@ const  AdminRechargeCodeRouters = {
     }),
 
     getAll: router.get('/getAll/:offset/:limit', async (req, res) => {
-            await StationGlobalRouters.getAll(req, res)
-
-        }),
+        try{
+            let {offset, limit} = req.params
+            let gor = await RechargeCodeOperations.getAll(offset, limit)
+            if(gor.finalResult){
+                AnswerHttpRequest.done(res, gor.result)
+            }else {
+                AnswerHttpRequest.wrong(res, gor.error)
+            }
+        }catch (error){
+            AnswerHttpRequest.wrong(res, "Request failed")
+        }
+    }),
 
     getOne: router.get('/getOne/:id', async (req, res) => {
             await StationGlobalRouters.getOne(req, res)

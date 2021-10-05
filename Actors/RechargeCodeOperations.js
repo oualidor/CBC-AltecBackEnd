@@ -34,11 +34,11 @@ const  RechargeCodeOperations = {
 
     getAll :  async (offset, limit) => {
         try{
-            let codes = await CurrentActor.findAll({offset: offset, limit: limit})
-            return codes
+            let rechargeCodes = await CurrentActor.findAll({offset: offset, limit: limit})
+            return  GlOpResult(true, rechargeCodes)
         }catch (error){
             console.log(error)
-            return false
+            return  GlOpResult(false, "request failed")
         }
 
     },
