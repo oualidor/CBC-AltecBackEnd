@@ -18,7 +18,7 @@ const RentTransaction = db.define('RentTransactions',
             allowNull: false
         },
         powerBankId : {
-            type: Sequelize.INTEGER,
+            type: Sequelize.STRING,
             allowNull: false
         },
         type : {
