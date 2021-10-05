@@ -59,6 +59,7 @@ const  ClientStationRouters = {
 
                                 }else {
                                     //TODO write log entry for transaction write failure
+                                    console.log(rentTransactionsResults.error)
                                     res.send( res.send({'finalResult': false, error: "power bank rented but failed to crate transaction"}))
                                 }
                             }else {
