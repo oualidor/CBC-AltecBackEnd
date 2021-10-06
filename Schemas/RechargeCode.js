@@ -9,6 +9,10 @@ const RechargeCode = db.define('RechargeCode',
             primaryKey: true,
             autoIncrement: true
         },
+        partnerId: {
+            type: Sequelize.INTEGER,
+            allowNull: false
+        },
         amount: {
             type: Sequelize.INTEGER,
             allowNull: false
