@@ -12,11 +12,13 @@ const {StationGlobalRouters} = require("../../Actors/StationGlobalOperatios");
 const  AdminRechargeCodeRouters = {
     create: router.post('/create', async (req, res) => {
         try{
-            let {partnerId, stat, amount} = req.body
-            const hashedCode = await codeGenerator.toString()
-            let data = {partnerId,  hashedCode, amount, stat}
-            console.log(partnerId)
-            let code = await RechargeCodeOperations.create(data)
+            let {partnerId, stat, amount, number} = req.body
+            let data = []
+            for(let i in [...Array(number).keys()]){
+                const hashedCode = await codeGenerator.toString()
+                data.push({partnerId,  hashedCode, amount, stat})
+            }
+            let code = await RechargeCodeOperations.bulkCreate(data)
             if(code){
                 AnswerHttpRequest.done(res, code.id)
             }else {

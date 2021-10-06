@@ -16,6 +16,17 @@ const  RechargeCodeOperations = {
         }
     },
 
+    bulkCreate : async (data) => {
+        try {
+            await CurrentActor.bulkCreate(data);
+            return true
+        }catch (error) {
+            console.log(error)
+            return  false
+        }
+    },
+
+
     update : async (id, data) => {
         try {
             const preparedData = UpdateData(data)
