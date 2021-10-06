@@ -15,6 +15,7 @@ const  AdminRechargeCodeRouters = {
             let {partnerId, stat, amount} = req.body
             const hashedCode = await codeGenerator.toString()
             let data = {partnerId,  hashedCode, amount, stat}
+            console.log(partnerId)
             let code = await RechargeCodeOperations.create(data)
             if(code){
                 AnswerHttpRequest.done(res, code.id)
