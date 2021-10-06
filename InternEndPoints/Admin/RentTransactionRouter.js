@@ -5,7 +5,7 @@ const RentTransactionGlobalRouters = require("../../Actors/RentTransactionOperat
 const router = express.Router();
 
 const {StationGlobalRouters} = require("../../Actors/StationGlobalOperatios");
-const  AdminStationRouters = {
+const  RentTransactionRouter = {
     create: router.post('/create', async (req, res) => {
             await StationGlobalRouters.create(req, res)
         }),
@@ -61,7 +61,7 @@ const  AdminStationRouters = {
 
 
 
-module.exports = AdminStationRouters;
+module.exports = RentTransactionRouter;
 
 
 

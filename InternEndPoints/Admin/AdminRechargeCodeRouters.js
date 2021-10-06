@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const codeGenerator = require("../../Apis/CodeGenerator");
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 const {RechargeCodeOperations} = require("../../Actors/RechargeCodeOperations");
-const {RentTransactionGlobalRouters} = require("../../Actors/RentTransactionGlobalOperatios");
+const RentTransactionGlobalRouters = require("../../Actors/RentTransactionOperations");
 
 const router = express.Router();
 
@@ -20,7 +20,7 @@ const  AdminRechargeCodeRouters = {
             }
             let code = await RechargeCodeOperations.bulkCreate(data)
             if(code){
-                AnswerHttpRequest.done(res, code.id)
+                AnswerHttpRequest.done(res, "done")
             }else {
                 AnswerHttpRequest.wrong(res, "Request failed")
             }

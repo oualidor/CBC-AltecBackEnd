@@ -5,7 +5,7 @@ const GlOpResult = require("../Structures/GlOpResult");
 const {TCP_SERVER} = require("../Apis/Config");
 
 
-const RentTransactionGlobalRouters = {
+const RentTransactionOperations = {
     create : async (StationId, clientId, powerBankId,  type) => {
         let validatedData = true;
         let dataError = "";
@@ -21,18 +21,16 @@ const RentTransactionGlobalRouters = {
         }
     },
 
-    getAll : async (req, res) => {
-        var {offset, limit} = req.params;
+    getAll : async (offset, limit) => {
         limit = parseInt(limit);
         offset = parseInt(offset);
         if (limit === 0) limit = 99999999
-        RentTransaction.findAll({offset: offset, limit: limit})
-            .then(stations =>
-                res.send({'finalResult': true, 'result': stations})
-            )
-            .catch(err =>
-                res.send({'finalResult': false, 'error': err})
-            );
+        let rentTransactions = await RentTransaction.findAll({offset: offset, limit: limit})
+        if(rentTransactions !== null){
+            return GlOpResult(true, rentTransactions)
+        }else {
+            GlOpResult(true, [])
+        }
     },
 
     getOne: async (req, res) => {
@@ -49,29 +47,6 @@ const RentTransactionGlobalRouters = {
         }
     },
 
-    getOneByPublicId: async (req, res) => {
-        const {id} = req.params
-
-        try {
-            let stations = await RentTransaction.findAll();
-            if(stations.length > 0){
-                let station  = stations[0]
-                if (station != null) {
-                    res.send({'finalResult': true, 'result': station})
-                } else {
-                    res.send({'finalResult': false, 'error': "no station found with id: " +id})
-                }
-            }else {
-                res.send({'finalResult': false, 'error': "no station found with id: " +id})
-            }
-
-        } catch (err) {
-            res.send({'finalResult': false, 'error': err})
-        }
-    },
-
-
-
 }
 
-module.exports = {RentTransactionGlobalRouters}
+module.exports = RentTransactionOperations

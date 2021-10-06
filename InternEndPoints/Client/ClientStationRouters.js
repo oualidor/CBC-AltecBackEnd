@@ -5,7 +5,7 @@ const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 const {ClientWalletGlobalOperations} = require("../../Actors/ClientWalletOperations");
 const {ClientGlobalOperations} = require("../../Actors/ClientGlobalOperations");
 const {RechargeCodeOperations} = require("../../Actors/RechargeCodeOperations");
-const {RentTransactionGlobalRouters} = require("../../Actors/RentTransactionGlobalOperatios");
+const RentTransactionGlobalRouters= require("../../Actors/RentTransactionOperations");
 
 const router = express.Router();
 
