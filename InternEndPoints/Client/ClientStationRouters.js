@@ -9,48 +9,47 @@ const TransactionOperations= require("../../Actors/TransactionOperations");
 
 const router = express.Router();
 
-const {StationGlobalRouters} = require("../../Actors/StationGlobalOperatios");
+const StationOperations = require("../../Actors/StationOperations");
 const  ClientStationRouters = {
 
     getAll: router.get('/getAll/:offset/:limit', async (req, res) => {
-            await StationGlobalRouters.getAll(req, res)
+            await StationOperations.getAll(req, res)
     }),
 
     getOne: router.get('/getOne/:id', async (req, res) => {
-            await StationGlobalRouters.getOne(req, res)
+            await StationOperations.getOne(req, res)
     }),
 
     getOneByPublicId: router.get('/getOneByPublicId/:id', async (req, res) => {
-            await StationGlobalRouters.getOneByPublicId(req, res)
+            await StationOperations.getOneByPublicId(req, res)
         }),
 
     getRealTimeInfo: router.get('/getRealTimeInfo/:id', async (req, res) => {
-            await StationGlobalRouters.getRealTimeInfo(req, res)
+            await StationOperations.getRealTimeInfo(req, res)
     }),
 
     rentPowerBank: router.post('/rentPowerBank/', async (req, res) => {
         try{
             let clientId = req.body.id;
-            let StationId = req.body.StationId
-            let gor = await ClientGlobalOperations.findByPk(clientId)
-            if(gor.finalResult){
+            let stationPublicId = req.body.StationId
+            let clientFindOperation = await ClientGlobalOperations.findByPk(clientId)
+            if(clientFindOperation.finalResult){
                 //TODO Check for station type
-                if(false){
-
-                }else {
-                    let currentClient = gor.result
+                let stationFindOperation = await StationOperations.getOneByPublicId(stationPublicId)
+                if(stationFindOperation.finalResult){
+                    let currentClient = clientFindOperation.result
                     let currentBalance  = parseInt(currentClient.Wallet.balance)
                     let rentFees = 50;
                     if(currentBalance >= rentFees){
                         let newBalance = currentBalance - rentFees
-                        let gor = await ClientWalletGlobalOperations.update(currentClient.Wallet.id, {balance: newBalance})
-                        if(gor.finalResult){
-                            let rentResult = await StationGlobalRouters.rentPowerBank(StationId)
+                        let walletUpdateOperation = await ClientWalletGlobalOperations.update(currentClient.Wallet.id, {balance: newBalance})
+                        if(walletUpdateOperation.finalResult){
+                            let rentResult = await StationOperations.rentPowerBank(stationPublicId)
                             if(rentResult.finalResult === true){
                                 let rentTransactionsResults = await TransactionOperations.create(
                                     TransactionTypes.station.rent,
                                     [
-                                        {dataTitle: "stationId", dataValue: StationId},
+                                        {dataTitle: "stationId", dataValue: stationFindOperation.result.id},
                                         {dataTitle: "clientId", dataValue: clientId},
                                         {dataTitle: "powerBankId", dataValue: rentResult.data.powerBankId},
                                     ]
@@ -69,16 +68,19 @@ const  ClientStationRouters = {
                                 AnswerHttpRequest.wrong(res, "Could not rent the power bank")
                             }
                         }else {
-                            AnswerHttpRequest.wrong(res, gor.error)
+                            AnswerHttpRequest.wrong(res, walletUpdateOperation.error)
                         }
                     }else {
                         AnswerHttpRequest.wrong(res, "Insufficient balance")
                     }
                 }
+                else {
+                    AnswerHttpRequest.wrong(res, "Unknown Station")
+                }
             }else {
-                AnswerHttpRequest.wrong(res, gor.error)
+                AnswerHttpRequest.wrong(res, clientFindOperation.error)
             }
-        }catch (e){
+        }catch (error){
             AnswerHttpRequest.wrong(res, "request failed")
         }
     }),

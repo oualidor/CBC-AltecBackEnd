@@ -1,6 +1,6 @@
 const axios = require("axios");
 const Station = require("../Schemas/Station");
-
+const GlOpResult = require("../Structures/GlOpResult");
 const {TCP_SERVER} = require("../Apis/Config");
 
 
@@ -34,42 +34,34 @@ const StationGlobalRouters = {
             );
     },
 
-    getOne: async (req, res) => {
-        const {id} = req.params
+    getOne: async (id) => {
+
         try {
             let station = await Station.findByPk(id);
             if (station != null) {
-                res.send({'finalResult': true, 'result': station})
+                return GlOpResult(true, station)
             } else {
-                res.send({'finalResult': false, 'error': "no station found with id: " +id})
+                return GlOpResult(false, "no station found with id: " +id)
             }
         } catch (err) {
-            res.send({'finalResult': false, 'error': err})
+            return GlOpResult(false, "Operation failed")
         }
     },
 
-    getOneByPublicId: async (req, res) => {
-        const {id} = req.params
-
+    getOneByPublicId: async (id) => {
         try {
-            let stations = await Station.findAll({
+            let station = await Station.findOne({
                 where: {
                     id: id
                 }
             });
-            if(stations.length > 0){
-                let station  = stations[0]
-                if (station != null) {
-                    res.send({'finalResult': true, 'result': station})
-                } else {
-                    res.send({'finalResult': false, 'error': "no station found with id: " +id})
-                }
-            }else {
-                res.send({'finalResult': false, 'error': "no station found with id: " +id})
+            if (station != null) {
+                return GlOpResult(true, station)
+            } else {
+                return GlOpResult(false, "no station found with id: " + id)
             }
-
         } catch (err) {
-            res.send({'finalResult': false, 'error': err})
+            return GlOpResult(false, "Operation failed")
         }
     },
 
@@ -110,4 +102,4 @@ const StationGlobalRouters = {
 
 }
 
-module.exports = {StationGlobalRouters}
+module.exports = StationGlobalRouters

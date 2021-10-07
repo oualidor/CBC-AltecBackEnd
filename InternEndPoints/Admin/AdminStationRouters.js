@@ -4,7 +4,8 @@ const RentTransactionGlobalRouters = require("../../Actors/TransactionOperations
 
 const router = express.Router();
 
-const {StationGlobalRouters} = require("../../Actors/StationGlobalOperatios");
+const StationGlobalRouters = require("../../Actors/StationOperations");
+const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 const  AdminStationRouters = {
     create: router.post('/create', async (req, res) => {
             await StationGlobalRouters.create(req, res)
@@ -18,12 +19,24 @@ const  AdminStationRouters = {
         }),
 
     getOneByPublicId: router.get('/getOneByPublicId/:id', async (req, res) => {
-            await StationGlobalRouters.getOneByPublicId(req, res)
+        let {id} = req.params
+        let stationGeOneOp = await StationGlobalRouters.getOneByPublicId(id)
+        if(stationGeOneOp.finalResult){
+            AnswerHttpRequest.done(res, stationGeOneOp.result)
+        }
+        else{
+            AnswerHttpRequest.wrong(res, stationGeOneOp.error)
+        }
         }),
     getRealTimeInfo: router.get('/getRealTimeInfo/:id', async (req, res) => {
-        await StationGlobalRouters.getRealTimeInfo(req, res)
+        let stationGetInfoOp = await StationGlobalRouters.getRealTimeInfo(req, res)
+        if(stationGetInfoOp.finalResult){
 
-        }),
+        }
+        else{
+
+        }
+    }),
 
     rentPowerBank: router.get('/rentPowerBank/:stationId', async (req, res) => {
         let {stationId} = req.params

@@ -6,7 +6,7 @@ const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 
 const router = express.Router();
 
-const {StationGlobalRouters} = require("../../Actors/StationGlobalOperatios");
+const StationGlobalRouters = require("../../Actors/StationOperations");
 const  AdminTransactionRouter = {
     create: router.post('/create', async (req, res) => {
             await StationGlobalRouters.create(req, res)
