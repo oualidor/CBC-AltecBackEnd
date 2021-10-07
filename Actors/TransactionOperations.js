@@ -4,14 +4,14 @@ const TransactionMetaData = require("../Schemas/TransactionMetaData");
 
 //StationId, clientId, powerBankId,
 const TransactionOperations = {
-    create : async (type, metaData) => {
+    create : async (operation, metaData) => {
         try {
             let validatedData = true;
             let dataError = "";
             if (!validatedData) {
                 return GlOpResult(false, dataError)
             } else {
-                let newTransaction  = await Transaction.create({type});
+                let newTransaction  = await Transaction.create({operation});
                 if(metaData !== undefined){
                     let metaDataOperation = await TransactionOperations.addMetadata(newTransaction.id, metaData)
                     if(metaDataOperation.finalResult){

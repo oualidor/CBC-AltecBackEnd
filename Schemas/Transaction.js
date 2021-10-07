@@ -9,7 +9,7 @@ const Transaction = db.define('Transaction',
             primaryKey: true,
             autoIncrement: true
         },
-        type : {
+        operation : {
             type: Sequelize.INTEGER,
             allowNull: false
         }

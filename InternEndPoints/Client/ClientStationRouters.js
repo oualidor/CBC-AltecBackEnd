@@ -1,6 +1,6 @@
 const express = require('express');
 const RentTransaction = require("../../Schemas/Transaction");
-const RentTransactionTypes = require("../../Structures/RentTransactionTypes");
+const TransactionTypes = require("../../Structures/TransactionTypes");
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 const {ClientWalletGlobalOperations} = require("../../Actors/ClientWalletOperations");
 const {ClientGlobalOperations} = require("../../Actors/ClientGlobalOperations");
@@ -48,7 +48,7 @@ const  ClientStationRouters = {
                             let rentResult = await StationGlobalRouters.rentPowerBank(StationId)
                             if(rentResult.finalResult === true){
                                 let rentTransactionsResults = await TransactionOperations.create(
-                                    RentTransactionTypes.rent,
+                                    TransactionTypes.station.rent,
                                     [
                                         {dataTitle: "stationId", dataValue: StationId},
                                         {dataTitle: "clientId", dataValue: clientId},
@@ -90,7 +90,7 @@ const  ClientStationRouters = {
         try{
 
             let rentTransactionsResults = await TransactionOperations.create({
-                StationId, clientId, powerBankId, type: RentTransactionTypes.return
+                StationId, clientId, powerBankId, type: TransactionTypes.return
             })
             if(rentTransactionsResults === true){
                 res.send( res.send({'finalResult': true, result: "Power bank rented successfully"}))

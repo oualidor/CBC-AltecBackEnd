@@ -1,5 +1,5 @@
 const express = require('express');
-const RentTransactionTypes = require("../../Structures/RentTransactionTypes");
+const RentTransactionTypes = require("../../Structures/TransactionTypes");
 const bcrypt = require("bcrypt");
 const codeGenerator = require("../../Apis/CodeGenerator");
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
