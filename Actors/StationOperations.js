@@ -35,7 +35,6 @@ const StationGlobalRouters = {
     },
 
     getOne: async (id) => {
-
         try {
             let station = await Station.findByPk(id);
             if (station != null) {

@@ -34,7 +34,6 @@ const  ClientStationRouters = {
             let stationPublicId = req.body.StationId
             let clientFindOperation = await ClientGlobalOperations.findByPk(clientId)
             if(clientFindOperation.finalResult){
-                //TODO Check for station type
                 let stationFindOperation = await StationOperations.getOneByPublicId(stationPublicId)
                 if(stationFindOperation.finalResult){
                     let currentClient = clientFindOperation.result
@@ -49,18 +48,16 @@ const  ClientStationRouters = {
                                 let rentTransactionsResults = await TransactionOperations.create(
                                     TransactionTypes.station.rent,
                                     [
-                                        {dataTitle: "stationId", dataValue: stationFindOperation.result.id},
+                                        {dataTitle: "stationId", dataValue: stationFindOperation.result.systemId},
                                         {dataTitle: "clientId", dataValue: clientId},
                                         {dataTitle: "powerBankId", dataValue: rentResult.data.powerBankId},
                                     ]
                                 )
-                                if(rentTransactionsResults.finalResult === true){
-                                    AnswerHttpRequest.done(res, "Power bank rented successfully")
-                                }else {
+                                if(rentTransactionsResults.finalResult === false){
                                     //TODO write log entry for transaction write failure
                                     console.log(rentTransactionsResults.error)
-                                    AnswerHttpRequest.wrong(res, "power bank rented but failed to crate transaction")
                                 }
+                                AnswerHttpRequest.done(res, "Power bank rented successfully")
                             }else {
                                 newBalance = newBalance + rentFees
                                 let gor = await ClientWalletGlobalOperations.update(currentClient.Wallet.id, {balance: newBalance})

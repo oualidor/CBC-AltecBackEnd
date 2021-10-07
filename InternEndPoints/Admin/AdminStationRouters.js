@@ -10,10 +10,12 @@ const  AdminStationRouters = {
     create: router.post('/create', async (req, res) => {
             await StationGlobalRouters.create(req, res)
         }),
+
     getAll: router.get('/getAll/:offset/:limit', async (req, res) => {
             await StationGlobalRouters.getAll(req, res)
 
         }),
+
     getOne: router.get('/getOne/:id', async (req, res) => {
             await StationGlobalRouters.getOne(req, res)
         }),
@@ -28,14 +30,9 @@ const  AdminStationRouters = {
             AnswerHttpRequest.wrong(res, stationGeOneOp.error)
         }
         }),
+
     getRealTimeInfo: router.get('/getRealTimeInfo/:id', async (req, res) => {
-        let stationGetInfoOp = await StationGlobalRouters.getRealTimeInfo(req, res)
-        if(stationGetInfoOp.finalResult){
-
-        }
-        else{
-
-        }
+        await StationGlobalRouters.getRealTimeInfo(req, res)
     }),
 
     rentPowerBank: router.get('/rentPowerBank/:stationId', async (req, res) => {

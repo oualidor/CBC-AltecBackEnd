@@ -1,11 +1,7 @@
 const express = require('express');
 const EventEmitter = require('events')
 const cors = require('cors');
-const swaggerUi = require("swagger-ui-express");
-const {yitAuthenticator} = require("./Apis/yitAuthenticator");
-
 const {adminRouters} = require("./Routers/AdminRouters");
-const swaggerFile = require('./swagger_output.json')
 const {clientRouter} = require("./Routers/ClientRouters");
 
 const PORT = process.env.PORT || 8080;
