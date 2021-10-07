@@ -11,6 +11,8 @@ const Client = require("../Schemas/Client");
 const ClientClientRouters = require("../InternEndPoints/Client/ClientClientRouters");
 const ClientStationRouters = require("../InternEndPoints/Client/ClientStationRouters");
 const AnswerHttpRequest = require("../Structures/AnswerHttpRequest");
+const TransactionTypes = require("../Structures/TransactionTypes");
+const TransactionOperations = require("../Actors/TransactionOperations");
 const {RechargeCodeOperations} = require("../Actors/RechargeCodeOperations");
 const {ClientWalletGlobalOperations} = require("../Actors/ClientWalletOperations");
 const {ClientGlobalOperations} = require("../Actors/ClientGlobalOperations");
@@ -111,15 +113,25 @@ clientRouter.post('/recharge', async (req, res) => {
                     if(client === null){
                         AnswerHttpRequest.wrong(res, "client not found")
                     }else {
-                        let gor = await RechargeCodeOperations.update(rechargeCode.id, {stat: 2})
-                        if (gor.finalResult) {
+                        let rechargeCodeOperation = await RechargeCodeOperations.update(rechargeCode.id, {stat: 2})
+                        if (rechargeCodeOperation.finalResult) {
                             let newBalance = parseInt(client.Wallet.balance) + rechargeCode.amount
-                            let gor = await ClientWalletGlobalOperations.update(client.Wallet.id, {balance: newBalance})
-                            if (gor.finalResult) {
-                                AnswerHttpRequest.done(res, gor.result)
+                            let walletUpdateOperation = await ClientWalletGlobalOperations.update(client.Wallet.id, {balance: newBalance})
+                            if (walletUpdateOperation.finalResult) {
+                                let rentTransactionsResults = await TransactionOperations.create(
+                                    TransactionTypes.tickets.recharge,
+                                    [
+                                        {dataTitle: "clientId", dataValue: client.id},
+                                        {dataTitle: "rechargeCodeId", dataValue: rechargeCode.id},
+                                    ]
+                                )
+                                if(rentTransactionsResults.finalResult === false){
+                                    //TODO treat wallet updated transaction no created
+                                }
+                                AnswerHttpRequest.done(res, walletUpdateOperation.result)
                             }else {
                                 //TODO treat code accepted wallet not updated
-                                AnswerHttpRequest.wrong(res, gor.error)
+                                AnswerHttpRequest.wrong(res, walletUpdateOperation.error)
                             }
                         }else {
                             AnswerHttpRequest.wrong(res, "Try again later please")
