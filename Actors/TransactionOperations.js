@@ -1,0 +1,84 @@
+const Transaction = require("../Schemas/Transaction");
+const GlOpResult = require("../Structures/GlOpResult");
+const TransactionMetaData = require("../Schemas/TransactionMetaData");
+
+//StationId, clientId, powerBankId,
+const TransactionOperations = {
+    create : async (type, metaData) => {
+        try {
+            let validatedData = true;
+            let dataError = "";
+            if (!validatedData) {
+                return GlOpResult(false, dataError)
+            } else {
+                let Transaction  = await Transaction.create({type});
+                if(metaData !== undefined){
+                    let metaDataOperation = await TransactionOperations.addMetadata(Transaction.id, metaData)
+                    if(metaDataOperation.finalResult){
+                        return GlOpResult(true, Transaction)
+                    }else {
+                        Transaction.destroy()
+                        return GlOpResult(false, "Operation failed")
+                    }
+                }else {
+                    return GlOpResult(true, Transaction)
+                }
+            }
+        }catch (error){
+            return GlOpResult(false, "Operation failed")
+        }
+    },
+
+    getAll : async (offset, limit) => {
+        limit = parseInt(limit);
+        offset = parseInt(offset);
+        if (limit === 0) limit = 99999999
+        let rentTransactions = await Transaction.findAll({offset: offset, limit: limit})
+        if(rentTransactions !== null){
+            return GlOpResult(true, rentTransactions)
+        }else {
+            GlOpResult(true, [])
+        }
+    },
+
+    getOne: async (req, res) => {
+        const {id} = req.params
+        try {
+            let station = await Transaction.findByPk(id);
+            if (station != null) {
+                res.send({'finalResult': true, 'result': station})
+            } else {
+                res.send({'finalResult': false, 'error': "no station found with id: " +id})
+            }
+        } catch (err) {
+            res.send({'finalResult': false, 'error': err})
+        }
+    },
+
+    addMetadata :  async (transactionId, data) => {
+        let validatedData = true;
+        let dataError = "";
+        if(!validatedData){
+            return GlOpResult(false, dataError)
+        }else{
+            let preparedData = []
+            data.forEach(entry =>{
+                preparedData.push(
+                    {
+                        transactionId,
+                        dataTitle: entry.dataTitle,
+                        dataValue: entry.dataValue
+                    }
+                )
+            })
+            try {
+                let transactionMetaData = await TransactionMetaData.bulkCreate(preparedData);
+                return GlOpResult(true, transactionMetaData)
+            }catch (e) {
+                return GlOpResult(false, "request failed")
+            }
+        }
+    }
+}
+
+module.exports = TransactionOperations

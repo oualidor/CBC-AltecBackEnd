@@ -1,11 +1,11 @@
 const express = require('express');
-const RentTransaction = require("../../Schemas/RentTransaction");
+const RentTransaction = require("../../Schemas/Transaction");
 const RentTransactionTypes = require("../../Structures/RentTransactionTypes");
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 const {ClientWalletGlobalOperations} = require("../../Actors/ClientWalletOperations");
 const {ClientGlobalOperations} = require("../../Actors/ClientGlobalOperations");
 const {RechargeCodeOperations} = require("../../Actors/RechargeCodeOperations");
-const RentTransactionGlobalRouters= require("../../Actors/RentTransactionOperations");
+const TransactionOperations= require("../../Actors/TransactionOperations");
 
 const router = express.Router();
 
@@ -26,8 +26,7 @@ const  ClientStationRouters = {
 
     getRealTimeInfo: router.get('/getRealTimeInfo/:id', async (req, res) => {
             await StationGlobalRouters.getRealTimeInfo(req, res)
-
-        }),
+    }),
 
     rentPowerBank: router.post('/rentPowerBank/', async (req, res) => {
         try{
@@ -48,14 +47,14 @@ const  ClientStationRouters = {
                         if(gor.finalResult){
                             let rentResult = await StationGlobalRouters.rentPowerBank(StationId)
                             if(rentResult.finalResult === true){
-                                let rentTransactionsResults = await RentTransactionGlobalRouters.create(
-                                    StationId,
-                                    clientId,
-                                    rentResult.data.powerBankId,
-                                    RentTransactionTypes.rent
+                                let rentTransactionsResults = await TransactionOperations.create(
+                                    RentTransactionTypes.rent,
+                                    [
+                                        {dataTitle: "stationId", dataValue: StationId},
+                                        {dataTitle: "clientId", dataValue: clientId},
+                                        {dataTitle: "powerBankId", dataValue: rentResult.data.powerBankId},
+                                    ]
                                 )
-                                console.log(rentResult.data.powerBankId)
-                                console.log(RentTransactionTypes.rent)
                                 if(rentTransactionsResults.finalResult === true){
                                     AnswerHttpRequest.done(res, "Power bank rented successfully")
                                 }else {
@@ -90,7 +89,7 @@ const  ClientStationRouters = {
         let powerBankId = req.body.powerBankId
         try{
 
-            let rentTransactionsResults = await RentTransactionGlobalRouters.create({
+            let rentTransactionsResults = await TransactionOperations.create({
                 StationId, clientId, powerBankId, type: RentTransactionTypes.return
             })
             if(rentTransactionsResults === true){

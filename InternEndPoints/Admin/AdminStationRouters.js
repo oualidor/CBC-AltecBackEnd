@@ -1,6 +1,6 @@
 const express = require('express');
 const RentTransactionTypes = require("../../Structures/RentTransactionTypes");
-const RentTransactionGlobalRouters = require("../../Actors/RentTransactionOperations");
+const RentTransactionGlobalRouters = require("../../Actors/TransactionOperations");
 
 const router = express.Router();
 

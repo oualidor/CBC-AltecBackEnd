@@ -1,13 +1,13 @@
 const express = require('express');
 const RentTransactionTypes = require("../../Structures/RentTransactionTypes");
-const RentTransactionGlobalRouters = require("../../Actors/RentTransactionOperations");
-const RentTransactionOperations = require("../../Actors/RentTransactionOperations");
+const RentTransactionGlobalRouters = require("../../Actors/TransactionOperations");
+const RentTransactionOperations = require("../../Actors/TransactionOperations");
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 
 const router = express.Router();
 
 const {StationGlobalRouters} = require("../../Actors/StationGlobalOperatios");
-const  AdminRentTransactionRouter = {
+const  AdminTransactionRouter = {
     create: router.post('/create', async (req, res) => {
             await StationGlobalRouters.create(req, res)
         }),
@@ -15,9 +15,11 @@ const  AdminRentTransactionRouter = {
         try {
             let {offset, limit} = req.params
             let getAllOp = await RentTransactionOperations.getAll(offset, limit)
-            if (getAllOp.finalResult) AnswerHttpRequest.done(res, getAllOp.result)
-            AnswerHttpRequest.wrong(res, getAllOp.error)
-
+            if (getAllOp.finalResult) {
+                AnswerHttpRequest.done(res, getAllOp.result)
+            }else {
+                AnswerHttpRequest.wrong(res, getAllOp.error)
+            }
         } catch (error) {
             AnswerHttpRequest.wrong(res, "Request Failed")
         }
@@ -31,7 +33,7 @@ const  AdminRentTransactionRouter = {
 
 
 
-module.exports = AdminRentTransactionRouter;
+module.exports = AdminTransactionRouter;
 
 
 

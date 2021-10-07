@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const codeGenerator = require("../../Apis/CodeGenerator");
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 const {RechargeCodeOperations} = require("../../Actors/RechargeCodeOperations");
-const RentTransactionGlobalRouters = require("../../Actors/RentTransactionOperations");
+const RentTransactionGlobalRouters = require("../../Actors/TransactionOperations");
 
 const router = express.Router();
 
