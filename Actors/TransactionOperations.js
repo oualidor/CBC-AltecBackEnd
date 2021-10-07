@@ -1,7 +1,7 @@
 const Transaction = require("../Schemas/Transaction");
 const GlOpResult = require("../Structures/GlOpResult");
 const TransactionMetaData = require("../Schemas/TransactionMetaData");
-
+Client.hasOne(TransactionMetaData, {as : 'MetaData', foreignKey : 'transactionId'});
 //StationId, clientId, powerBankId,
 const TransactionOperations = {
     create : async (operation, metaData) => {
@@ -34,7 +34,16 @@ const TransactionOperations = {
         limit = parseInt(limit);
         offset = parseInt(offset);
         if (limit === 0) limit = 99999999
-        let rentTransactions = await Transaction.findAll({offset: offset, limit: limit})
+        let rentTransactions = await Transaction.findAll(
+            {
+                offset: offset, limit: limit,
+                include : [
+                    {
+                        model: TransactionMetaData,
+                        as: "MetaData",
+                    }
+                ],
+            })
         if(rentTransactions !== null){
             return GlOpResult(true, rentTransactions)
         }else {
@@ -45,7 +54,17 @@ const TransactionOperations = {
     getOne: async (req, res) => {
         const {id} = req.params
         try {
-            let station = await Transaction.findByPk(id);
+            let station = await Transaction.findByPk(
+                id,
+                {
+                    include : [
+                        {
+                            model: TransactionMetaData,
+                            as: "MetaData",
+                        }
+                    ],
+                }
+                );
             if (station != null) {
                 res.send({'finalResult': true, 'result': station})
             } else {
