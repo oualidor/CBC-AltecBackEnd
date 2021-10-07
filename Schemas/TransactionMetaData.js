@@ -3,7 +3,7 @@
 const Sequelize = require('sequelize');
 
 
-const db = require('../apis/sqConnection');
+const db = require('../Apis/sqConnection');
 
 const Transaction = require('./Transaction')
 const TransactionMetaData = db.define('TransactionMetaData', {
