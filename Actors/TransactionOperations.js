@@ -1,7 +1,7 @@
 const Transaction = require("../Schemas/Transaction");
 const GlOpResult = require("../Structures/GlOpResult");
 const TransactionMetaData = require("../Schemas/TransactionMetaData");
-Client.hasOne(TransactionMetaData, {as : 'MetaData', foreignKey : 'transactionId'});
+Transaction.hasMany(TransactionMetaData, {as : 'MetaData', foreignKey : 'transactionId'});
 //StationId, clientId, powerBankId,
 const TransactionOperations = {
     create : async (operation, metaData) => {
