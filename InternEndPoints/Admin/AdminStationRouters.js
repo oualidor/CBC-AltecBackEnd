@@ -17,8 +17,15 @@ const  AdminStationRouters = {
         }),
 
     getOne: router.get('/getOne/:id', async (req, res) => {
-            await StationGlobalRouters.getOne(req, res)
-        }),
+        let {id} = req.params
+        let stationGeOneOp = await StationGlobalRouters.getOne(id)
+        if(stationGeOneOp.finalResult){
+            AnswerHttpRequest.done(res, stationGeOneOp.result)
+        }
+        else{
+            AnswerHttpRequest.wrong(res, stationGeOneOp.error)
+        }
+    }),
 
     getOneByPublicId: router.get('/getOneByPublicId/:id', async (req, res) => {
         let {id} = req.params
