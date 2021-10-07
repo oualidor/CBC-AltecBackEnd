@@ -90,7 +90,7 @@ const StationGlobalRouters = {
             const request = await axios({url: requestAddress, method: "get", responseType: 'json'})
             return request.data
         } catch (e) {
-            console.log("//////")
+
             console.log(e)
             return {finalResult: false, error: e}
         }

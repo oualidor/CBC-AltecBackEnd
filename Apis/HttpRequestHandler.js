@@ -7,7 +7,7 @@ const HttpRequestHandler = {
             const data = await request.data;
             return data
         }catch (error){
-            //console.log(error)
+
             return {finalResult: false, error: error}
         }
     },

@@ -25,6 +25,7 @@ const TransactionOperations = {
                 }
             }
         }catch (error){
+            console.log(error)
             return GlOpResult(false, "Operation failed")
         }
     },
