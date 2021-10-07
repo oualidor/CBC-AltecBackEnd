@@ -11,17 +11,17 @@ const TransactionOperations = {
             if (!validatedData) {
                 return GlOpResult(false, dataError)
             } else {
-                let Transaction  = await Transaction.create({type});
+                let newTransaction  = await Transaction.create({type});
                 if(metaData !== undefined){
-                    let metaDataOperation = await TransactionOperations.addMetadata(Transaction.id, metaData)
+                    let metaDataOperation = await TransactionOperations.addMetadata(newTransaction.id, metaData)
                     if(metaDataOperation.finalResult){
-                        return GlOpResult(true, Transaction)
+                        return GlOpResult(true, newTransaction)
                     }else {
-                        Transaction.destroy()
+                        newTransaction.destroy()
                         return GlOpResult(false, "Operation failed")
                     }
                 }else {
-                    return GlOpResult(true, Transaction)
+                    return GlOpResult(true, newTransaction)
                 }
             }
         }catch (error){
