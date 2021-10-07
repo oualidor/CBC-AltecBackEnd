@@ -11,10 +11,11 @@ const  AdminTransactionRouter = {
     create: router.post('/create', async (req, res) => {
             await StationGlobalRouters.create(req, res)
         }),
-    getAll: router.get('/getAll/:offset/:limit', async (req, res) => {
+
+    getAll: router.get('/getAll/:operation/:offset/:limit', async (req, res) => {
         try {
-            let {offset, limit} = req.params
-            let getAllOp = await RentTransactionOperations.getAll(offset, limit)
+            let {operation, offset, limit} = req.params
+            let getAllOp = await RentTransactionOperations.getAll(operation, offset, limit)
             if (getAllOp.finalResult) {
                 AnswerHttpRequest.done(res, getAllOp.result)
             }else {
@@ -24,6 +25,7 @@ const  AdminTransactionRouter = {
             AnswerHttpRequest.wrong(res, "Request Failed")
         }
     }),
+
     getOne: router.get('/getOne/:id', async (req, res) => {
             await StationGlobalRouters.getOne(req, res)
         }),

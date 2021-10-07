@@ -30,12 +30,14 @@ const TransactionOperations = {
         }
     },
 
-    getAll : async (offset, limit) => {
+    getAll : async (operation, offset, limit) => {
         limit = parseInt(limit);
+        operation = parseInt(operation);
         offset = parseInt(offset);
         if (limit === 0) limit = 99999999
         let rentTransactions = await Transaction.findAll(
             {
+                where: { operation: operation},
                 offset: offset, limit: limit,
                 include : [
                     {
