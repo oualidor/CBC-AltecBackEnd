@@ -20,7 +20,7 @@ const db = new Sequelize('sql5439528', 'sql5439528', 'yysX4snjwI', {
  */
 
 let host  = "164.132.59.129"
-const db = new Sequelize('ppdb', 'postgres', 'postgres', {
+const db = new Sequelize('ppdb', 'postgres', 'kn?t!CkNht@khut', {
 
     host: host,
     dialect: 'postgres',
