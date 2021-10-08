@@ -5,7 +5,7 @@
   "main": "BackEndExpressServer.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js",
+    "dev": "clear && npx kill-port 8080 && nodemon app.js",
     "test": "test"
   },
   "author": "YourIt Department",

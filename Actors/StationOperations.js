@@ -1,8 +1,10 @@
 const axios = require("axios");
 const Station = require("../Schemas/Station");
 const GlOpResult = require("../Structures/GlOpResult");
+const Partner = require("../Schemas/Partner");
 const {TCP_SERVER} = require("../Apis/Config");
 
+Station.belongsTo(Partner, {foreignKey: "currentPartner"})
 
 const StationGlobalRouters = {
     create : async (req, res) => {
@@ -36,13 +38,20 @@ const StationGlobalRouters = {
 
     getOne: async (id) => {
         try {
-            let station = await Station.findByPk(id);
+            let station = await Station.findByPk(
+                id,
+                {
+                    include : [Partner],
+                }
+
+            )
             if (station != null) {
                 return GlOpResult(true, station)
             } else {
                 return GlOpResult(false, "no station found with id: " +id)
             }
         } catch (err) {
+            console.log(err)
             return GlOpResult(false, "Operation failed")
         }
     },
