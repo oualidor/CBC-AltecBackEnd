@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node app.js",
     "dev": "clear && npx kill-port 8080 && nodemon app.js",
-    "test": "test"
+    "update": "git reset --hard origine/master"
   },
   "author": "YourIt Department",
   "license": "ISC",
