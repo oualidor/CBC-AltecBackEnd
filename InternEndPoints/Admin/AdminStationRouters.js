@@ -13,7 +13,8 @@ const  AdminStationRouters = {
 
     update: router.post('/update/:id', async (req, res) => {
         let {id} = req.params
-        let updateOp = await StationGlobalRouters.update(id, req.body)
+        let data = {id: req.body.id}
+        let updateOp = await StationGlobalRouters.update(id, data)
         if(updateOp.finalResult){
             AnswerHttpRequest.done(res, updateOp.result)
         }else {
