@@ -13,6 +13,7 @@ const  AdminStationRouters = {
 
     update: router.post('/update/:id', async (req, res) => {
         let {id} = req.params
+        req.body['systemId'] = null
         let updateOp = await StationOperations.update(id, req.body)
         if(updateOp.finalResult){
             AnswerHttpRequest.done(res, updateOp.result)
