@@ -11,6 +11,16 @@ const  AdminStationRouters = {
             await StationGlobalRouters.create(req, res)
         }),
 
+    update: router.post('/update/:id', async (req, res) => {
+        let {id} = req.params
+        let updateOp = await StationGlobalRouters.update(id, req.body)
+        if(updateOp.finalResult){
+            AnswerHttpRequest.done(res, updateOp.result)
+        }else {
+            AnswerHttpRequest.wrong(res, updateOp.error)
+        }
+    }),
+
     getAll: router.get('/getAll/:offset/:limit', async (req, res) => {
             await StationGlobalRouters.getAll(req, res)
 

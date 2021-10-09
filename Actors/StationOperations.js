@@ -1,10 +1,12 @@
+const {UpdateData} = require("../Apis/UpdateData");
+
 const axios = require("axios");
-const Station = require("../Schemas/Station");
+const CurrentActor = require("../Schemas/Station");
 const GlOpResult = require("../Structures/GlOpResult");
 const Partner = require("../Schemas/Partner");
 const {TCP_SERVER} = require("../Apis/Config");
 
-Station.belongsTo(Partner, {foreignKey: "currentPartner"})
+CurrentActor.belongsTo(Partner, {foreignKey: "currentPartner"})
 
 const StationGlobalRouters = {
     create : async (req, res) => {
@@ -14,11 +16,27 @@ const StationGlobalRouters = {
             res.send({'finalResult': false, 'error': dataError});
         } else {
             try {
-                await Station.create(req.body);
+                await CurrentActor.create(req.body);
                 res.send({'finalResult': true, 'result': true})
             } catch (e) {
                 res.send({'finalResult': false, 'error': e})
             }
+        }
+    },
+
+    update : async (id, data) => {
+        try {
+            const preparedData = UpdateData(data)
+            let currentActor = await CurrentActor.findByPk(id);
+            if(currentActor != null){
+                await currentActor.update(preparedData);
+                return  GlOpResult(true, "Station updated")
+            }else{
+                return  GlOpResult(false, "Station code not found")
+            }
+        }catch (error){
+            console.log(error)
+            return  GlOpResult(false, "could not update Station info")
         }
     },
 
@@ -27,7 +45,7 @@ const StationGlobalRouters = {
         limit = parseInt(limit);
         offset = parseInt(offset);
         if (limit === 0) limit = 99999999
-        Station.findAll({offset: offset, limit: limit})
+        CurrentActor.findAll({offset: offset, limit: limit})
             .then(stations =>
                 res.send({'finalResult': true, 'result': stations})
             )
@@ -38,7 +56,7 @@ const StationGlobalRouters = {
 
     getOne: async (id) => {
         try {
-            let station = await Station.findByPk(
+            let station = await CurrentActor.findByPk(
                 id,
                 {
                     include : [Partner],
@@ -58,7 +76,7 @@ const StationGlobalRouters = {
 
     getOneByPublicId: async (id) => {
         try {
-            let station = await Station.findOne({
+            let station = await CurrentActor.findOne({
                 where: {
                     id: id
                 }
