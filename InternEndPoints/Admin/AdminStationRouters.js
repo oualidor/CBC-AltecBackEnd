@@ -85,6 +85,27 @@ const  AdminStationRouters = {
         }
     }),
 
+
+    setAddress: router.post('/setAddress/:stationId', async (req, res) => {
+        let {stationId} = req.params
+        let point = "Station/SetServer/"+stationId
+        let { address, port, heartBit }  = req.body
+        let preparedData = {address, port, heartBit }
+        AnswerHttpRequest.done(res, preparedData)
+        /*
+        try{
+            let op = await StationOperations.sendRequest.POST(point, preparedData)
+            if(op.finalResult){
+                AnswerHttpRequest.done(res, op.data)
+            }else {
+                AnswerHttpRequest.wrong(res, op.error)
+            }
+        }catch (error){
+            AnswerHttpRequest.wrong(res, "Request failed")
+        }
+
+         */
+    }),
     setVolume: router.get('/setVolume/:stationId/:level', async (req, res) => {
         let {stationId, level} = req.params
         let point = "Station/SetVoice/"+stationId+"/"+level

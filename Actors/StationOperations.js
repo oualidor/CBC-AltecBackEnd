@@ -140,7 +140,8 @@ const StationGlobalRouters = {
             }
         },
 
-        POST: async (URL, data)=>{
+        POST: async (point, data)=>{
+            let URL = TCP_SERVER + point
             try {
                 const request = await axios({url: URL, method: "get", responseType: 'json'})
                 return request.data
