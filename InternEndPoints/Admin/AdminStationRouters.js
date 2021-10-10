@@ -84,6 +84,21 @@ const  AdminStationRouters = {
             res.send({finalResult: false, error: e})
         }
     }),
+
+    setVolume: router.get('/setVolume/:stationId/:level', async (req, res) => {
+        let {stationId, level} = req.params
+        let point = "Station/SetVoice/"+stationId+"/"+level
+        try{
+            let op = await StationOperations.sendRequest.GET(point)
+            if(op.finalResult){
+                AnswerHttpRequest.done(res, op.data)
+            }else {
+                AnswerHttpRequest.wrong(res, op.error)
+            }
+        }catch (error){
+            AnswerHttpRequest.wrong(res, "Request failed")
+        }
+    }),
 }
 
 

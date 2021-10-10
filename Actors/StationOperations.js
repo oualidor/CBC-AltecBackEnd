@@ -9,6 +9,7 @@ const {TCP_SERVER} = require("../Apis/Config");
 CurrentActor.belongsTo(Partner, {foreignKey: "currentPartner"})
 
 const StationGlobalRouters = {
+
     create : async (req, res) => {
         let validatedData = true;
         let dataError = "";
@@ -101,7 +102,7 @@ const StationGlobalRouters = {
         }catch (e){
             res.send({finalResult: false, error: e})
         }
-},
+    },
 
     rentPowerBank: async (id) => {
         let requestAddress = TCP_SERVER + 'Station/rent/'+id
@@ -125,7 +126,33 @@ const StationGlobalRouters = {
             console.log(e)
             return {finalResult: false, error: e}
         }
-    }
+    },
+
+    sendRequest: {
+        GET: async (point) => {
+            let URL = TCP_SERVER + point
+            try {
+                const request = await axios({url: URL, method: "get", responseType: 'json'})
+                return request.data
+            } catch (e) {
+                console.log(e)
+                return {finalResult: false, error: e}
+            }
+        },
+
+        POST: async (URL, data)=>{
+            try {
+                const request = await axios({url: URL, method: "get", responseType: 'json'})
+                return request.data
+            } catch (e) {
+
+                console.log(e)
+                return {finalResult: false, error: e}
+            }
+        }
+    },
+
+
 
 }
 
