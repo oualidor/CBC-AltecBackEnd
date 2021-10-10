@@ -154,6 +154,7 @@ const StationGlobalRouters = {
                 const data = await response.data;
                 return data
             }catch (error){
+                console.log(error)
                 return {finalResult: false, error: error}
             }
         }
