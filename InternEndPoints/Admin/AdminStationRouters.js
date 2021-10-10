@@ -91,8 +91,6 @@ const  AdminStationRouters = {
         let point = "Station/SetServer/"+stationId
         let { address, port, heartBit }  = req.body
         let preparedData = {address, port, heartBit }
-        AnswerHttpRequest.done(res, preparedData)
-        /*
         try{
             let op = await StationOperations.sendRequest.POST(point, preparedData)
             if(op.finalResult){
@@ -103,9 +101,9 @@ const  AdminStationRouters = {
         }catch (error){
             AnswerHttpRequest.wrong(res, "Request failed")
         }
-
-         */
     }),
+
+
     setVolume: router.get('/setVolume/:stationId/:level', async (req, res) => {
         let {stationId, level} = req.params
         let point = "Station/SetVoice/"+stationId+"/"+level
