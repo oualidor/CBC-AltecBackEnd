@@ -64,13 +64,13 @@ const  AdminStationRouters = {
     }),
 
     returnPowerBank: router.post('/returnPowerBank/', async (req, res) => {
-        let {clientId, stationId, powerBankId } = req.body
+        let {stationId, powerBankId } = req.body
         try{
             let metaData = [
                 {dataTitle: "stationId", dataValue: stationId},
                 {dataTitle: "powerBankId", dataValue: powerBankId},
             ]
-            let rentTransactionsResults = await TransactionOperations.create(RentTransactionTypes.return, metaData)
+            let rentTransactionsResults = await TransactionOperations.create(RentTransactionTypes.station.return, metaData)
             res.send(rentTransactionsResults)
         }catch (e){
             console.log(e)
