@@ -10,6 +10,7 @@ const TransactionOperations= require("../../Actors/TransactionOperations");
 const router = express.Router();
 
 const StationOperations = require("../../Actors/StationOperations");
+const SettingOperations = require("../../Actors/SettingOperations");
 const  ClientStationRouters = {
 
     getAll: router.get('/getAll/:offset/:limit', async (req, res) => {
@@ -30,52 +31,64 @@ const  ClientStationRouters = {
 
     rentPowerBank: router.post('/rentPowerBank/', async (req, res) => {
         try{
-            let clientId = req.body.id;
-            let stationPublicId = req.body.StationId
-            let clientFindOperation = await ClientGlobalOperations.findByPk(clientId)
-            if(clientFindOperation.finalResult){
-                let stationFindOperation = await StationOperations.getOneByPublicId(stationPublicId)
-                if(stationFindOperation.finalResult){
-                    let currentClient = clientFindOperation.result
-                    let currentBalance  = parseInt(currentClient.Wallet.balance)
-                    let rentFees = 50;
-                    if(currentBalance >= rentFees){
-                        let newBalance = currentBalance - rentFees
-                        let walletUpdateOperation = await ClientWalletGlobalOperations.update(currentClient.Wallet.id, {balance: newBalance})
-                        if(walletUpdateOperation.finalResult){
-                            let rentResult = await StationOperations.rentPowerBank(stationPublicId)
-                            if(rentResult.finalResult === true){
-                                let rentTransactionsResults = await TransactionOperations.create(
-                                    TransactionTypes.station.rent,
-                                    [
-                                        {dataTitle: "stationId", dataValue: stationFindOperation.result.systemId},
-                                        {dataTitle: "clientId", dataValue: clientId},
-                                        {dataTitle: "powerBankId", dataValue: rentResult.data.powerBankId},
-                                    ]
-                                )
-                                if(rentTransactionsResults.finalResult === false){
-                                    //TODO write log entry for transaction write failure
-                                    console.log(rentTransactionsResults.error)
+            let getOp = await SettingOperations.getOne("rent")
+            if(getOp.finalResult){
+                let rentSetting = getOp.result
+                if(rentSetting.dataValue === true){
+                    let clientId = req.body.id;
+                    let stationPublicId = req.body.StationId
+                    let clientFindOperation = await ClientGlobalOperations.findByPk(clientId)
+                    if(clientFindOperation.finalResult){
+                        let stationFindOperation = await StationOperations.getOneByPublicId(stationPublicId)
+                        if(stationFindOperation.finalResult){
+                            let currentClient = clientFindOperation.result
+                            let currentBalance  = parseInt(currentClient.Wallet.balance)
+                            let rentFees = 50;
+                            if(currentBalance >= rentFees){
+                                let newBalance = currentBalance - rentFees
+                                let walletUpdateOperation = await ClientWalletGlobalOperations.update(currentClient.Wallet.id, {balance: newBalance})
+                                if(walletUpdateOperation.finalResult){
+                                    let rentResult = await StationOperations.rentPowerBank(stationPublicId)
+                                    if(rentResult.finalResult === true){
+                                        let rentTransactionsResults = await TransactionOperations.create(
+                                            TransactionTypes.station.rent,
+                                            [
+                                                {dataTitle: "stationId", dataValue: stationFindOperation.result.systemId},
+                                                {dataTitle: "clientId", dataValue: clientId},
+                                                {dataTitle: "powerBankId", dataValue: rentResult.data.powerBankId},
+                                            ]
+                                        )
+                                        if(rentTransactionsResults.finalResult === false){
+                                            //TODO write log entry for transaction write failure
+                                            console.log(rentTransactionsResults.error)
+                                        }
+                                        AnswerHttpRequest.done(res, "Power bank rented successfully")
+                                    }else {
+                                        newBalance = newBalance + rentFees
+                                        let gor = await ClientWalletGlobalOperations.update(currentClient.Wallet.id, {balance: newBalance})
+                                        //TODO write heavy log if wallet refund fails
+                                        AnswerHttpRequest.wrong(res, "Could not rent the power bank")
+                                    }
+                                }else {
+                                    AnswerHttpRequest.wrong(res, walletUpdateOperation.error)
                                 }
-                                AnswerHttpRequest.done(res, "Power bank rented successfully")
                             }else {
-                                newBalance = newBalance + rentFees
-                                let gor = await ClientWalletGlobalOperations.update(currentClient.Wallet.id, {balance: newBalance})
-                                //TODO write heavy log if wallet refund fails
-                                AnswerHttpRequest.wrong(res, "Could not rent the power bank")
+                                AnswerHttpRequest.wrong(res, "Insufficient balance")
                             }
-                        }else {
-                            AnswerHttpRequest.wrong(res, walletUpdateOperation.error)
+                        }
+                        else {
+                            AnswerHttpRequest.wrong(res, "Unknown Station")
                         }
                     }else {
-                        AnswerHttpRequest.wrong(res, "Insufficient balance")
+                        AnswerHttpRequest.wrong(res, clientFindOperation.error)
                     }
                 }
                 else {
-                    AnswerHttpRequest.wrong(res, "Unknown Station")
+                    AnswerHttpRequest.wrong(res, "Rent is temporal deactivated")
                 }
-            }else {
-                AnswerHttpRequest.wrong(res, clientFindOperation.error)
+            }else
+            {
+                AnswerHttpRequest.wrong(res, "Request failed")
             }
         }catch (error){
             AnswerHttpRequest.wrong(res, "request failed")
