@@ -1,6 +1,6 @@
 const express = require('express');
 const RentTransactionTypes = require("../../Structures/TransactionTypes");
-const RentTransactionGlobalRouters = require("../../Actors/TransactionOperations");
+const TransactionOperations = require("../../Actors/TransactionOperations");
 
 const router = express.Router();
 
@@ -64,10 +64,13 @@ const  AdminStationRouters = {
     }),
 
     returnPowerBank: router.post('/returnPowerBank/', async (req, res) => {
-        let {clientId, StationId, powerBankId } = req.body
+        let {clientId, stationId, powerBankId } = req.body
         try{
-            let rentTransactionsResults = await RentTransactionGlobalRouters.create(
-                StationId, clientId, powerBankId,  RentTransactionTypes.return)
+            let metaData = [
+                {dataTitle: "stationId", dataValue: stationId},
+                {dataTitle: "powerBankId", dataValue: powerBankId},
+            ]
+            let rentTransactionsResults = await TransactionOperations.create(RentTransactionTypes.return, metaData)
             res.send(rentTransactionsResults)
         }catch (e){
             console.log(e)
