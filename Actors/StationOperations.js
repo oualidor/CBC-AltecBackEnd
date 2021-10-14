@@ -12,25 +12,31 @@ CurrentActor.belongsTo(Partner, {foreignKey: "currentPartner"})
 const StationOperations = {
 
     create : async (req, res) => {
-        let validatedData = true;
-        let dataError = "";
-        if (!validatedData) {
-            res.send({'finalResult': false, 'error': dataError});
-        } else {
-            try {
-                let getOneOp = await StationOperations.getOneByPublicId(req.body.id)
-                {
-                    if(!getOneOp.finalResult){
+        try {
+            let validatedData = true;
+            let dataError = "";
+            if (!validatedData) {
+                res.send({'finalResult': false, 'error': dataError});
+            }
+            else{
+            let getOneOp = await StationOperations.getOneByPublicId(req.body.id)
+                if(!getOneOp.finalResult){
+                    try {
                         let newStation = await CurrentActor.create(req.body);
                         AnswerHttpRequest.done(res, newStation)
-                    }else {
-                        AnswerHttpRequest.wrong(res, "Station already exist")
+                    }catch (error){
+                        let errorMsg = error.errors[0]
+                        AnswerHttpRequest.wrong(res, errorMsg)
                     }
+
+                }else {
+                    AnswerHttpRequest.wrong(res, "Station already exist")
                 }
-            } catch (error) {
-                console.log(error)
-                res.send({'finalResult': false, 'error': error})
             }
+        }
+        catch (error) {
+            console.log(error)
+            res.send({'finalResult': false, 'error': "Request failed"})
         }
     },
 
