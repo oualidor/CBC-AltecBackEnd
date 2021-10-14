@@ -30,6 +30,9 @@ const  PartnerOperations = {
                 res.send({'finalResult': true, 'result': true})
             }
         }catch (error) {
+            if(error.name.match(/Sequelize/)){
+                error = error.errors[0].message
+            }
             res.send({'finalResult': false, error: error})
         }
     },
