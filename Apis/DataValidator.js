@@ -5,7 +5,7 @@ const Global = (data) =>{
     let error = ""
     let isError = false
     for(let attr in data) {
-        if (data[attr] !== undefined || data[attr] !== null || data[attr] !== "") {
+        if (data[attr] == undefined || data[attr] == null || data[attr] == "") {
             error += data[attr]+ " cant be null "
             isError = true
         }
