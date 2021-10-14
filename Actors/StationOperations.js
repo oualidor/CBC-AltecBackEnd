@@ -25,7 +25,7 @@ const StationOperations = {
                         let newStation = await CurrentActor.create(req.body);
                         AnswerHttpRequest.done(res, newStation)
                     }catch (error){
-                        let errorMsg = error.errors[0]
+                        let errorMsg = error.errors[0].message
                         AnswerHttpRequest.wrong(res, errorMsg)
                     }
 
