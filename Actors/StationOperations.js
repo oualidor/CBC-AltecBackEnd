@@ -4,11 +4,12 @@ const axios = require("axios");
 const CurrentActor = require("../Schemas/Station");
 const GlOpResult = require("../Structures/GlOpResult");
 const Partner = require("../Schemas/Partner");
+const AnswerHttpRequest = require("../Structures/AnswerHttpRequest");
 const {TCP_SERVER} = require("../Apis/Config");
 
 CurrentActor.belongsTo(Partner, {foreignKey: "currentPartner"})
 
-const StationGlobalRouters = {
+const StationOperations = {
 
     create : async (req, res) => {
         let validatedData = true;
@@ -17,8 +18,15 @@ const StationGlobalRouters = {
             res.send({'finalResult': false, 'error': dataError});
         } else {
             try {
-                await CurrentActor.create(req.body);
-                res.send({'finalResult': true, 'result': true})
+                let getOneOp = await StationOperations.getOneByPublicId(req.body.id)
+                {
+                    if(!getOneOp.finalResult){
+                        let newStation = await CurrentActor.create(req.body);
+                        AnswerHttpRequest.done(res, newStation)
+                    }else {
+                        AnswerHttpRequest.wrong(res, "Station already exist")
+                    }
+                }
             } catch (error) {
                 console.log(error)
                 res.send({'finalResult': false, 'error': error})
@@ -161,4 +169,4 @@ const StationGlobalRouters = {
     },
 }
 
-module.exports = StationGlobalRouters
+module.exports = StationOperations
