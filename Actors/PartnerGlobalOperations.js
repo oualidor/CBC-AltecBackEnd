@@ -30,7 +30,7 @@ const  PartnerOperations = {
                 res.send({'finalResult': true, 'result': true})
             }
         }catch (error) {
-            res.send({'finalResult': false, 'error': e})
+            res.send({'finalResult': false, error: error})
         }
     },
 
