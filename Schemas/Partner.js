@@ -34,7 +34,7 @@ const Partner = db.define('Partner', {
         type: Sequelize.FLOAT,
         allowNull: false,
         validate: {
-            isEmpty(value) {
+            isNull(value) {
                 console.log("hihi")
                 if (value === null || value == undefined) {
                     throw new Error('Only even values are allowed!');
