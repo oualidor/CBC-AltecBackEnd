@@ -20,6 +20,7 @@ const StationGlobalRouters = {
                 await CurrentActor.create(req.body);
                 res.send({'finalResult': true, 'result': true})
             } catch (error) {
+                console.log(error)
                 res.send({'finalResult': false, 'error': error})
             }
         }
