@@ -1,5 +1,5 @@
 const CurrentActor = require("../Schemas/ClientWallet");
-const Validator = require("../Apis/dataValidator");
+const Validator = require("../Apis/DataValidator");
 const bcrypt = require("bcrypt");
 const GlOpResult = require("../Structures/GlOpResult");
 const {ClientGlobalOperations} = require("./ClientGlobalOperations");

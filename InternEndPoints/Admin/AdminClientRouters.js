@@ -2,7 +2,7 @@ const express = require('express');
 const seq = require('sequelize');
 const router = express.Router();
 const Client = require('../../Schemas/Client');
-const Validator = require('../../Apis/dataValidator');
+const Validator = require('../../Apis/DataValidator');
 
 const bcrypt = require('bcrypt');
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");

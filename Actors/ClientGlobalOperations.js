@@ -1,6 +1,6 @@
 const { Op } = require("sequelize");
 const Client = require("../Schemas/Client");
-const Validator = require("../Apis/dataValidator");
+const Validator = require("../Apis/DataValidator");
 const bcrypt = require("bcrypt");
 const GlOpResult = require("../Structures/GlOpResult");
 const ClientWallet = require("../Schemas/ClientWallet");

@@ -1,34 +1,40 @@
 const axios = require("axios");
 const Partner = require("../Schemas/Partner");
-const Validator = require("../Apis/dataValidator");
+const Validator = require("../Apis/DataValidator");
 const Station = require("../Schemas/Station");
 const bcrypt = require("bcrypt");
 const {UpdateData} = require("../Apis/UpdateData");
 
 
-const  PartnerGlobalOperations = {
+const  PartnerOperations = {
 
     create : async (req, res) => {
-        let {mail, phone, password, fullName, stat, x, y} = req.body;
-        if (password == null){
-            password = "";
-        }
-        let validatedData = true;
-        let dataError = "";
-        if(!Validator.email(mail)){
-            validatedData = false;
-            dataError = dataError+'email: wrong email';
-        }
-        if(!validatedData){
-            res.send({'finalResult': false,  'error': dataError});
-        }else{
-            const hashedPassword  = bcrypt.hashSync(password, 10);
-            let data = {mail, phone,  hashedPassword, fullName,  stat, x, y};
-            try {
-                await Partner.create(data);
-                res.send({'finalResult': true, 'result': true})
-            }catch (e) {
-                res.send({'finalResult': false, 'error': e})
+        let validateResult = await Validator.Global(req.body)
+        if(!validateResult.finalResult){
+            res.send({'finalResult': false,  'error': validateResult.data});
+        }else {
+            let {mail, phone, password, fullName, stat, x, y} = req.body;
+            if (password == null){
+                password = "";
+            }
+            let validatedData = true;
+
+            let dataError = "";
+            if(!Validator.email(mail)){
+                validatedData = false;
+                dataError = dataError+'email: wrong email';
+            }
+            if(!validatedData){
+                res.send({'finalResult': false,  'error': dataError});
+            }else{
+                const hashedPassword  = bcrypt.hashSync(password, 10);
+                let data = {mail, phone,  hashedPassword, fullName,  stat, x, y};
+                try {
+                    await Partner.create(data);
+                    res.send({'finalResult': true, 'result': true})
+                }catch (e) {
+                    res.send({'finalResult': false, 'error': e})
+                }
             }
         }
     },
@@ -118,4 +124,4 @@ const  PartnerGlobalOperations = {
     },
 }
 
-module.exports = {PartnerGlobalOperations}
+module.exports = PartnerOperations
