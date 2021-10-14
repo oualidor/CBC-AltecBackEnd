@@ -32,12 +32,21 @@ const Partner = db.define('Partner', {
     },
     x: {
         type: Sequelize.FLOAT,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            isEmpty(value) {
+                if (value == null) {
+                    throw new Error('Only even values are allowed!');
+                }
+            }
+        }
+
     },
     y: {
         type: Sequelize.FLOAT,
         allowNull: false
-    }
+    },
+
 });
 
 module.exports = Partner;
