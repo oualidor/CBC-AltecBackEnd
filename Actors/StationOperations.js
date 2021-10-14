@@ -30,7 +30,6 @@ const StationGlobalRouters = {
             const preparedData = UpdateData(data)
             let currentActor = await CurrentActor.findByPk(id);
             if(currentActor != null){
-                console.log(preparedData)
                 await currentActor.update(preparedData);
                 return  GlOpResult(true, "Station updated")
             }else{

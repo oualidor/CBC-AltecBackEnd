@@ -11,7 +11,8 @@ const Station = db.define('Station',
         },
         id : {
             type: Sequelize.STRING,
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
         currentPartner : {
             type: Sequelize.INTEGER,
