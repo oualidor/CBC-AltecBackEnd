@@ -9,11 +9,7 @@ const {UpdateData} = require("../Apis/UpdateData");
 const  PartnerOperations = {
 
     create : async (req, res) => {
-        let {mail, phone, password, fullName, stat, x, y} = req.body;
-        let validateResult = await Validator.Global({mail, phone, password, fullName, stat, x, y})
-        if(!validateResult.finalResult){
-            res.send({'finalResult': false,  'error': validateResult.data});
-        }else {
+        try {
             let {mail, phone, password, fullName, stat, x, y} = req.body;
             if (password == null){
                 password = "";
@@ -30,13 +26,11 @@ const  PartnerOperations = {
             }else{
                 const hashedPassword  = bcrypt.hashSync(password, 10);
                 let data = {mail, phone,  hashedPassword, fullName,  stat, x, y};
-                try {
-                    await Partner.create(data);
-                    res.send({'finalResult': true, 'result': true})
-                }catch (e) {
-                    res.send({'finalResult': false, 'error': e})
-                }
+                await Partner.create(data);
+                res.send({'finalResult': true, 'result': true})
             }
+        }catch (error) {
+            res.send({'finalResult': false, 'error': e})
         }
     },
 
