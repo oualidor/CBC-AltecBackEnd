@@ -10,7 +10,7 @@ const Global = (data) =>{
             isError = true
         }
     }
-    return {finalResult: isError, data: error}
+    return {finalResult: !isError, data: error}
 }
 const isLongitude = (x)=>{
     if (x == null) return false
