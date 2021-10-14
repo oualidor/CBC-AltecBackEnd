@@ -19,18 +19,12 @@ const StationOperations = {
                 res.send({'finalResult': false, 'error': dataError});
             }
             else{
-            let getOneOp = await StationOperations.getOneByPublicId(req.body.id)
-                if(!getOneOp.finalResult){
-                    try {
-                        let newStation = await CurrentActor.create(req.body);
-                        AnswerHttpRequest.done(res, newStation)
-                    }catch (error){
-                        let errorMsg = error.errors[0].message
-                        AnswerHttpRequest.wrong(res, errorMsg)
-                    }
-
-                }else {
-                    AnswerHttpRequest.wrong(res, "Station already exist")
+                try {
+                    let newStation = await CurrentActor.create(req.body);
+                    AnswerHttpRequest.done(res, newStation)
+                }catch (error){
+                    let errorMsg = error.errors[0].message
+                    AnswerHttpRequest.wrong(res, errorMsg)
                 }
             }
         }
