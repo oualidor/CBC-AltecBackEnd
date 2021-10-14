@@ -30,6 +30,10 @@ const Partner = db.define('Partner', {
         type: Sequelize.INTEGER,
         allowNull: false
     },
+    type: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+    },
     x: {
         type: Sequelize.FLOAT,
         allowNull: false

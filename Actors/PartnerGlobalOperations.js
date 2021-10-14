@@ -10,7 +10,7 @@ const  PartnerOperations = {
 
     create : async (req, res) => {
         try {
-            let {mail, phone, password, fullName, stat, x, y} = req.body;
+            let {mail, phone, password, fullName, stat, type, x, y} = req.body;
             if (password == null){
                 password = "";
             }
@@ -25,7 +25,7 @@ const  PartnerOperations = {
                 res.send({'finalResult': false,  'error': dataError});
             }else{
                 const hashedPassword  = bcrypt.hashSync(password, 10);
-                let data = {mail, phone,  hashedPassword, fullName,  stat, x, y};
+                let data = {mail, phone,  hashedPassword, fullName,  stat, type, x, y};
                 await Partner.create(data);
                 res.send({'finalResult': true, 'result': true})
             }
