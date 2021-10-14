@@ -9,7 +9,8 @@ const {UpdateData} = require("../Apis/UpdateData");
 const  PartnerOperations = {
 
     create : async (req, res) => {
-        let validateResult = await Validator.Global(req.body)
+        let {mail, phone, password, fullName, stat, x, y} = req.body;
+        let validateResult = await Validator.Global({mail, phone, password, fullName, stat, x, y})
         if(!validateResult.finalResult){
             res.send({'finalResult': false,  'error': validateResult.data});
         }else {
