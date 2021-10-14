@@ -35,7 +35,8 @@ const Partner = db.define('Partner', {
         allowNull: false,
         validate: {
             isEmpty(value) {
-                if (value == null) {
+                console.log("hihi")
+                if (value === null || value == undefined) {
                     throw new Error('Only even values are allowed!');
                 }
             }
