@@ -6,6 +6,8 @@ const router = express.Router();
 
 const StationOperations = require("../../Actors/StationOperations");
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
+const StatisticsOperations = require("../../Actors/StatisticsOperations");
+const Station = require("../../Schemas/Station");
 const  AdminStationRouters = {
     create: router.post('/create', async (req, res) => {
             await StationOperations.create(req, res)
@@ -88,7 +90,6 @@ const  AdminStationRouters = {
         }
     }),
 
-
     setAddress: router.post('/setAddress/:stationId', async (req, res) => {
         let {stationId} = req.params
         let point = "Station/SetServer/"+stationId
@@ -106,7 +107,6 @@ const  AdminStationRouters = {
         }
     }),
 
-
     setVolume: router.get('/setVolume/:stationId/:level', async (req, res) => {
         let {stationId, level} = req.params
         let point = "Station/SetVoice/"+stationId+"/"+level
@@ -121,6 +121,15 @@ const  AdminStationRouters = {
             AnswerHttpRequest.wrong(res, "Request failed")
         }
     }),
+
+    count:  router.get('/Count', async (req, res)=>{
+        let countOp = await StatisticsOperations.count(Station, {})
+        if(countOp.finalResult){
+            AnswerHttpRequest.done(res, countOp.result)
+        }else {
+            AnswerHttpRequest.wrong(res, countOp.error)
+        }
+    })
 }
 
 
