@@ -1,8 +1,5 @@
 const sequelize = require('sequelize');
-const Transaction = require("../Schemas/Transaction");
 const GlOpResult = require("../Structures/GlOpResult");
-const TransactionMetaData = require("../Schemas/TransactionMetaData");
-Transaction.hasMany(TransactionMetaData, {as : 'MetaData', foreignKey : 'transactionId'});
 //StationId, clientId, powerBankId,
 const StatisticsOperations = {
     count : async (Model, options) => {
