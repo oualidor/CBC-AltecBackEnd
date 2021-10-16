@@ -4,7 +4,7 @@ const Validator = require("../Apis/DataValidator");
 const Station = require("../Schemas/Station");
 const bcrypt = require("bcrypt");
 const {UpdateData} = require("../Apis/UpdateData");
-
+Partner.hasMany(Station, {foreignKey: "currentPartner", as: "Stations"})
 
 const  PartnerOperations = {
 
@@ -84,8 +84,10 @@ const  PartnerOperations = {
             .then(partner =>
                 res.send({'finalResult': true, 'result': partner})
             )
-            .catch(err =>
+            .catch(err =>{
+                console.log(err)
                 res.send({'finalResult': false, 'error': err})
+            }
             );
     },
 
