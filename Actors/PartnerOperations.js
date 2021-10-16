@@ -53,6 +53,7 @@ const  PartnerOperations = {
                 res.send({'finalResult': false, 'error': "No Client with the provided Id"})
             }
         }catch (e){
+            console.log(e)
             res.send({'finalResult': false, 'error': "some thing went wrong"})
         }
     },
