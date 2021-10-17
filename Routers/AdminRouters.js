@@ -16,7 +16,7 @@ const {adminPassword} = require("../Apis/Config");
 const {adminMail} = require("../Apis/Config");
 const adminRouters = express.Router();
 const Model  =require("../Actors/_Model")
-let SchemaModel = new Model(Station)
+
 //Admin Login
 adminRouters.post('/login', async (req, res) => {
     const {mail, password} = req.body;
@@ -47,6 +47,7 @@ adminRouters.post('/login', async (req, res) => {
     }
 });
 
+let SchemaModel = new Model(Station)
 let _EndPoints = new EndPoints(Station, StationOperations, SchemaModel)
 adminRouters.use("/Station",  yitAuthenticator.authAdmin, AdminStationRouters.setVolume)
 adminRouters.use("/Station",  yitAuthenticator.authAdmin, _EndPoints.count)

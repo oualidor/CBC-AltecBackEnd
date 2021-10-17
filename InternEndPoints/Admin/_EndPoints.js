@@ -30,7 +30,7 @@ class _EndPoints{
 
     getAll =  router.get('/getAll/:offset/:limit', async (req, res) => {
         let {offset, limit} = req.body
-        await this.SchemaOperations.getAll(offset, limit)
+        await this.SchemaModel.getAll(offset, limit)
     })
 
     count =  router.get('/Count', async (req, res)=>{

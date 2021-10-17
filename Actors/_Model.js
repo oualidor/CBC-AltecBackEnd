@@ -29,6 +29,20 @@ class _Model{
         }
     }
 
+    getAll = async (offset, limit) => {
+        limit = parseInt(limit);
+        offset = parseInt(offset);
+        if (limit === 0) limit = 50
+        try{
+            let result = await this.CurrentActor.findAll({offset: offset, limit: limit})
+            return GlOpResult(true, result)
+        }
+        catch (error){
+            return GlOpResult(false , "Operation failed")
+        }
+
+    }
+
     searchBy =  async (attribute, value) => {
         let data = {where: {[attribute]: {[seq.Op.like]: '%' + value + '%'}}};
         try {

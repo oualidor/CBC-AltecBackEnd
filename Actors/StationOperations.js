@@ -28,20 +28,6 @@ const StationOperations = {
         }
     },
 
-    getAll : async (req, res) => {
-        var {offset, limit} = req.params;
-        limit = parseInt(limit);
-        offset = parseInt(offset);
-        if (limit === 0) limit = 99999999
-        CurrentActor.findAll({offset: offset, limit: limit})
-            .then(stations =>
-                res.send({'finalResult': true, 'result': stations})
-            )
-            .catch(err =>
-                res.send({'finalResult': false, 'error': err})
-            );
-    },
-
     getOne: async (id) => {
         try {
             let station = await CurrentActor.findByPk(
