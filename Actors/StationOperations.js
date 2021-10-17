@@ -12,28 +12,6 @@ CurrentActor.belongsTo(Partner, {foreignKey: "currentPartner"})
 
 const StationOperations = {
 
-    create : async (req, res) => {
-        try {
-            let validatedData = true;
-            let dataError = "";
-            if (!validatedData) {
-                res.send({'finalResult': false, 'error': dataError});
-            }
-            else{
-                try {
-                    let newStation = await CurrentActor.create(req.body);
-                    AnswerHttpRequest.done(res, newStation)
-                }catch (error){
-                    let errorMsg = error.errors[0].message
-                    AnswerHttpRequest.wrong(res, errorMsg)
-                }
-            }
-        }
-        catch (error) {
-            console.log(error)
-            res.send({'finalResult': false, 'error': "Request failed"})
-        }
-    },
 
     update : async (id, data) => {
         try {

@@ -8,9 +8,11 @@ const StationOperations = require("../../Actors/StationOperations");
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 const StatisticsOperations = require("../../Actors/StatisticsOperations");
 const Station = require("../../Schemas/Station");
+const Model  =require("./_Model")
+const _Model  = new Model(Station)
 const  AdminStationRouters = {
     create: router.post('/create', async (req, res) => {
-            await StationOperations.create(req, res)
+            await _Model.create(req, res)
         }),
 
     update: router.post('/update/:id', async (req, res) => {
@@ -42,7 +44,7 @@ const  AdminStationRouters = {
 
     searchBy: router.get('/searchBy/:attribute/:value', async (req, res) => {
         let {attribute, value} = req.params
-        let stationGeOneOp = await StationOperations._Model.searchBy(attribute, value)
+        let stationGeOneOp = await _Model.searchBy(attribute, value)
         if(stationGeOneOp.finalResult){
             AnswerHttpRequest.done(res, stationGeOneOp.result)
         }
