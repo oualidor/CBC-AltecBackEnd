@@ -89,7 +89,9 @@ const StationOperations = {
             let station = await CurrentActor.findOne({
                 where: {
                     id: id
-                }
+                },
+                include : [Partner],
+
             });
             if (station != null) {
                 return GlOpResult(true, station)
