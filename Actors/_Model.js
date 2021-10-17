@@ -6,26 +6,26 @@ class _Model{
         this.CurrentActor = CurrentActor
     }
 
-    create = async (req, res) => {
+    create = async (data) => {
         try {
             let validatedData = true;
             let dataError = "";
             if (!validatedData) {
-                res.send({'finalResult': false, 'error': dataError});
+                return GlOpResult(false, dataError)
             }
             else{
                 try {
-                    let newStation = await this.CurrentActor.create(req.body);
-                    AnswerHttpRequest.done(res, newStation)
+                    let newStation = await this.CurrentActor.create(dataError);
+                    return GlOpResult(true, newStation)
                 }catch (error){
                     let errorMsg = error.errors[0].message
-                    AnswerHttpRequest.wrong(res, errorMsg)
+                    return GlOpResult(false, errorMsg)
                 }
             }
         }
         catch (error) {
             console.log(error)
-            res.send({'finalResult': false, 'error': "Request failed"})
+            return GlOpResult(false, "Request failed")
         }
     }
 

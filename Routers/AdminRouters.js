@@ -15,6 +15,8 @@ const {jwtPrivateKey} = require("../Apis/Config");
 const {adminPassword} = require("../Apis/Config");
 const {adminMail} = require("../Apis/Config");
 const adminRouters = express.Router();
+const Model  =require("../Actors/_Model")
+let SchemaModel = new Model(Station)
 //Admin Login
 adminRouters.post('/login', async (req, res) => {
     const {mail, password} = req.body;
@@ -44,9 +46,12 @@ adminRouters.post('/login', async (req, res) => {
         }
     }
 });
-let _EndPoints = new EndPoints(Station, StationOperations)
+
+let _EndPoints = new EndPoints(Station, StationOperations, SchemaModel)
 adminRouters.use("/Station",  yitAuthenticator.authAdmin, AdminStationRouters.create)
 adminRouters.use("/Station",  yitAuthenticator.authAdmin, _EndPoints.count)
+
+
 adminRouters.use("/Client",  yitAuthenticator.authAdmin, AdminClientRouters.create)
 adminRouters.use("/Partner",   AdminPartnerRouters.create)
 adminRouters.use("/RechargeCode",   AdminRechargeCodeRouters.create)

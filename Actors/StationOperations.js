@@ -12,7 +12,6 @@ CurrentActor.belongsTo(Partner, {foreignKey: "currentPartner"})
 
 const StationOperations = {
 
-
     update : async (id, data) => {
         try {
             const preparedData = UpdateData(data)

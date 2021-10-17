@@ -11,9 +11,6 @@ const Station = require("../../Schemas/Station");
 const Model  =require("../../Actors/_Model")
 const _Model  = new Model(Station)
 const  AdminStationRouters = {
-    create: router.post('/create', async (req, res) => {
-            await _Model.create(req, res)
-        }),
 
     update: router.post('/update/:id', async (req, res) => {
         let {id} = req.params
