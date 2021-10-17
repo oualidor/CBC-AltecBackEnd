@@ -7,9 +7,6 @@ const router = express.Router();
 const StationOperations = require("../../Actors/StationOperations");
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 const StatisticsOperations = require("../../Actors/StatisticsOperations");
-const Station = require("../../Schemas/Station");
-
-
 
 class _EndPoints{
     constructor(Schema, SchemaOperations, SchemaModel) {
@@ -25,6 +22,16 @@ class _EndPoints{
             AnswerHttpRequest.done(res, createOp.result)
         }else {
             AnswerHttpRequest.wrong(res, createOp.error)
+        }
+    })
+
+    update =  router.post('/update/:id', async (req, res) => {
+        let {id} = req.params
+        let updateOp = await this.SchemaModel(id, req.body)
+        if(updateOp.finalResult){
+            AnswerHttpRequest.done(res, updateOp.result)
+        }else {
+            AnswerHttpRequest.wrong(res, updateOp.error)
         }
     })
 

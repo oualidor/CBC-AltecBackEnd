@@ -6,28 +6,10 @@ const GlOpResult = require("../Structures/GlOpResult");
 const Partner = require("../Schemas/Partner");
 const AnswerHttpRequest = require("../Structures/AnswerHttpRequest");
 const {TCP_SERVER} = require("../Apis/Config");
-const Model  =require("./_Model")
-const _Model  = new Model(CurrentActor)
 CurrentActor.belongsTo(Partner, {foreignKey: "currentPartner"})
 
 const StationOperations = {
-
-    update : async (id, data) => {
-        try {
-            const preparedData = UpdateData(data)
-            let currentActor = await CurrentActor.findByPk(id);
-            if(currentActor != null){
-                await currentActor.update(preparedData);
-                return  GlOpResult(true, "Station updated")
-            }else{
-                return  GlOpResult(false, "Station code not found")
-            }
-        }catch (error){
-            console.log(error)
-            return  GlOpResult(false, "could not update Station info")
-        }
-    },
-
+    
     getOne: async (id) => {
         try {
             let station = await CurrentActor.findByPk(
@@ -101,8 +83,6 @@ const StationOperations = {
             return {finalResult: false, error: e}
         }
     },
-
-    _Model : _Model,
 
     sendRequest: {
         GET: async (point) => {

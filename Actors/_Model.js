@@ -1,6 +1,7 @@
 const GlOpResult = require("../Structures/GlOpResult");
 const seq = require('sequelize')
 const AnswerHttpRequest = require("../Structures/AnswerHttpRequest");
+const {UpdateData} = require("../Apis/UpdateData");
 class _Model{
     constructor(CurrentActor) {
         this.CurrentActor = CurrentActor
@@ -26,6 +27,22 @@ class _Model{
         catch (error) {
             console.log(error)
             return GlOpResult(false, "Request failed")
+        }
+    }
+
+    update = async (id, data) => {
+        try {
+            const preparedData = UpdateData(data)
+            let currentActor = await this.CurrentActor.findByPk(id);
+            if(currentActor != null){
+                await currentActor.update(preparedData);
+                return  GlOpResult(true, "Update success")
+            }else{
+                return  GlOpResult(false, "Entry code not found")
+            }
+        }catch (error){
+            console.log(error)
+            return  GlOpResult(false, "could not update entry info")
         }
     }
 

@@ -9,8 +9,12 @@ const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 const StatisticsOperations = require("../../Actors/StatisticsOperations");
 const Station = require("../../Schemas/Station");
 const Model  =require("../../Actors/_Model")
-const _Model  = new Model(Station)
+const EndPoints = require("../../InternEndPoints/Admin/_EndPoints");
+let SchemaModel = new Model(Station)
+let _EndPoints = new EndPoints(Station, StationOperations, SchemaModel)
+
 const  AdminStationRouters = {
+    ready: router.use('/', _EndPoints.count),
 
     update: router.post('/update/:id', async (req, res) => {
         let {id} = req.params
