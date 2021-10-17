@@ -75,7 +75,16 @@ const  AdminClientRouters = {
                 AnswerHttpRequest.wrong(res, stationGeOneOp.error)
             }
         }),
-    }
+
+    count:  router.get('/Count', async (req, res)=>{
+        let countOp = await _Model.count(Client)
+        if(countOp.finalResult){
+            AnswerHttpRequest.done(res, countOp.result)
+        }else {
+            AnswerHttpRequest.wrong(res, countOp.error)
+        }
+    })
+}
 
 module.exports = AdminClientRouters;
 

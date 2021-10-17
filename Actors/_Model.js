@@ -39,6 +39,20 @@ class _Model{
             return GlOpResult(false, e)
         }
     }
+
+    count =  async (Model) => {
+        try {
+            let total  = await Model.findAll({
+                attributes: [
+                    [seq.fn('COUNT', seq.col('id')), 'total'] // To add the aggregation...
+                ]
+            });
+            return GlOpResult(true, total)
+        }catch (error){
+            console.log(error)
+            return GlOpResult(false, "Operation failed")
+        }
+    }
 }
 
 module.exports = _Model
