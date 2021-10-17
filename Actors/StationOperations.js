@@ -1,12 +1,13 @@
 const {UpdateData} = require("../Apis/UpdateData");
-const seq = require('sequelize')
+
 const axios = require("axios");
 const CurrentActor = require("../Schemas/Station");
 const GlOpResult = require("../Structures/GlOpResult");
 const Partner = require("../Schemas/Partner");
 const AnswerHttpRequest = require("../Structures/AnswerHttpRequest");
 const {TCP_SERVER} = require("../Apis/Config");
-
+const Model  =require("./_Model")
+const _Model  = new Model(CurrentActor)
 CurrentActor.belongsTo(Partner, {foreignKey: "currentPartner"})
 
 const StationOperations = {
@@ -138,16 +139,7 @@ const StationOperations = {
         }
     },
 
-    searchBy: async (attribute, value) => {
-        let data = {where: {[attribute]: {[seq.Op.like]: '%' + value + '%'}}};
-        try {
-            let result = await CurrentActor.findAll(data);
-            return GlOpResult(true, result)
-        } catch (e) {
-            console.log(e)
-            return GlOpResult(false, e)
-        }
-    },
+    _Model : _Model,
 
     sendRequest: {
         GET: async (point) => {

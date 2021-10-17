@@ -42,7 +42,7 @@ const  AdminStationRouters = {
 
     searchBy: router.get('/searchBy/:attribute/:value', async (req, res) => {
         let {attribute, value} = req.params
-        let stationGeOneOp = await StationOperations.searchBy(attribute, value)
+        let stationGeOneOp = await StationOperations._Model.searchBy(attribute, value)
         if(stationGeOneOp.finalResult){
             AnswerHttpRequest.done(res, stationGeOneOp.result)
         }
