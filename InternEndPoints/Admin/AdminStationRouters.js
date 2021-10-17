@@ -26,11 +26,6 @@ const  AdminStationRouters = {
         }
     }),
 
-    getAll: router.get('/getAll/:offset/:limit', async (req, res) => {
-            await StationOperations.getAll(req, res)
-
-        }),
-
     getOne: router.get('/getOne/:id', async (req, res) => {
         let {id} = req.params
         let stationGeOneOp = await StationOperations.getOne(id)

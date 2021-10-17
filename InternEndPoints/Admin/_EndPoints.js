@@ -13,9 +13,15 @@ const _Model  = new Model(Station)
 
 
 class _EndPoints{
-    constructor(Model) {
+    constructor(Model, ModelOperations) {
         this.Model = Model
+        this.ModelOperations = ModelOperations
     }
+
+
+    getAll =  router.get('/getAll/:offset/:limit', async (req, res) => {
+        await this.ModelOperations.getAll(req, res)
+    })
 
     count =  router.get('/Count', async (req, res)=>{
         let countOp = await StatisticsOperations.count(this.Model, {})
