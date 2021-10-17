@@ -27,7 +27,7 @@ class _EndPoints{
 
     update =  router.post('/update/:id', async (req, res) => {
         let {id} = req.params
-        let updateOp = await this.SchemaModel(id, req.body)
+        let updateOp = await this.SchemaModel.update(id, req.body)
         if(updateOp.finalResult){
             AnswerHttpRequest.done(res, updateOp.result)
         }else {
