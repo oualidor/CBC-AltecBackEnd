@@ -144,6 +144,7 @@ const StationOperations = {
             let result = await CurrentActor.findAll(data);
             return GlOpResult(true, result)
         } catch (e) {
+            console.log(e)
             return GlOpResult(false, e)
         }
     },

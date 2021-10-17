@@ -40,6 +40,17 @@ const  AdminStationRouters = {
         }
     }),
 
+    searchBy: router.get('/searchBy/:attribute/:value', async (req, res) => {
+        let {attribute, value} = req.params
+        let stationGeOneOp = await StationOperations.searchBy(attribute, value)
+        if(stationGeOneOp.finalResult){
+            AnswerHttpRequest.done(res, stationGeOneOp.result)
+        }
+        else{
+            AnswerHttpRequest.wrong(res, stationGeOneOp.error)
+        }
+    }),
+
     getOneByPublicId: router.get('/getOneByPublicId/:id', async (req, res) => {
         let {id} = req.params
         let stationGeOneOp = await StationOperations.getOneByPublicId(id)
