@@ -1,4 +1,4 @@
-
+const express = require('express');
 const RentTransactionTypes = require("../../Structures/TransactionTypes");
 const TransactionOperations = require("../../Actors/TransactionOperations");
 
