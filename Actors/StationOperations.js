@@ -1,5 +1,5 @@
 const {UpdateData} = require("../Apis/UpdateData");
-
+const seq = require('sequelize')
 const axios = require("axios");
 const CurrentActor = require("../Schemas/Station");
 const GlOpResult = require("../Structures/GlOpResult");
@@ -135,6 +135,16 @@ const StationOperations = {
 
             console.log(e)
             return {finalResult: false, error: e}
+        }
+    },
+
+    searchBy: async (attribute, value) => {
+        let data = {where: {[attribute]: {[seq.Op.like]: '%' + value + '%'}}};
+        try {
+            let result = await CurrentActor.findAll(data);
+            return GlOpResult(true, result)
+        } catch (e) {
+            return GlOpResult(false, e)
         }
     },
 
