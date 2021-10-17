@@ -48,7 +48,7 @@ adminRouters.post('/login', async (req, res) => {
 });
 
 let _EndPoints = new EndPoints(Station, StationOperations, SchemaModel)
-adminRouters.use("/Station",  yitAuthenticator.authAdmin, AdminStationRouters.create)
+adminRouters.use("/Station",  yitAuthenticator.authAdmin, AdminStationRouters.setVolume)
 adminRouters.use("/Station",  yitAuthenticator.authAdmin, _EndPoints.count)
 
 
