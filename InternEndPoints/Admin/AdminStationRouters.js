@@ -134,15 +134,6 @@ const  AdminStationRouters = {
             AnswerHttpRequest.wrong(res, "Request failed")
         }
     }),
-
-    count:  router.get('/Count', async (req, res)=>{
-        let countOp = await StatisticsOperations.count(Station, {})
-        if(countOp.finalResult){
-            AnswerHttpRequest.done(res, countOp.result)
-        }else {
-            AnswerHttpRequest.wrong(res, countOp.error)
-        }
-    })
 }
 
 
