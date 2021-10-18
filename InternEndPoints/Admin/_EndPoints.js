@@ -3,69 +3,60 @@ const express = require('express');
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 const _Model = require("../../Actors/_Model");
 
-class _EndPoints{
-    constructor(Schema, SchemaOperations) {
-        this.Schema = Schema
-        this.SchemaOperations = SchemaOperations
-        this.SchemaModel = new _Model(Schema)
-        console.log("hihihihihi")
-        this.router = express.Router();
+const _EndPoints = (Schema, SchemaOperations)=>{
+    const router = express.Router();
+    const SchemaModel = new _Model(Schema)
+    router.post('/create', async (req, res) => {
+        let data  = req.body
+        let createOp = await SchemaModel.create(data)
+        if(createOp.finalResult){
+            AnswerHttpRequest.done(res, createOp.result)
+        }else {
+            AnswerHttpRequest.wrong(res, createOp.error)
+        }
+    })
 
-    }
+    router.post('/update/:id', async (req, res) => {
+        let {id} = req.params
+        let updateOp = await SchemaModel.update(id, req.body)
+        if(updateOp.finalResult){
+            AnswerHttpRequest.done(res, updateOp.result)
+        }else {
+            AnswerHttpRequest.wrong(res, updateOp.error)
+        }
+    })
 
-    getRouters(){
-        this.router.post('/create', async (req, res) => {
-            let data  = req.body
-            let createOp = await this.SchemaModel.create(data)
-            if(createOp.finalResult){
-                AnswerHttpRequest.done(res, createOp.result)
-            }else {
-                AnswerHttpRequest.wrong(res, createOp.error)
-            }
-        })
+    router.get('/getAll/:offset/:limit', async (req, res) => {
+        let {offset, limit} = req.params
+        let getAllOp = await SchemaModel.getAll(offset, limit)
+        if(getAllOp.finalResult){
+            AnswerHttpRequest.done(res, getAllOp.result)
+        }else {
+            AnswerHttpRequest.wrong(res, getAllOp.error)
+        }
+    })
 
-        this.router.post('/update/:id', async (req, res) => {
-            let {id} = req.params
-            let updateOp = await this.SchemaModel.update(id, req.body)
-            if(updateOp.finalResult){
-                AnswerHttpRequest.done(res, updateOp.result)
-            }else {
-                AnswerHttpRequest.wrong(res, updateOp.error)
-            }
-        })
+    router.get('/searchBy/:attribute/:value', async (req, res) => {
+        let {attribute, value} = req.params
+        let stationGeOneOp = await SchemaModel.searchBy(attribute, value)
+        if(stationGeOneOp.finalResult){
+            AnswerHttpRequest.done(res, stationGeOneOp.result)
+        }
+        else{
+            AnswerHttpRequest.wrong(res, stationGeOneOp.error)
+        }
+    })
 
-        this.router.get('/getAll/:offset/:limit', async (req, res) => {
-            let {offset, limit} = req.params
-            let getAllOp = await this.SchemaModel.getAll(offset, limit)
-            if(getAllOp.finalResult){
-                AnswerHttpRequest.done(res, getAllOp.result)
-            }else {
-                AnswerHttpRequest.wrong(res, getAllOp.error)
-            }
-        })
+    router.get('/Count', async (req, res)=>{
+        let countOp = await SchemaModel.count()
+        if(countOp.finalResult){
+            AnswerHttpRequest.done(res, countOp.result)
+        }else {
+            AnswerHttpRequest.wrong(res, countOp.error)
+        }
+    })
 
-        this.router.get('/searchBy/:attribute/:value', async (req, res) => {
-            let {attribute, value} = req.params
-            let stationGeOneOp = await this.SchemaModel.searchBy(attribute, value)
-            if(stationGeOneOp.finalResult){
-                AnswerHttpRequest.done(res, stationGeOneOp.result)
-            }
-            else{
-                AnswerHttpRequest.wrong(res, stationGeOneOp.error)
-            }
-        })
-
-        this.router.get('/Count', async (req, res)=>{
-            let countOp = await this.SchemaModel.count()
-            if(countOp.finalResult){
-                AnswerHttpRequest.done(res, countOp.result)
-            }else {
-                AnswerHttpRequest.wrong(res, countOp.error)
-            }
-        })
-    }
-
-
+    return(router)
 }
 
 module.exports = _EndPoints
