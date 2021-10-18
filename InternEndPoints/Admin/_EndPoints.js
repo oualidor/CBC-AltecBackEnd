@@ -57,7 +57,7 @@ class _EndPoints{
     })
 
     count =  router.get('/Count', async (req, res)=>{
-        let countOp = await StatisticsOperations.count(this.Schema, {})
+        let countOp = await this.SchemaModel.count()
         if(countOp.finalResult){
             AnswerHttpRequest.done(res, countOp.result)
         }else {
