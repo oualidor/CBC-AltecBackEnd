@@ -70,28 +70,17 @@ class _Model{
         }
     }
 
-    count =  async () => {
+    count =  async (attribute, value) => {
         try {
-            let total  = await this.CurrentActor.findAll({
+            let options = {
                 attributes: [
                     [seq.fn('COUNT', seq.col('id')), 'total'] // To add the aggregation...
                 ]
-            });
-            return GlOpResult(true, total)
-        }catch (error){
-            console.log(error)
-            return GlOpResult(false, "Operation failed")
-        }
-    }
-
-    countWhere =  async () => {
-        try {
-            let total  = await this.CurrentActor.findAll({
-                attributes: [
-                    [seq.fn('COUNT', seq.col('id')), 'total'] // To add the aggregation...
-                ],
-                where: {[attribute]: {[seq.Op.like]: '%' + value + '%'}}
-            });
+            }
+            if(attribute !== undefined && value !== undefined){
+                options.where = {[attribute]: {[seq.Op.like]: '%' + value + '%'}}
+            }
+            let total  = await this.CurrentActor.findAll();
             return GlOpResult(true, total)
         }catch (error){
             console.log(error)

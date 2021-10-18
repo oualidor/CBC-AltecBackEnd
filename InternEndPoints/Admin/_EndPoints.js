@@ -60,7 +60,7 @@ const _EndPoints = (Schema, SchemaOperations)=>{
 
     router.get('/CountWhere/:attribute/:value', async (req, res)=>{
         let {attribute, value} = req.params
-        let countOp = await SchemaModel.countWhere(attribute, value)
+        let countOp = await SchemaModel.count(attribute, value)
         if(countOp.finalResult){
             AnswerHttpRequest.done(res, countOp.result)
         }else {
