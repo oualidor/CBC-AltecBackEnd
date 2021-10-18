@@ -19,8 +19,8 @@ AdminSettingRouter.get('/getOne/:name', async (req, res) => {
 }),
 
 AdminSettingRouter.get('/getAll/:offset/:limit', async (req, res) => {
-    let {name} = req.params
-    let getOneOp = await SettingOperations.getOne(name)
+    let {offset, limit} = req.params
+    let getOneOp = await SettingOperations.getAll(offset, limit)
     if(getOneOp.finalResult){
         AnswerHttpRequest.done(res, getOneOp.result)
     }
