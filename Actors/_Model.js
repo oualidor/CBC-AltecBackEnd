@@ -1,6 +1,5 @@
-const GlOpResult = require("../Structures/GlOpResult");
 const seq = require('sequelize')
-const AnswerHttpRequest = require("../Structures/AnswerHttpRequest");
+const GlOpResult = require("../Structures/GlOpResult");
 const {UpdateData} = require("../Apis/UpdateData");
 class _Model{
     constructor(CurrentActor) {
@@ -71,9 +70,9 @@ class _Model{
         }
     }
 
-    count =  async (Model) => {
+    count =  async () => {
         try {
-            let total  = await Model.findAll({
+            let total  = await this.CurrentActor.findAll({
                 attributes: [
                     [seq.fn('COUNT', seq.col('id')), 'total'] // To add the aggregation...
                 ]
