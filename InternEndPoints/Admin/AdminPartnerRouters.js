@@ -4,7 +4,7 @@ const PartnerOperations = require("../../Actors/PartnerOperations");
 const _EndPoints = require("../../InternEndPoints/Admin/_EndPoints");
 const Partner = require("../../Schemas/Partner");
 const _EndPointsRouter = _EndPoints(Partner, PartnerOperations)
-const  AdminPartnerRouters = express.Router
+const  AdminPartnerRouters = express.Router()
 
 AdminPartnerRouters.use('/', _EndPointsRouter),
 AdminPartnerRouters.post('/create', async (req, res) => {
