@@ -74,7 +74,7 @@ class _Model{
         try {
             let options = {
                 attributes: [
-                    [seq.fn('COUNT', seq.col('id'))] // To add the aggregation...
+                    [seq.fn('COUNT', seq.col('id')), 'total'] // To add the aggregation...
                 ]
             }
             if(attribute !== undefined && value !== undefined){
