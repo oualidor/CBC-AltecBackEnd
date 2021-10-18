@@ -8,8 +8,9 @@ class _EndPoints{
         this.Schema = Schema
         this.SchemaOperations = SchemaOperations
         this.SchemaModel = new _Model(Schema)
-        this.router = express.Router();
         console.log("hihihihihi")
+        this.router = express.Router();
+
     }
 
     create =  this.router.post('/create', async (req, res) => {
