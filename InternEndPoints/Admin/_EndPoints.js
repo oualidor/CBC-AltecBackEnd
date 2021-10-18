@@ -45,6 +45,17 @@ class _EndPoints{
         }
     })
 
+    searchBy = router.get('/searchBy/:attribute/:value', async (req, res) => {
+        let {attribute, value} = req.params
+        let stationGeOneOp = await this.SchemaModel.searchBy(attribute, value)
+        if(stationGeOneOp.finalResult){
+            AnswerHttpRequest.done(res, stationGeOneOp.result)
+        }
+        else{
+            AnswerHttpRequest.wrong(res, stationGeOneOp.error)
+        }
+    })
+
     count =  router.get('/Count', async (req, res)=>{
         let countOp = await StatisticsOperations.count(this.Schema, {})
         if(countOp.finalResult){
