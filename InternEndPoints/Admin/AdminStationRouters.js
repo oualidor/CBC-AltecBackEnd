@@ -7,10 +7,8 @@ const router = express.Router();
 const StationOperations = require("../../Actors/StationOperations");
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 const Station = require("../../Schemas/Station");
-const Model  =require("../../Actors/_Model")
 const EndPoints = require("../../InternEndPoints/Admin/_EndPoints");
-let SchemaModel = new Model(Station)
-let _EndPoints = new EndPoints(Station, StationOperations, SchemaModel)
+let _EndPoints = new EndPoints(Station, StationOperations)
 const AdminStationRouters = express.Router();
 
 AdminStationRouters.use('/', _EndPoints.count),
@@ -118,7 +116,7 @@ AdminStationRouters.get('/setVolume/:stationId/:level', async (req, res) => {
         AnswerHttpRequest.wrong(res, "Request failed")
     }
 }),
-    
+
 module.exports = AdminStationRouters;
 
 

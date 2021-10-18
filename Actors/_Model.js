@@ -50,7 +50,7 @@ class _Model{
         offset = parseInt(offset);
         if (limit === 0) limit = 50
         try{
-            console.log(typeof this.CurrentActor)
+            console.log(this.CurrentActor)
             let result = await this.CurrentActor.findAll({offset: offset, limit: limit})
             return GlOpResult(true, result)
         }

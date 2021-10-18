@@ -1,18 +1,13 @@
 const express = require('express');
-const RentTransactionTypes = require("../../Structures/TransactionTypes");
-const TransactionOperations = require("../../Actors/TransactionOperations");
-
 const router = express.Router();
-
-const StationOperations = require("../../Actors/StationOperations");
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
-const StatisticsOperations = require("../../Actors/StatisticsOperations");
+const _Model = require("../../Actors/_Model");
 
 class _EndPoints{
-    constructor(Schema, SchemaOperations, SchemaModel) {
+    constructor(Schema, SchemaOperations) {
         this.Schema = Schema
         this.SchemaOperations = SchemaOperations
-        this.SchemaModel = SchemaModel
+        this.SchemaModel = new _Model(Schema)
     }
 
     create =  router.post('/create', async (req, res) => {

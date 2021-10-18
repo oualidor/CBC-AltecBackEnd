@@ -4,10 +4,8 @@ const router = express.Router();
 const Client = require('../../Schemas/Client');
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 const ClientOperations = require("../../Actors/ClientOperations");
-const Model  =require("../../Actors/_Model")
 const EndPoints = require("../../InternEndPoints/Admin/_EndPoints");
-let SchemaModel = new Model(Client)
-let _EndPoints = new EndPoints(Client, ClientOperations, SchemaModel)
+let _EndPoints = new EndPoints(Client, ClientOperations)
 const  AdminClientRouters = express.Router()
 
 AdminClientRouters.use('/', _EndPoints.count)
