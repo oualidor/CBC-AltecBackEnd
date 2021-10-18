@@ -67,10 +67,6 @@ module.exports = _EndPoints
 
 
 
-module.exports = _EndPoints;
-
-
-
 
 
 
