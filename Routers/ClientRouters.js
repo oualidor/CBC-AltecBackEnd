@@ -15,7 +15,7 @@ const TransactionTypes = require("../Structures/TransactionTypes");
 const TransactionOperations = require("../Actors/TransactionOperations");
 const {RechargeCodeOperations} = require("../Actors/RechargeCodeOperations");
 const {ClientWalletGlobalOperations} = require("../Actors/ClientWalletOperations");
-const {ClientGlobalOperations} = require("../Actors/ClientGlobalOperations");
+const ClientGlobalOperations = require("../Actors/ClientOperations");
 const clientRouter = express.Router();
 
 

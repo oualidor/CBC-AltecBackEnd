@@ -8,7 +8,7 @@ const {UpdateData} = require("../Apis/UpdateData");
 Client.hasOne(ClientWallet, {as : 'Wallet', foreignKey : 'clientId'});
 
 
-const  ClientGlobalOperations = {
+const  ClientOperations = {
 
     create : async (data) => {
         try {
@@ -141,4 +141,4 @@ const  ClientGlobalOperations = {
     },
 }
 
-module.exports = {ClientGlobalOperations}
+module.exports = ClientOperations

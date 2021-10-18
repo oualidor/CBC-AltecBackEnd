@@ -6,8 +6,8 @@ const Validator = require('../../Apis/DataValidator');
 
 const bcrypt = require('bcrypt');
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
-const {ClientGlobalOperations} = require("../../Actors/ClientGlobalOperations");
-const {ClientGlobalRouters} = require("../../Actors/ClientGlobalOperations");
+const ClientGlobalOperations = require("../../Actors/ClientOperations");
+const {ClientGlobalRouters} = require("../../Actors/ClientOperations");
 
 const  ClientClientRouters = {
 

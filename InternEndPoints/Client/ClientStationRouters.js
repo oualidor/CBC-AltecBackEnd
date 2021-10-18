@@ -3,7 +3,7 @@ const RentTransaction = require("../../Schemas/Transaction");
 const TransactionTypes = require("../../Structures/TransactionTypes");
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 const {ClientWalletGlobalOperations} = require("../../Actors/ClientWalletOperations");
-const {ClientGlobalOperations} = require("../../Actors/ClientGlobalOperations");
+const ClientGlobalOperations = require("../../Actors/ClientOperations");
 const {RechargeCodeOperations} = require("../../Actors/RechargeCodeOperations");
 const TransactionOperations= require("../../Actors/TransactionOperations");
 
