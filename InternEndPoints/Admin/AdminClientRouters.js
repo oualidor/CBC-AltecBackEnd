@@ -2,8 +2,6 @@ const express = require('express');
 const seq = require('sequelize');
 const router = express.Router();
 const Client = require('../../Schemas/Client');
-
-
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 const ClientOperations = require("../../Actors/ClientOperations");
 const Model  =require("../../Actors/_Model")
@@ -11,7 +9,6 @@ const EndPoints = require("../../InternEndPoints/Admin/_EndPoints");
 let SchemaModel = new Model(Client)
 let _EndPoints = new EndPoints(Client, ClientOperations, SchemaModel)
 const  AdminClientRouters = {
-
     ready: router.use('/', _EndPoints.count),
 
     create : router.post('/create', async (req, res) => {
