@@ -50,8 +50,8 @@ class _Model{
         offset = parseInt(offset);
         if (limit === 0) limit = 50
         try{
-            let {count, result} = await this.CurrentActor.findAndCountAll({offset: offset, limit: limit})
-            return GlOpResult(true, {count: count, data: result})
+            let result = await this.CurrentActor.findAndCountAll({offset: offset, limit: limit})
+            return GlOpResult(true, result)
         }
         catch (error){
             return GlOpResult(false , "Operation failed")
