@@ -4,11 +4,11 @@ const TransactionOperations = require("../../Actors/TransactionOperations");
 const StationOperations = require("../../Actors/StationOperations");
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 const Station = require("../../Schemas/Station");
-const EndPoints = require("../../InternEndPoints/Admin/_EndPoints");
-let _EndPoints = new EndPoints(Station, StationOperations)
+const _EndPoints = require("../../InternEndPoints/Admin/_EndPoints");
+const _StationEndPoints = new _EndPoints(Station, StationOperations)
 const AdminStationRouters = express.Router();
 
-AdminStationRouters.use('/', _EndPoints.count),
+AdminStationRouters.use('/', _StationEndPoints.count),
 
 AdminStationRouters.post('/update/:id', async (req, res) => {
     let {id} = req.params
