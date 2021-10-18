@@ -74,13 +74,13 @@ class _Model{
         try {
             let options = {
                 attributes: [
-                    [seq.fn('COUNT', seq.col('id')), 'total'] // To add the aggregation...
+                    [seq.fn('COUNT', seq.col('id'))] // To add the aggregation...
                 ]
             }
             if(attribute !== undefined && value !== undefined){
                 options.where = {[attribute]: {[seq.Op.like]: '%' + value + '%'}}
             }
-            let total  = await this.CurrentActor.findAll(options);
+            let total  = await this.CurrentActor.count(options);
             return GlOpResult(true, total)
         }catch (error){
             console.log(error)
