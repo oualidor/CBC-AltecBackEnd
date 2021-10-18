@@ -4,11 +4,11 @@ const router = express.Router();
 const Client = require('../../Schemas/Client');
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 const ClientOperations = require("../../Actors/ClientOperations");
-const EndPoints = require("../../InternEndPoints/Admin/_EndPoints");
-let _EndPoints = new EndPoints(Client, ClientOperations)
+const _EndPoints = require("../../InternEndPoints/Admin/_EndPoints");
+const _EndPointsRouter = _EndPoints(Client, ClientOperations)
 const  AdminClientRouters = express.Router()
 
-AdminClientRouters.use('/', _EndPoints.count)
+AdminClientRouters.use('/', _EndPointsRouter),
 
 AdminClientRouters.post('/create', async (req, res) => {
         let gor = await ClientOperations.create(req.body)
