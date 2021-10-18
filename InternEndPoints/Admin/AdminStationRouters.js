@@ -8,7 +8,7 @@ const _EndPoints = require("../../InternEndPoints/Admin/_EndPoints");
 const _StationEndPoints = new _EndPoints(Station, StationOperations)
 const AdminStationRouters = express.Router();
 
-AdminStationRouters.use('/', _StationEndPoints.router),
+AdminStationRouters.use('/', _StationEndPoints.getRouters),
 
 AdminStationRouters.post('/update/:id', async (req, res) => {
     let {id} = req.params

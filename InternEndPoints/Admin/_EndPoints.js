@@ -11,6 +11,9 @@ class _EndPoints{
         console.log("hihihihihi")
         this.router = express.Router();
 
+    }
+
+    getRouters(){
         this.router.post('/create', async (req, res) => {
             let data  = req.body
             let createOp = await this.SchemaModel.create(data)
@@ -60,7 +63,6 @@ class _EndPoints{
                 AnswerHttpRequest.wrong(res, countOp.error)
             }
         })
-
     }
 
 
