@@ -9,7 +9,7 @@ const EndPoints = require("../../InternEndPoints/Admin/_EndPoints");
 let SchemaModel = new Model(Client)
 let _EndPoints = new EndPoints(Client, ClientOperations, SchemaModel)
 const  AdminClientRouters = {
-    ready: router.use('/', _EndPoints.count),
+    ready: router.use('', _EndPoints.count),
 
     create : router.post('/create', async (req, res) => {
         let gor = await ClientOperations.create(req.body)
