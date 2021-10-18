@@ -80,7 +80,7 @@ class _Model{
             if(attribute !== undefined && value !== undefined){
                 options.where = {[attribute]: {[seq.Op.like]: '%' + value + '%'}}
             }
-            let total  = await this.CurrentActor.findAll();
+            let total  = await this.CurrentActor.findAll(options);
             return GlOpResult(true, total)
         }catch (error){
             console.log(error)
