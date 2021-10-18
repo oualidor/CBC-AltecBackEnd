@@ -5,9 +5,10 @@ const StationOperations = require("../../Actors/StationOperations");
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 const Station = require("../../Schemas/Station");
 const _EndPoints = require("../../InternEndPoints/Admin/_EndPoints");
+const _StationEndPoints = new _EndPoints(Station, StationOperations)
 const AdminStationRouters = express.Router();
 
-AdminStationRouters.use('/', new _EndPoints(Station, StationOperations)),
+AdminStationRouters.use('/', _StationEndPoints.router),
 
 AdminStationRouters.post('/update/:id', async (req, res) => {
     let {id} = req.params
