@@ -46,7 +46,7 @@ adminRouters.post('/login', async (req, res) => {
 });
 
 adminRouters.use("/Station",  yitAuthenticator.authAdmin, AdminStationRouters)
-adminRouters.use("/Client",  yitAuthenticator.authAdmin, AdminClientRouters.create)
+adminRouters.use("/Client",  yitAuthenticator.authAdmin, AdminClientRouters)
 adminRouters.use("/Partner",   AdminPartnerRouters.create)
 adminRouters.use("/RechargeCode",   AdminRechargeCodeRouters.create)
 adminRouters.use("/RentTransactions",   AdminRentTransactionRouter.create)

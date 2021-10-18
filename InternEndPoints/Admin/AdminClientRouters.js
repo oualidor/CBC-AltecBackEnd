@@ -8,19 +8,20 @@ const Model  =require("../../Actors/_Model")
 const EndPoints = require("../../InternEndPoints/Admin/_EndPoints");
 let SchemaModel = new Model(Client)
 let _EndPoints = new EndPoints(Client, ClientOperations, SchemaModel)
-const  AdminClientRouters = {
-    ready: router.use('', _EndPoints.count),
+const  AdminClientRouters = express.Router()
 
-    create : router.post('/create', async (req, res) => {
+AdminClientRouters.use('/', _EndPoints.count)
+
+AdminClientRouters.post('/create', async (req, res) => {
         let gor = await ClientOperations.create(req.body)
         if(gor.finalResult){
             AnswerHttpRequest.done(res, gor.result)
         }else {
             AnswerHttpRequest.wrong(res, gor.error)
         }
-    }),
+    })
 
-    update : router.post('/update/:id', async (req, res) => {
+AdminClientRouters.post('/update/:id', async (req, res) => {
         const id = parseInt(req.params.id);
         let gor = await ClientOperations.update(id, req.body)
         if(gor.finalResult){
@@ -28,13 +29,13 @@ const  AdminClientRouters = {
         }else {
             AnswerHttpRequest.wrong(res, gor.error)
         }
-    }),
+    })
 
-    getAll : router.get('/getAll/:offset/:limit',  async (req, res) => {
+AdminClientRouters.get('/getAll/:offset/:limit',  async (req, res) => {
         await ClientOperations.getAll(req, res)
-    }),
+    })
 
-    getOne : router.get('/getOne/:id',  async (req, res) => {
+AdminClientRouters.get('/getOne/:id',  async (req, res) => {
         const id = parseInt(req.params.id);
         let gor = await ClientOperations.findByPk(id)
         if(gor.finalResult){
@@ -42,9 +43,9 @@ const  AdminClientRouters = {
         }else {
             AnswerHttpRequest.wrong(res, gor.error)
         }
-    }),
+    })
 
-    delete : router.get('/delete/:id',  async (req, res) => {
+AdminClientRouters.get('/delete/:id',  async (req, res) => {
         const id = parseInt(req.params.id);
         try {
             let customer = await Client.findByPk(id);
@@ -61,9 +62,7 @@ const  AdminClientRouters = {
         }catch (e){
             res.send({'finalResult': false, 'error': e})
         }
-    }),
-
-}
+    })
 
 module.exports = AdminClientRouters;
 
