@@ -8,7 +8,6 @@ const Setting = db.define('Settings', {
     },
     dataType: {
         type: Sequelize.STRING,
-        unique: true,
         allowNull: false
     },
     dataTitle: {

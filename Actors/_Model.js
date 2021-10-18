@@ -50,8 +50,8 @@ class _Model{
         offset = parseInt(offset);
         if (limit === 0) limit = 50
         try{
-            let result = await this.CurrentActor.findAll({offset: offset, limit: limit})
-            return GlOpResult(true, result)
+            let {count, result} = await this.CurrentActor.findAndCountAll({offset: offset, limit: limit})
+            return GlOpResult(true, {count, result})
         }
         catch (error){
             return GlOpResult(false , "Operation failed")
@@ -76,6 +76,21 @@ class _Model{
                 attributes: [
                     [seq.fn('COUNT', seq.col('id')), 'total'] // To add the aggregation...
                 ]
+            });
+            return GlOpResult(true, total)
+        }catch (error){
+            console.log(error)
+            return GlOpResult(false, "Operation failed")
+        }
+    }
+
+    countWhere =  async () => {
+        try {
+            let total  = await this.CurrentActor.findAll({
+                attributes: [
+                    [seq.fn('COUNT', seq.col('id')), 'total'] // To add the aggregation...
+                ],
+                where: {[attribute]: {[seq.Op.like]: '%' + value + '%'}}
             });
             return GlOpResult(true, total)
         }catch (error){
