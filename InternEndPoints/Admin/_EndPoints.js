@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.Router();
+
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 const _Model = require("../../Actors/_Model");
 
@@ -8,9 +8,10 @@ class _EndPoints{
         this.Schema = Schema
         this.SchemaOperations = SchemaOperations
         this.SchemaModel = new _Model(Schema)
+        this.router = express.Router();
     }
 
-    create =  router.post('/create', async (req, res) => {
+    create =  this.router.post('/create', async (req, res) => {
         let data  = req.body
         let createOp = await this.SchemaModel.create(data)
         if(createOp.finalResult){
@@ -20,7 +21,7 @@ class _EndPoints{
         }
     })
 
-    update =  router.post('/update/:id', async (req, res) => {
+    update =  this.router.post('/update/:id', async (req, res) => {
         let {id} = req.params
         let updateOp = await this.SchemaModel.update(id, req.body)
         if(updateOp.finalResult){
@@ -30,7 +31,7 @@ class _EndPoints{
         }
     })
 
-    getAll =  router.get('/getAll/:offset/:limit', async (req, res) => {
+    getAll =  this.router.get('/getAll/:offset/:limit', async (req, res) => {
         let {offset, limit} = req.params
         let getAllOp = await this.SchemaModel.getAll(offset, limit)
         if(getAllOp.finalResult){
@@ -40,7 +41,7 @@ class _EndPoints{
         }
     })
 
-    searchBy = router.get('/searchBy/:attribute/:value', async (req, res) => {
+    searchBy = this.router.get('/searchBy/:attribute/:value', async (req, res) => {
         let {attribute, value} = req.params
         let stationGeOneOp = await this.SchemaModel.searchBy(attribute, value)
         if(stationGeOneOp.finalResult){
@@ -51,7 +52,7 @@ class _EndPoints{
         }
     })
 
-    count =  router.get('/Count', async (req, res)=>{
+    count =  this.router.get('/Count', async (req, res)=>{
         let countOp = await this.SchemaModel.count()
         if(countOp.finalResult){
             AnswerHttpRequest.done(res, countOp.result)

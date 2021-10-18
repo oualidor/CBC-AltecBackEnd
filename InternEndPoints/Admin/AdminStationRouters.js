@@ -1,9 +1,6 @@
 const express = require('express');
 const RentTransactionTypes = require("../../Structures/TransactionTypes");
 const TransactionOperations = require("../../Actors/TransactionOperations");
-
-const router = express.Router();
-
 const StationOperations = require("../../Actors/StationOperations");
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 const Station = require("../../Schemas/Station");
