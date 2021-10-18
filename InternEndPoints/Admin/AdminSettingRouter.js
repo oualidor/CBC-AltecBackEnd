@@ -5,7 +5,7 @@ const SettingOperations = require("../../Actors/SettingOperations");
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 const AdminSettingRouter = express.Router();
 
-AdminSettingRouter.use('/', _EndPoints(Setting, SettingOperations)),
+
 
 AdminSettingRouter.get('/getOne/:name', async (req, res) => {
     let {name} = req.params
@@ -18,7 +18,18 @@ AdminSettingRouter.get('/getOne/:name', async (req, res) => {
     }
 }),
 
+AdminSettingRouter.get('/getAll/:offset/:limit', async (req, res) => {
+    let {name} = req.params
+    let getOneOp = await SettingOperations.getOne(name)
+    if(getOneOp.finalResult){
+        AnswerHttpRequest.done(res, getOneOp.result)
+    }
+    else{
+        AnswerHttpRequest.wrong(res, getOneOp.error)
+    }
+}),
 
+AdminSettingRouter.use('/', _EndPoints(Setting, SettingOperations)),
 
 module.exports = AdminSettingRouter;
 
