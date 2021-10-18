@@ -15,7 +15,7 @@ class _Model{
             }
             else{
                 try {
-                    let newStation = await this.CurrentActor.create(dataError);
+                    let newStation = await this.CurrentActor.create(data);
                     return GlOpResult(true, newStation)
                 }catch (error){
                     let errorMsg = error.errors[0].message

@@ -7,6 +7,7 @@ const AdminPartnerRouters = require("../InternEndPoints/Admin/AdminPartnerRouter
 const AdminRechargeCodeRouters = require("../InternEndPoints/Admin/AdminRechargeCodeRouters");
 const AdminRentTransactionRouter = require("../InternEndPoints/Admin/AdminTransactionRouter");
 const Validator = require("../Apis/DataValidator");
+const AdminSettingRouter = require("../InternEndPoints/Admin/AdminSettingRouter");
 
 const {yitAuthenticator} = require("../Apis/yitAuthenticator");
 const {jwtPrivateKey} = require("../Apis/Config");
@@ -50,6 +51,7 @@ adminRouters.use("/Client",  yitAuthenticator.authAdmin, AdminClientRouters)
 adminRouters.use("/Partner",   AdminPartnerRouters)
 adminRouters.use("/RechargeCode",   AdminRechargeCodeRouters.create)
 adminRouters.use("/RentTransactions",   AdminRentTransactionRouter.create)
+adminRouters.use("/Setting",  yitAuthenticator.authAdmin, AdminSettingRouter)
 
 
 
