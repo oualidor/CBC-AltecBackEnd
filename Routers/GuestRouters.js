@@ -7,11 +7,12 @@ const Client = require("../Schemas/Client");
 const AnswerHttpRequest = require("../Structures/AnswerHttpRequest");
 const {ClientWalletGlobalOperations} = require("../Actors/ClientWalletOperations");
 const ClientGlobalOperations = require("../Actors/ClientOperations");
+const YitAuthenticator = require("../Apis/YitAuthenticator");
 const {adminMail} = require("../Apis/Config");
 const {adminPassword} = require("../Apis/Config");
 const GuestRouters = express.Router();
 GuestRouters.use(async (req, res, next)=>{
-    await GuestRouters.authAll(req, res, next)
+    await YitAuthenticator.authAll(req, res, next)
 })
 
 //Admin Login
