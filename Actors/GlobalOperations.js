@@ -1,7 +1,7 @@
 const seq = require('sequelize')
 const GlOpResult = require("../Structures/GlOpResult");
 const {UpdateData} = require("../Apis/UpdateData");
-class _Model{
+class globalOperations{
     constructor(CurrentActor) {
         this.CurrentActor = CurrentActor
     }
@@ -89,4 +89,4 @@ class _Model{
     }
 }
 
-module.exports = _Model
+module.exports = globalOperations

@@ -1,15 +1,16 @@
 const express = require('express');
 
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
-const _Model = require("../../Actors/_Model");
+const GlobalOperations = require("../../Actors/GlobalOperations");
 
 
-const _EndPoints = (Schema, SchemaOperations)=>{
+const _EndPoints = (Schema)=>{
     const router = express.Router();
-    const SchemaModel = new _Model(Schema)
+    const globalOperations = new GlobalOperations(Schema)
+
     router.post('/create', async (req, res) => {
         let data  = req.body
-        let createOp = await SchemaModel.create(data)
+        let createOp = await globalOperations.create(data)
         if(createOp.finalResult){
             AnswerHttpRequest.done(res, createOp.result)
         }else {
@@ -19,7 +20,7 @@ const _EndPoints = (Schema, SchemaOperations)=>{
 
     router.post('/update/:id', async (req, res) => {
         let {id} = req.params
-        let updateOp = await SchemaModel.update(id, req.body)
+        let updateOp = await globalOperations.update(id, req.body)
         if(updateOp.finalResult){
             AnswerHttpRequest.done(res, updateOp.result)
         }else {
@@ -29,7 +30,7 @@ const _EndPoints = (Schema, SchemaOperations)=>{
 
     router.get('/getAll/:offset/:limit', async (req, res) => {
         let {offset, limit} = req.params
-        let getAllOp = await SchemaModel.getAll(offset, limit)
+        let getAllOp = await globalOperations.getAll(offset, limit)
         if(getAllOp.finalResult){
             AnswerHttpRequest.done(res, getAllOp.result)
         }else {
@@ -39,7 +40,7 @@ const _EndPoints = (Schema, SchemaOperations)=>{
 
     router.get('/searchBy/:attribute/:value', async (req, res) => {
         let {attribute, value} = req.params
-        let stationGeOneOp = await SchemaModel.searchBy(attribute, value)
+        let stationGeOneOp = await globalOperations.searchBy(attribute, value)
         if(stationGeOneOp.finalResult){
             AnswerHttpRequest.done(res, stationGeOneOp.result)
         }
@@ -49,7 +50,7 @@ const _EndPoints = (Schema, SchemaOperations)=>{
     })
 
     router.get('/Count', async (req, res)=>{
-        let countOp = await SchemaModel.count()
+        let countOp = await globalOperations.count()
         if(countOp.finalResult){
             AnswerHttpRequest.done(res, countOp.result)
         }else {
@@ -57,10 +58,9 @@ const _EndPoints = (Schema, SchemaOperations)=>{
         }
     })
 
-
     router.get('/CountWhere/:attribute/:value', async (req, res)=>{
         let {attribute, value} = req.params
-        let countOp = await SchemaModel.count(attribute, value)
+        let countOp = await globalOperations.count(attribute, value)
         if(countOp.finalResult){
             AnswerHttpRequest.done(res, countOp.result)
         }else {

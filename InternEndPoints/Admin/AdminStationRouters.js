@@ -5,10 +5,7 @@ const StationOperations = require("../../Actors/StationOperations");
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 const Station = require("../../Schemas/Station");
 const _EndPoints = require("../../InternEndPoints/Admin/_EndPoints");
-const _EndPointsRouter = _EndPoints(Station, StationOperations)
 const AdminStationRouters = express.Router();
-
-AdminStationRouters.use('/', _EndPointsRouter),
 
 AdminStationRouters.post('/update/:id', async (req, res) => {
     let {id} = req.params
@@ -113,6 +110,8 @@ AdminStationRouters.get('/setVolume/:stationId/:level', async (req, res) => {
         AnswerHttpRequest.wrong(res, "Request failed")
     }
 }),
+
+AdminStationRouters.use('/', _EndPoints(Station))
 
 module.exports = AdminStationRouters;
 

@@ -1,4 +1,3 @@
-const { Op } = require("sequelize");
 const Client = require("../Schemas/Client");
 const Validator = require("../Apis/DataValidator");
 const bcrypt = require("bcrypt");
@@ -53,20 +52,6 @@ const  ClientOperations = {
         }catch (error){
             return GlOpResult(false, "Request failed")
         }
-    },
-
-    getAll :  async (req, res) => {
-        var {offset, limit} = req.params;
-        limit = parseInt(limit);
-        offset = parseInt(offset);
-        if (limit === 0) limit = 99999999
-        Client.findAll({offset: offset, limit: limit})
-            .then(stores =>
-                res.send({'finalResult': true, 'result': stores})
-            )
-            .catch(err =>
-                res.send({'finalResult': false, 'error': true})
-            );
     },
 
     findByPk :  async (id, options) => {
