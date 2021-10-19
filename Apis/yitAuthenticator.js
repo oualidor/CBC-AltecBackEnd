@@ -9,10 +9,11 @@ const yitAuthenticator = {
             if(getOneOp.finalResult){
                 let systemSetting = getOneOp.result
                 if(systemSetting.dataValue === true){
+                    console.log("true")
                     next()
                 }
             }else {
-                alert("hihihi")
+                console.log("false")
                 AnswerHttpRequest.wrong(res, "System is offline now, try again")
             }
         }
