@@ -46,7 +46,7 @@ const YitAuthenticator = {
         }
     },
 
-    authClient: async (req, res, next) => {
+    authClient:  (req, res, next) => {
         const authHead = req.headers['authorization'];
         const token = authHead && authHead.split(' ')[1];
         if (token == null) {
