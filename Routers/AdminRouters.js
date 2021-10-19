@@ -14,7 +14,7 @@ AdminRouters.use("/Station", AdminStationRouters)
 AdminRouters.use("/Client", AdminClientRouters)
 AdminRouters.use("/Partner", AdminPartnerRouters)
 AdminRouters.use("/RechargeCode", AdminRechargeCodeRouters.create)
-AdminRouters.use("/RentTransactions", AdminRentTransactionRouter.create)
+AdminRouters.use("/RentTransactions", AdminRentTransactionRouter)
 AdminRouters.use("/Setting", AdminSettingRouter)
 
 
