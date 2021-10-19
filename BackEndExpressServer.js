@@ -6,6 +6,7 @@ const AdminRouters = require("./Routers/AdminRouters");
 const SettingOperations = require("./Actors/SettingOperations");
 const ClientRouter = require("./Routers/ClientRouters");
 const YitAuthenticator = require("./Apis/YitAuthenticator");
+const AnswerHttpRequest = require("./Structures/AnswerHttpRequest");
 const PORT = process.env.PORT || 8080;
 
 
@@ -29,11 +30,11 @@ class BackEndExpressServer extends EventEmitter{
             this.app.use(cors());
             this.app.use(express.urlencoded({ extended: true }))
             this.app.use(express.json());
-            this.app.use(function(req, res, next) {
+            this.app.use((req, res)=> {
                 res.status(404);
                 // respond with json
                 if (req.accepts('json')) {
-                    res.json({ error: 'Not found' });
+                    AnswerHttpRequest.wrong(res, "end point unknown")
                     return;
                 }
             });
