@@ -32,7 +32,6 @@ const yitAuthenticator = {
         if (token == null) {
             res.send({finalResult: false, error: "UnAuthorised"});
         } else {
-            await yitAuthenticator.authAll(req, res, next)
             jwt.verify(token, jwtPrivateKey, (err, data) => {
                 if (err) res.send({finalResult: false, error: err});
                 if (data.userType === "Admin") {

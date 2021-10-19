@@ -10,10 +10,13 @@ const TransactionOperations = require("../Actors/TransactionOperations");
 const {RechargeCodeOperations} = require("../Actors/RechargeCodeOperations");
 const {ClientWalletGlobalOperations} = require("../Actors/ClientWalletOperations");
 const ClientGlobalOperations = require("../Actors/ClientOperations");
-const clientRouter = express.Router();
+const {yitAuthenticator} = require("../Apis/yitAuthenticator");
+const ClientRouter = express.Router();
+
+ClientRouter.use(yitAuthenticator.authClient)
 
 //Recharge
-clientRouter.post('/recharge', async (req, res) => {
+ClientRouter.post('/recharge', async (req, res) => {
     try{
         const {mail, hashedCode} = req.body;
         let rechargeCode = await RechargeCode.findOne({where: {hashedCode: hashedCode}})
@@ -80,16 +83,16 @@ clientRouter.post('/recharge', async (req, res) => {
 });
 
 
-clientRouter.get('/heartBit',   (req, res) =>{
+ClientRouter.get('/heartBit',   (req, res) =>{
     AnswerHttpRequest.done(res, "Hi there")
 })
 
 
 //Station
-clientRouter.use("/Station",   ClientStationRouters.getOne)
-clientRouter.use("/Client",   ClientClientRouters.getOne)
+ClientRouter.use("/Station",   ClientStationRouters.getOne)
+ClientRouter.use("/Client",   ClientClientRouters.getOne)
 
 
 
 
-module.exports = {clientRouter}
+module.exports = ClientRouter

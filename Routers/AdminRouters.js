@@ -5,8 +5,11 @@ const AdminPartnerRouters = require("../InternEndPoints/Admin/AdminPartnerRouter
 const AdminRechargeCodeRouters = require("../InternEndPoints/Admin/AdminRechargeCodeRouters");
 const AdminRentTransactionRouter = require("../InternEndPoints/Admin/AdminTransactionRouter");
 const AdminSettingRouter = require("../InternEndPoints/Admin/AdminSettingRouter");
+const {yitAuthenticator} = require("../Apis/yitAuthenticator");
 
 const AdminRouters = express.Router();
+
+AdminRouters.use(yitAuthenticator.authAdmin)
 
 
 
