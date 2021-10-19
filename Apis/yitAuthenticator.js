@@ -18,6 +18,7 @@ const yitAuthenticator = {
             }
         }
         catch (error){
+            console.log("error")
             console.log(error)
             AnswerHttpRequest.wrong(res, "System is offline now, try again")
         }
