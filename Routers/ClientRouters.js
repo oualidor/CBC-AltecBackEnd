@@ -14,11 +14,11 @@ const YitAuthenticator = require("../Apis/YitAuthenticator");
 const ClientRouter = express.Router();
 
 ClientRouter.use((req, res, next)=>{
-    YitAuthenticator.authAll(req, res, (req, res)=>{
+    YitAuthenticator.authAll(req, res, ()=>{
         YitAuthenticator.authClient(req, res, next)
     }).then(r => {})
-
 })
+
 
 //Recharge
 ClientRouter.post('/recharge', async (req, res) => {
