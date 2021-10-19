@@ -2,7 +2,7 @@ const jwt  = require('jsonwebtoken');
 const SettingOperations = require("../Actors/SettingOperations");
 const AnswerHttpRequest = require("../Structures/AnswerHttpRequest");
 const {jwtPrivateKey} = require("./Config");
-const yitAuthenticator = {
+const YitAuthenticator = {
     authAll: async (req, res, next) => {
         try {
             let getOneOp = await SettingOperations.getOne("system")
@@ -26,6 +26,7 @@ const yitAuthenticator = {
             AnswerHttpRequest.wrong(res, "System is offline now, try again")
         }
     },
+
     authAdmin: async (req, res, next) => {
         const authHead = req.headers['authorization'];
         const token = authHead && authHead.split(' ')[1];
@@ -44,7 +45,6 @@ const yitAuthenticator = {
             })
         }
     },
-
 
     authClient: async (req, res, next) => {
         const authHead = req.headers['authorization'];
@@ -70,8 +70,4 @@ const yitAuthenticator = {
 
 }
 
-
-
-
-
-module.exports = {yitAuthenticator};
+module.exports = YitAuthenticator;

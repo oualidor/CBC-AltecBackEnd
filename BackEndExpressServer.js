@@ -5,7 +5,7 @@ const GuestRouters = require("./Routers/GuestRouters");
 const AdminRouters = require("./Routers/AdminRouters");
 const SettingOperations = require("./Actors/SettingOperations");
 const ClientRouter = require("./Routers/ClientRouters");
-const {yitAuthenticator} = require("./Apis/yitAuthenticator");
+const YitAuthenticator = require("./Apis/YitAuthenticator");
 const PORT = process.env.PORT || 8080;
 
 

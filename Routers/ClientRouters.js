@@ -10,7 +10,7 @@ const TransactionOperations = require("../Actors/TransactionOperations");
 const {RechargeCodeOperations} = require("../Actors/RechargeCodeOperations");
 const {ClientWalletGlobalOperations} = require("../Actors/ClientWalletOperations");
 const ClientGlobalOperations = require("../Actors/ClientOperations");
-const {yitAuthenticator} = require("../Apis/yitAuthenticator");
+const {yitAuthenticator} = require("../Apis/YitAuthenticator");
 const ClientRouter = express.Router();
 
 ClientRouter.use(yitAuthenticator.authClient)
