@@ -27,7 +27,7 @@ const YitAuthenticator = {
         }
     },
 
-    authAdmin: async (req, res, next) => {
+    authAdmin:  (req, res, next) => {
         const authHead = req.headers['authorization'];
         const token = authHead && authHead.split(' ')[1];
         if (token == null) {

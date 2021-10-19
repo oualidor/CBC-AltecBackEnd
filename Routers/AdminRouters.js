@@ -10,7 +10,7 @@ const YitAuthenticator = require("../Apis/YitAuthenticator");
 const AdminRouters = express.Router();
 
 AdminRouters.use((req, res, next)=>{
-
+    YitAuthenticator.authAdmin(req, res, next)
 })
 
 AdminRouters.use("/Station", AdminStationRouters)
