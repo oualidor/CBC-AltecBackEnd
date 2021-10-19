@@ -9,6 +9,7 @@ Partner.hasMany(Station, {foreignKey: "currentPartner", as: "Stations"})
 const  PartnerOperations = {
 
     create : async (req, res) => {
+        console.log(req.body)
         try {
             let {mail, phone, password, fullName, stat, type, x, y} = req.body;
             if (password == null){
