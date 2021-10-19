@@ -3,6 +3,7 @@ const EventEmitter = require('events')
 const cors = require('cors');
 const GuestRouters = require("./Routers/GuestRouters");
 const AdminRouters = require("./Routers/AdminRouters");
+const {yitAuthenticator} = require("./Apis/yitAuthenticator");
 const {clientRouter} = require("./Routers/ClientRouters");
 const PORT = process.env.PORT || 8080;
 
