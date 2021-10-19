@@ -30,12 +30,13 @@ class BackEndExpressServer extends EventEmitter{
             this.app.use(cors());
             this.app.use(express.urlencoded({ extended: true }))
             this.app.use(express.json());
-            this.app.use((req, res)=> {
-                res.status(404);
+            this.app.use((req, res, next)=> {
+
                 // respond with json
-                if (req.accepts('json')) {
+                if(res.status === 404) {
                     AnswerHttpRequest.wrong(res, "end point unknown")
-                    return;
+                }else {
+                    next()
                 }
             });
             if(this.logger != undefined) this.app.use(this.logger)
