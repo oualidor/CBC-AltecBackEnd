@@ -13,7 +13,7 @@ const {adminPassword} = require("../Apis/Config");
 const GuestRouters = express.Router();
 
 //Admin Login
-GuestRouters.post('/login', async (req, res) => {
+GuestRouters.post('/adminLogin', async (req, res) => {
     const {mail, password} = req.body;
     let validatedData = true;
     let dataError = "";
@@ -43,7 +43,7 @@ GuestRouters.post('/login', async (req, res) => {
 });
 
 //Client Login
-GuestRouters.post('/login', async (req, res) => {
+GuestRouters.post('/clientLogin', async (req, res) => {
     const {mail, password} = req.body;
     let validatedData = true;
     let dataError = "";
@@ -87,7 +87,7 @@ GuestRouters.post('/login', async (req, res) => {
 });
 
 //Client SignUp
-GuestRouters.post('/create', async (req, res) => {
+GuestRouters.post('/clientSignUp', async (req, res) => {
     let data = req.body
     let gor = await ClientGlobalOperations.create(data)
     if(gor.finalResult === false){
