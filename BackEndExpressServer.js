@@ -3,9 +3,7 @@ const EventEmitter = require('events')
 const cors = require('cors');
 const GuestRouters = require("./Routers/GuestRouters");
 const AdminRouters = require("./Routers/AdminRouters");
-const SettingOperations = require("./Actors/SettingOperations");
 const ClientRouter = require("./Routers/ClientRouters");
-const YitAuthenticator = require("./Apis/YitAuthenticator");
 const AnswerHttpRequest = require("./Structures/AnswerHttpRequest");
 const PORT = process.env.PORT || 8080;
 
@@ -14,13 +12,12 @@ class BackEndExpressServer extends EventEmitter{
     constructor(Port, logger) {
         super();
         this.logger = logger
-        this.isRunning = false
         this.app = express()
         this.port = Port
         if(!this.configure()){
 
         }else {
-            this.setRouters().then(r => {})
+            this.setRouters().then(() => {})
             this.app.use((req, res)=> {
                 res.status(404);
                 AnswerHttpRequest.wrong(res, "end point unknown")
@@ -34,7 +31,7 @@ class BackEndExpressServer extends EventEmitter{
             this.app.use(cors());
             this.app.use(express.urlencoded({ extended: true }))
             this.app.use(express.json());
-            if(this.logger != undefined) this.app.use(this.logger)
+            if(this.logger !== undefined) this.app.use(this.logger)
 
 
 
@@ -50,7 +47,6 @@ class BackEndExpressServer extends EventEmitter{
             this.app.listen(PORT, () => {
                 console.log(`Server  running on  ${PORT}.`)
             });
-            this.isRunning = true
         }catch (error){
             console.log(error)
         }

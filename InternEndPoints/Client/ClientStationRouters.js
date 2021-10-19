@@ -1,5 +1,4 @@
 const express = require('express');
-const RentTransaction = require("../../Schemas/Transaction");
 const TransactionTypes = require("../../Structures/TransactionTypes");
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 const {ClientWalletGlobalOperations} = require("../../Actors/ClientWalletOperations");
@@ -51,7 +50,7 @@ ClientStationRouters.post('/rentPowerBank/', async (req, res) => {
                                 }
                                 else {
                                     newBalance = newBalance + rentFees
-                                    let gor = await ClientWalletGlobalOperations.update(currentClient.Wallet.id, {balance: newBalance})
+                                    await ClientWalletGlobalOperations.update(currentClient.Wallet.id, {balance: newBalance})
                                     //TODO write heavy log if wallet refund fails
                                     AnswerHttpRequest.wrong(res, rentResult.error)
                                 }
@@ -79,7 +78,7 @@ ClientStationRouters.post('/rentPowerBank/', async (req, res) => {
     }catch (error){
         AnswerHttpRequest.wrong(res, "request failed")
     }
-}),
+})
 
 ClientStationRouters.get('/returnPowerBank/:stationId', async (req, res) => {
     let clientId = req.body.id;

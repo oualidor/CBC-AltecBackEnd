@@ -16,7 +16,7 @@ const ClientRouter = express.Router();
 ClientRouter.use((req, res, next)=>{
     YitAuthenticator.authAll(req, res, ()=>{
         YitAuthenticator.authClient(req, res, next)
-    }).then(r => {})
+    }).then(()=> {})
 })
 
 
@@ -53,7 +53,7 @@ ClientRouter.post('/recharge', async (req, res) => {
                         if (rechargeCodeOperation.finalResult) {
                             let newBalance = parseInt(client.Wallet.balance) + rechargeCode.amount
                             let walletUpdateOperation = await ClientWalletGlobalOperations.update(client.Wallet.id, {balance: newBalance})
-                            if (walletUpdateOperation.finalResult) {
+                            if (walletUpdateOperation.finalResult){
                                 let rentTransactionsResults = await TransactionOperations.create(
                                     TransactionTypes.tickets.recharge,
                                     [
