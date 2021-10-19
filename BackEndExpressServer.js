@@ -29,6 +29,14 @@ class BackEndExpressServer extends EventEmitter{
             this.app.use(cors());
             this.app.use(express.urlencoded({ extended: true }))
             this.app.use(express.json());
+            this.app.use(function(req, res, next) {
+                res.status(404);
+                // respond with json
+                if (req.accepts('json')) {
+                    res.json({ error: 'Not found' });
+                    return;
+                }
+            });
             if(this.logger != undefined) this.app.use(this.logger)
 
 
