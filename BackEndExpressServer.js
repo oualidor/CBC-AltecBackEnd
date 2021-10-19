@@ -20,7 +20,11 @@ class BackEndExpressServer extends EventEmitter{
         if(!this.configure()){
 
         }else {
-            this.setRouters()
+            this.setRouters().then(r => {})
+            this.app.use((req, res)=> {
+                res.status(404);
+                AnswerHttpRequest.wrong(res, "end point unknown")
+            });
 
         }
     }
@@ -30,15 +34,6 @@ class BackEndExpressServer extends EventEmitter{
             this.app.use(cors());
             this.app.use(express.urlencoded({ extended: true }))
             this.app.use(express.json());
-            this.app.use((req, res, next)=> {
-
-                // respond with json
-                if(res.status === 404) {
-                    AnswerHttpRequest.wrong(res, "end point unknown")
-                }else {
-                    next()
-                }
-            });
             if(this.logger != undefined) this.app.use(this.logger)
 
 
