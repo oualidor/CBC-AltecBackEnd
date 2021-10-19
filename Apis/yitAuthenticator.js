@@ -12,6 +12,7 @@ const yitAuthenticator = {
                     next()
                 }
             }else {
+                alert("hihihi")
                 AnswerHttpRequest.wrong(res, "System is offline now, try again")
             }
         }
