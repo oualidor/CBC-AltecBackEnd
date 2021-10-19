@@ -2,7 +2,6 @@ const express = require('express');
 const jwt  = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const Validator = require("../Apis/DataValidator");
-
 const {jwtPrivateKey} = require("../Apis/Config");
 const Client = require("../Schemas/Client");
 const AnswerHttpRequest = require("../Structures/AnswerHttpRequest");
@@ -11,7 +10,9 @@ const ClientGlobalOperations = require("../Actors/ClientOperations");
 const {adminMail} = require("../Apis/Config");
 const {adminPassword} = require("../Apis/Config");
 const GuestRouters = express.Router();
-
+GuestRouters.use(async (req, res, next)=>{
+    await GuestRouters.authAll(req, res, next)
+})
 
 //Admin Login
 GuestRouters.post('/adminLogin', async (req, res) => {
