@@ -94,7 +94,7 @@ ClientRouter.get('/heartBit',   (req, res) =>{
 
 
 //Station
-ClientRouter.use("/Station",   ClientStationRouters.getOne)
+ClientRouter.use("/Station",   ClientStationRouters)
 ClientRouter.use("/Client",   ClientClientRouters.getOne)
 
 
