@@ -48,11 +48,12 @@ ClientStationRouters.post('/rentPowerBank/', async (req, res) => {
                                         console.log(rentTransactionsResults.error)
                                     }
                                     AnswerHttpRequest.done(res, "Power bank rented successfully")
-                                }else {
+                                }
+                                else {
                                     newBalance = newBalance + rentFees
                                     let gor = await ClientWalletGlobalOperations.update(currentClient.Wallet.id, {balance: newBalance})
                                     //TODO write heavy log if wallet refund fails
-                                    AnswerHttpRequest.wrong(res, "Could not rent the power bank")
+                                    AnswerHttpRequest.wrong(res, rentResult.error)
                                 }
                             }else {
                                 AnswerHttpRequest.wrong(res, walletUpdateOperation.error)
