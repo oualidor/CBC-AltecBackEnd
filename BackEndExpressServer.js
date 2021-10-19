@@ -55,7 +55,7 @@ class BackEndExpressServer extends EventEmitter{
         this.app.get("/HeartBit", (req, res) => {
             res.send({finalResult: true, result: true})
         })
-        this.app.use("/Admin", await yitAuthenticator.authAll, yitAuthenticator.authAdmin, AdminRouters)
+        this.app.use("/Admin", yitAuthenticator.authAdmin, AdminRouters)
 
         this.app.use("/Guest", GuestRouters)
         this.app.use("/Client", yitAuthenticator.authClient, clientRouter)
