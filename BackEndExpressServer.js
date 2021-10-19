@@ -3,6 +3,7 @@ const EventEmitter = require('events')
 const cors = require('cors');
 const GuestRouters = require("./Routers/GuestRouters");
 const AdminRouters = require("./Routers/AdminRouters");
+const SettingOperations = require("./Actors/SettingOperations");
 const {yitAuthenticator} = require("./Apis/yitAuthenticator");
 const {clientRouter} = require("./Routers/ClientRouters");
 const PORT = process.env.PORT || 8080;
@@ -54,8 +55,9 @@ class BackEndExpressServer extends EventEmitter{
         this.app.get("/HeartBit", (req, res)=>{
             res.send({finalResult : true, result: true})
         })
-        this.app.use("/Guest",  GuestRouters)
         this.app.use("/Admin",   yitAuthenticator.authAdmin, AdminRouters)
+
+        this.app.use("/Guest",  GuestRouters)
         this.app.use("/Client",   yitAuthenticator.authClient, clientRouter)
     }
 }

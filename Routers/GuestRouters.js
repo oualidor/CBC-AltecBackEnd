@@ -12,6 +12,7 @@ const {adminMail} = require("../Apis/Config");
 const {adminPassword} = require("../Apis/Config");
 const GuestRouters = express.Router();
 
+
 //Admin Login
 GuestRouters.post('/adminLogin', async (req, res) => {
     const {mail, password} = req.body;
