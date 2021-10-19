@@ -1,10 +1,12 @@
 const express = require('express');
 const RentTransactionOperations = require("../../Actors/TransactionOperations");
+const Transaction = require("../../Schemas/Transaction");
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 
 
 
 const StationGlobalRouters = require("../../Actors/StationOperations");
+const _EndPoints = require("./_EndPoints");
 const AdminTransactionRouter = express.Router();
 
 AdminTransactionRouter.get('/getAll/:operation/:offset/:limit', async (req, res) => {
@@ -25,9 +27,9 @@ AdminTransactionRouter.get('/getOne/:id', async (req, res) => {
     await StationGlobalRouters.getOne(req, res)
 })
 
+AdminTransactionRouter.use('/', _EndPoints(Transaction))
 
-
-module.exports = AdminTransactionRouter;
+module.exports = AdminTransactionRouter  ;
 
 
 
