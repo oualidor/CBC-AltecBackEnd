@@ -4,7 +4,6 @@ const TransactionTypes = require("../../Structures/TransactionTypes");
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 const {ClientWalletGlobalOperations} = require("../../Actors/ClientWalletOperations");
 const ClientGlobalOperations = require("../../Actors/ClientOperations");
-const {RechargeCodeOperations} = require("../../Actors/RechargeCodeOperations");
 const TransactionOperations= require("../../Actors/TransactionOperations");
 
 
@@ -13,21 +12,7 @@ const StationOperations = require("../../Actors/StationOperations");
 const SettingOperations = require("../../Actors/SettingOperations");
 const  ClientStationRouters = express.Router
 
-ClientStationRouters.get('/getAll/:offset/:limit', async (req, res) => {
-        await StationOperations.getAll(req, res)
-}),
 
-ClientStationRouters.get('/getOne/:id', async (req, res) => {
-        await StationOperations.getOne(req, res)
-}),
-
-ClientStationRouters.get('/getOneByPublicId/:id', async (req, res) => {
-        await StationOperations.getOneByPublicId(req, res)
-    }),
-
-ClientStationRouters.get('/getRealTimeInfo/:id', async (req, res) => {
-    await StationOperations.getRealTimeInfo(req, res)
-}),
 
 ClientStationRouters.post('/rentPowerBank/', async (req, res) => {
     try{
