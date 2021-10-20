@@ -29,6 +29,7 @@ ClientStationRouters.post(
             if(clientFindOperation.finalResult){
                 let stationFindOperation = await StationOperations.getOneByPublicId(stationPublicId)
                 if(stationFindOperation.finalResult){
+                    let currentStation = stationFindOperation.result
                     let currentClient = clientFindOperation.result
                     let currentBalance  = parseInt(currentClient.Wallet.balance)
                     let getFeesOp =  await SettingOperations.getOne("rentFees")
@@ -48,20 +49,25 @@ ClientStationRouters.post(
                                     ]
                                 )
                                 if(rentTransactionsResults.finalResult === false){
-                                    //TODO write log entry for transaction write failure
-                                    console.log(rentTransactionsResults.error)
+                                    let logEntry = ErrorLog.Transaction.rent(
+                                        currentStation,
+                                        rentResult.data.powerBankId,
+                                        clientId
+                                    )
+                                    YitLogger.error({ message: logEntry})
                                 }
                                 AnswerHttpRequest.done(res, "Power bank rented successfully")
                             }
                             else {
                                 newBalance = newBalance + rentFees
                                 await ClientWalletGlobalOperations.update(currentClient.Wallet.id, {balance: newBalance})
-                                //TODO write heavy log if wallet refund fails
+                                let logEntry = ErrorLog.WalletUpdate.reFund(clientId, currentBalance)
+                                YitLogger.error({ message: logEntry})
                                 AnswerHttpRequest.wrong(res, rentResult.error)
                             }
                         }else {
-                            YitLogger.error({ message: ErrorLog.RentWalletUpdate(clientId, "charge")})
-                            AnswerHttpRequest.wrong(res, "hihihi")
+                            YitLogger.error({ message: ErrorLog.WalletUpdate.rent(clientId, "charge")})
+                            AnswerHttpRequest.wrong(res, walletUpdateOperation.error)
                         }
                     }else {
                         AnswerHttpRequest.wrong(res, "Insufficient balance")
