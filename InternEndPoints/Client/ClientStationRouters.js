@@ -29,7 +29,8 @@ ClientStationRouters.post(
                 if(stationFindOperation.finalResult){
                     let currentClient = clientFindOperation.result
                     let currentBalance  = parseInt(currentClient.Wallet.balance)
-                    let rentFees =  await SettingOperations.getOne("rentFees").dataValue
+                    let getFeesOp =  await SettingOperations.getOne("rentFees")
+                    let rentFees = getFeesOp.dataValue
                     console.debug(rentFees)
                     if(currentBalance >= rentFees){
                         let newBalance = currentBalance - rentFees

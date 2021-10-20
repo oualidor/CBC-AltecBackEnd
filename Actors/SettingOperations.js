@@ -38,7 +38,6 @@ const SettingOperations = {
                     case "int":
                         setting["dataValue"] = parseInt(setting["dataValue"])
                 }
-                console.log(setting)
                 return GlOpResult(true, setting)
             } else {
                 GlOpResult(false, "no setting with this name")
