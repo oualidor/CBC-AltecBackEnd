@@ -16,7 +16,7 @@ AdminRouters.use((req, res, next)=>{
 AdminRouters.use("/Station", AdminStationRouters)
 AdminRouters.use("/Client", AdminClientRouters)
 AdminRouters.use("/Partner", AdminPartnerRouters)
-AdminRouters.use("/RechargeCode", AdminRechargeCodeRouters.create)
+AdminRouters.use("/RechargeCode", AdminRechargeCodeRouters)
 AdminRouters.use("/RentTransactions", AdminRentTransactionRouter)
 AdminRouters.use("/Setting", AdminSettingRouter)
 
