@@ -59,7 +59,7 @@ ClientStationRouters.post(
                                 AnswerHttpRequest.wrong(res, rentResult.error)
                             }
                         }else {
-                            YitLogger.error({level: 'info', message: "Failed to update client wallet while rent request"})
+                            YitLogger.alert({ message: "Failed to update client wallet while rent request"})
                             AnswerHttpRequest.wrong(res, "hihihi")
                         }
                     }else {
