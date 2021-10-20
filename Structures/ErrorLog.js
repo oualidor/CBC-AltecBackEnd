@@ -1,6 +1,6 @@
 const ErrorLog = {
     RentWalletUpdate: (clientId, operation)=>{
-        return (JSON.stringify({clientId: clientId, operation: operation}))
+        return ({clientId: clientId, operation: operation})
     }
 }
 
