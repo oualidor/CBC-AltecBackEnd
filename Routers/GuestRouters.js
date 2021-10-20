@@ -151,7 +151,7 @@ GuestRouters.post('/recharge', async (req, res) => {
                         if (rechargeCodeOperation.finalResult) {
                             let newBalance = parseInt(client.Wallet.balance) + rechargeCode.amount
                             let walletUpdateOperation = await ClientWalletGlobalOperations.update(client.Wallet.id, {balance: newBalance})
-                            if (walletUpdateOperation.finalResult === false){
+                            if (walletUpdateOperation.finalResult){
                                 let rentTransactionsResults = await TransactionOperations.create(
                                     TransactionTypes.tickets.recharge,
                                     [
@@ -177,7 +177,7 @@ GuestRouters.post('/recharge', async (req, res) => {
                                     "Code accepted but client wallet not updated"
                                 )
                                 YitLogger.error({ message: logEntry})
-                                AnswerHttpRequest.wrong(res, "1212")
+                                AnswerHttpRequest.wrong(res, walletUpdateOperation.error)
                             }
                         }else {
                             AnswerHttpRequest.wrong(res, "Try again later please")
