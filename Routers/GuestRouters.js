@@ -151,7 +151,7 @@ GuestRouters.post('/recharge', async (req, res) => {
                         if (rechargeCodeOperation.finalResult) {
                             let newBalance = parseInt(client.Wallet.balance) + rechargeCode.amount
                             let walletUpdateOperation = await ClientWalletGlobalOperations.update(client.Wallet.id, {balance: newBalance})
-                            if (walletUpdateOperation.finalResult){
+                            if (walletUpdateOperation.finalResult === false){
                                 let rentTransactionsResults = await TransactionOperations.create(
                                     TransactionTypes.tickets.recharge,
                                     [
@@ -159,19 +159,25 @@ GuestRouters.post('/recharge', async (req, res) => {
                                         {dataTitle: "rechargeCodeId", dataValue: rechargeCode.id},
                                     ]
                                 )
-                                if(rentTransactionsResults.finalResult === true){
+                                if(rentTransactionsResults.finalResult === false){
                                     let logEntry = ErrorLog.Transaction.recharge(
                                         client.id,
                                         rechargeCode.id,
                                         "Client wallet charged but transaction writes failed"
                                     )
                                     YitLogger.error({ message: logEntry})
-                                    //TODO treat wallet updated transaction no created
                                 }
                                 AnswerHttpRequest.done(res, walletUpdateOperation.result)
-                            }else {
+                            }
+                            else {
                                 //TODO treat code accepted wallet not updated
-                                AnswerHttpRequest.wrong(res, walletUpdateOperation.error)
+                                let logEntry = ErrorLog.WalletUpdate.recharge(
+                                    client.id,
+                                    rechargeCode.id,
+                                    "Code accepted but client wallet not updated"
+                                )
+                                YitLogger.error({ message: logEntry})
+                                AnswerHttpRequest.wrong(res, "1212")
                             }
                         }else {
                             AnswerHttpRequest.wrong(res, "Try again later please")

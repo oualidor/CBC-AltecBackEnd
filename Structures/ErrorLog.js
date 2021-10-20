@@ -3,10 +3,9 @@ const ErrorLog = {
         rent: (clientId, operation, )=>{
             return (JSON.stringify({clientId: clientId, operation: operation, details}))
         },
-        recharge: (clientId, operation, details)=>{
-            return (JSON.stringify({clientId: clientId, operation: operation, details}))
+        recharge: (clientId, reCodeId, details)=>{
+            return (JSON.stringify({clientId: clientId,  reCodeId, details}))
         },
-
         reFund: (clientId,  oldBalance, details)=>{
             return (JSON.stringify({clientId: clientId, oldBalance,  details}))
         },
