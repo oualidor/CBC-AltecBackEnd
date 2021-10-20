@@ -34,7 +34,6 @@ const  ClientOperations = {
                 error = error.errors[0].message
                 return GlOpResult(false, error)
             }
-
             return GlOpResult(false, "Operation failed")
         }
     },
