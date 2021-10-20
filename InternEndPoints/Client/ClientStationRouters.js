@@ -47,7 +47,7 @@ ClientStationRouters.post(
                                         {dataTitle: "powerBankId", dataValue: rentResult.data.powerBankId},
                                     ]
                                 )
-                                if(rentTransactionsResults.finalResult === false){
+                                if(rentTransactionsResults.finalResult === true){
                                     let logEntry = ErrorLog.Transaction.rent(
                                         stationFindOperation.result.id,
                                         rentResult.data.powerBankId,
