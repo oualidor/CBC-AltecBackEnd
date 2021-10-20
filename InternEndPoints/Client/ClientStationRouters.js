@@ -11,6 +11,7 @@ const StationOperations = require("../../Actors/StationOperations");
 const SettingOperations = require("../../Actors/SettingOperations");
 const SettingsMiddleware = require("../../Apis/SettingsMiddleware");
 const YitLogger = require("../../Apis/YitLogger");
+const ErrorLog = require("../../Structures/ErrorLog");
 const  ClientStationRouters = express.Router()
 
 
@@ -59,7 +60,7 @@ ClientStationRouters.post(
                                 AnswerHttpRequest.wrong(res, rentResult.error)
                             }
                         }else {
-                            YitLogger.warning({ message: "Failed to update client wallet while rent request"})
+                            YitLogger.error({ message: ErrorLog.RentWalletUpdate(clientId, "charge")})
                             AnswerHttpRequest.wrong(res, "hihihi")
                         }
                     }else {

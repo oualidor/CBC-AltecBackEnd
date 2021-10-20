@@ -4,7 +4,7 @@ const logConfiguration = {
     transports: [
         new transports.File({
             // Create the log directory if it does not exist
-            filename: 'Logs/example.log'
+            filename: 'Logs/errors.log'
         })
     ],
     format: format.combine(
