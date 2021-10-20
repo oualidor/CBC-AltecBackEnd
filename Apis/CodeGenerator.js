@@ -1,11 +1,14 @@
 const bcrypt = require("bcrypt");
-
-function generate(){
-    let code = Math.floor(Math.random() * 999999999)
-    const hashedCode = bcrypt.hashSync(code.toString(), 10);
+const  codeGenerator =  ()=>{
+    let chars = "0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let passwordLength = 14;
+    let password = "";
+    for (let i = 0; i <= passwordLength; i++) {
+        let randomNumber = Math.floor(Math.random() * chars.length);
+        password += chars.substring(randomNumber, randomNumber +1);
+    }
+    const hashedCode = bcrypt.hashSync(password.toString(), 14);
     return hashedCode
-}
-
-const  codeGenerator =  generate();
+};
 
 module.exports = codeGenerator

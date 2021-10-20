@@ -1,6 +1,4 @@
 const express = require('express');
-const RentTransactionTypes = require("../../Structures/TransactionTypes");
-const bcrypt = require("bcrypt");
 const codeGenerator = require("../../Apis/CodeGenerator");
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 const RechargeCode = require("../../Schemas/RechargeCode");
@@ -15,7 +13,7 @@ AdminRechargeCodeRouters.post('/create', async (req, res) => {
         let {partnerId, stat, amount, number} = req.body
         let data = []
         for(let i in [...Array(number).keys()]){
-            const hashedCode = await codeGenerator.toString()
+            const hashedCode = await codeGenerator().toString()
             data.push({partnerId,  hashedCode, amount, stat})
         }
         let createOp = await RechargeCodeOperations.bulkCreate(data)

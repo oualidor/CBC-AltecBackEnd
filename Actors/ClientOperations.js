@@ -24,7 +24,7 @@ const  ClientOperations = {
             if(!validatedData){
                 return GlOpResult(false, dataError)
             }else {
-                const hashedPassword = bcrypt.hashSync(password, 10);
+                const hashedPassword = bcrypt.hashSync(password, 114);
                 let data = {mail, phone, hashedPassword, fullName, stat, type};
                 let client = await Client.create(data);
                 return GlOpResult(true, client)
