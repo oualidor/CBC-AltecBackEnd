@@ -30,6 +30,7 @@ const SettingOperations = {
         try {
             let setting = await Setting.findByPk(name);
             if (setting != null){
+                console.debug("found")
                 switch (setting.dataType){
                     case "boolean":
                         setting["dataValue"] = (setting.dataValue === "true")
