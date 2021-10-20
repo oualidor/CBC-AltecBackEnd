@@ -37,7 +37,7 @@ ClientStationRouters.post(
                     if(currentBalance >= rentFees){
                         let newBalance = currentBalance - rentFees
                         let walletUpdateOperation = await ClientWalletGlobalOperations.update(currentClient.Wallet.id, {balance: newBalance})
-                        if(!walletUpdateOperation.finalResult){
+                        if(walletUpdateOperation.finalResult){
                             let rentResult = await StationOperations.rentPowerBank(stationPublicId)
                             if(rentResult.finalResult === true){
                                 let rentTransactionsResults = await TransactionOperations.create(
@@ -48,7 +48,7 @@ ClientStationRouters.post(
                                         {dataTitle: "powerBankId", dataValue: rentResult.data.powerBankId},
                                     ]
                                 )
-                                if(rentTransactionsResults.finalResult === false){
+                                if(rentTransactionsResults.finalResult === true){
                                     let logEntry = ErrorLog.Transaction.rent(
                                         currentStation,
                                         rentResult.data.powerBankId,
