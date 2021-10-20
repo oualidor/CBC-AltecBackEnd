@@ -2,11 +2,7 @@ const { createLogger, format, transports } = require('winston');
 
 const logConfiguration = {
     transports: [
-        new transports.Console({
-            level: 'warn'
-        }),
         new transports.File({
-            level: 'error',
             // Create the log directory if it does not exist
             filename: 'Logs/example.log'
         })
