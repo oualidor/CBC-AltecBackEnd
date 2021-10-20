@@ -26,7 +26,7 @@ GuestRouters.use(async (req, res, next)=>{
 
 //Admin Login
 GuestRouters.post('/adminLogin', async (req, res) => {
-    const {mail, password} = req.body;
+    const {mail} = req.body;
     let validatedData = true;
     let dataError = "";
     if(!Validator.email(mail)){
@@ -149,8 +149,8 @@ GuestRouters.post('/recharge', async (req, res) => {
                     }else {
                         let rechargeCodeOperation = await RechargeCodeOperations.update(rechargeCode.id, {stat: 2})
                         if (rechargeCodeOperation.finalResult) {
-                            let newBalance = parseInt(client.Wallet.balance) + rechargeCode.amount
-                            let walletUpdateOperation = await ClientWalletGlobalOperations.update(client.Wallet.id, {balance: newBalance})
+                            let newBalance = parseInt(client["Wallet"].balance) + rechargeCode.amount
+                            let walletUpdateOperation = await ClientWalletGlobalOperations.update(client["Wallet"].id, {balance: newBalance})
                             if (walletUpdateOperation.finalResult){
                                 let rentTransactionsResults = await TransactionOperations.create(
                                     TransactionTypes.tickets.recharge,
