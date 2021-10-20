@@ -1,3 +1,6 @@
+import {Op} from "sequelize";
+const ClientWallet  = require ("../Schemas/ClientWallet");
+const TransactionOperations = require("../Actors/TransactionOperations");
 const express = require('express');
 const jwt  = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
@@ -8,8 +11,11 @@ const AnswerHttpRequest = require("../Structures/AnswerHttpRequest");
 const {ClientWalletGlobalOperations} = require("../Actors/ClientWalletOperations");
 const ClientGlobalOperations = require("../Actors/ClientOperations");
 const YitAuthenticator = require("../Apis/YitAuthenticator");
+const RechargeCode = require("../Actors/ClientOperations");
 const {adminMail} = require("../Apis/Config");
 const {adminPassword} = require("../Apis/Config");
+Client.hasOne(ClientWallet, {as : 'Wallet', foreignKey : 'clientId'});
+
 const GuestRouters = express.Router();
 GuestRouters.use(async (req, res, next)=>{
     await YitAuthenticator.authAll(req, res, next)

@@ -5,8 +5,8 @@ const  ClientWallet  = require("../Schemas/ClientWallet");
 const ClientClientRouters = require("../InternEndPoints/Client/ClientClientRouters");
 const ClientStationRouters = require("../InternEndPoints/Client/ClientStationRouters");
 const AnswerHttpRequest = require("../Structures/AnswerHttpRequest");
-const TransactionTypes = require("../Structures/TransactionTypes");
-const TransactionOperations = require("../Actors/TransactionOperations");
+
+
 const {RechargeCodeOperations} = require("../Actors/RechargeCodeOperations");
 const {ClientWalletGlobalOperations} = require("../Actors/ClientWalletOperations");
 const ClientGlobalOperations = require("../Actors/ClientOperations");

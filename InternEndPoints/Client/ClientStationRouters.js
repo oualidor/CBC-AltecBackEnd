@@ -1,9 +1,9 @@
 const express = require('express');
-const TransactionTypes = require("../../Structures/TransactionTypes");
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 const {ClientWalletGlobalOperations} = require("../../Actors/ClientWalletOperations");
 const ClientGlobalOperations = require("../../Actors/ClientOperations");
 const TransactionOperations= require("../../Actors/TransactionOperations");
+const TransactionTypes = require("../../Structures/TransactionTypes");
 
 
 
@@ -92,7 +92,7 @@ ClientStationRouters.get('/returnPowerBank/:stationId', async (req, res) => {
     try{
 
         let rentTransactionsResults = await TransactionOperations.create({
-            StationId, clientId, powerBankId, type: TransactionTypes.return
+            StationId, clientId, powerBankId, type: TransactionTypes.station.return
         })
         if(rentTransactionsResults === true){
             res.send( res.send({'finalResult': true, result: "Power bank rented successfully"}))
