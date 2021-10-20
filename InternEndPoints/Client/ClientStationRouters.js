@@ -38,7 +38,7 @@ ClientStationRouters.post(
                         let walletUpdateOperation = await ClientWalletGlobalOperations.update(currentClient.Wallet.id, {balance: newBalance})
                         if(walletUpdateOperation.finalResult){
                             let rentResult = await StationOperations.rentPowerBank(stationPublicId)
-                            if(rentResult.finalResult === false){
+                            if(rentResult.finalResult === true){
                                 let rentTransactionsResults = await TransactionOperations.create(
                                     TransactionTypes.station.rent,
                                     [
