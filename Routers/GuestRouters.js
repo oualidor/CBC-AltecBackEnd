@@ -170,7 +170,6 @@ GuestRouters.post('/recharge', async (req, res) => {
                                 AnswerHttpRequest.done(res, walletUpdateOperation.result)
                             }
                             else {
-                                //TODO treat code accepted wallet not updated
                                 let logEntry = ErrorLog.WalletUpdate.recharge(
                                     client.id,
                                     rechargeCode.id,
