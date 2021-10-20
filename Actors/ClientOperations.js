@@ -66,7 +66,6 @@ const  ClientOperations = {
                         as: "Wallet",
                     }
                 ],
-
             }
             let client = await Client.findByPk(id, options)
             if(client != null)     return GlOpResult(true, client)

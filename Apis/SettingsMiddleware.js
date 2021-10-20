@@ -8,15 +8,14 @@ const SettingsMiddleware = async (name, value, req, res, next) => {
             if(systemSetting.dataValue === value){
                 next()
             }else {
-                AnswerHttpRequest.wrong(res, "System is offline now, try again")
+                AnswerHttpRequest.wrong(res, "Operation not temporarily not permitted")
             }
         }else {
-
-            AnswerHttpRequest.wrong(res, "System is offline now, try again")
+            AnswerHttpRequest.wrong(res, "Operation not temporarily not permitted")
         }
     }
     catch (error){
-        AnswerHttpRequest.wrong(res, "System is offline now, try again")
+        AnswerHttpRequest.wrong(res, "Operation not temporarily not permitted")
     }
 }
 

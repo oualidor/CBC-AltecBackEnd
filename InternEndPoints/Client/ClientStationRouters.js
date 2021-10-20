@@ -17,7 +17,7 @@ const  ClientStationRouters = express.Router()
 ClientStationRouters.post(
     '/rentPowerBank/',
     (req, res, next)=>{
-        SettingsMiddleware("rent", true, req, res, next)
+        SettingsMiddleware("rent", true, req, res, next).then()
     },
     async (req, res) => {
         try{
@@ -29,7 +29,7 @@ ClientStationRouters.post(
                 if(stationFindOperation.finalResult){
                     let currentClient = clientFindOperation.result
                     let currentBalance  = parseInt(currentClient.Wallet.balance)
-                    let rentFees = 50;
+                    let rentFees =  await SettingOperations.getOne("rentFees").dataValue
                     if(currentBalance >= rentFees){
                         let newBalance = currentBalance - rentFees
                         let walletUpdateOperation = await ClientWalletGlobalOperations.update(currentClient.Wallet.id, {balance: newBalance})
