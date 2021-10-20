@@ -38,7 +38,7 @@ ClientStationRouters.post(
                         let walletUpdateOperation = await ClientWalletGlobalOperations.update(currentClient.Wallet.id, {balance: newBalance})
                         if(walletUpdateOperation.finalResult){
                             let rentResult = await StationOperations.rentPowerBank(stationPublicId)
-                            if(rentResult.finalResult === true){
+                            if(rentResult.finalResult === false){
                                 let rentTransactionsResults = await TransactionOperations.create(
                                     TransactionTypes.station.rent,
                                     [
@@ -47,9 +47,9 @@ ClientStationRouters.post(
                                         {dataTitle: "powerBankId", dataValue: rentResult.data.powerBankId},
                                     ]
                                 )
-                                if(rentTransactionsResults.finalResult === true){
+                                if(rentTransactionsResults.finalResult === false){
                                     let logEntry = ErrorLog.Transaction.rent(
-                                        stationFindOperation.result,
+                                        stationFindOperation.result.id,
                                         rentResult.data.powerBankId,
                                         clientId
                                     )
@@ -60,7 +60,7 @@ ClientStationRouters.post(
                             else {
                                 newBalance = newBalance + rentFees
                                 await ClientWalletGlobalOperations.update(currentClient.Wallet.id, {balance: newBalance})
-                                let logEntry = ErrorLog.WalletUpdate.reFund(clientId, currentBalance)
+                                let logEntry = ErrorLog.WalletUpdate.reFund(clientId, currentBalance, "wallet refund failed after charge for rent")
                                 YitLogger.error({ message: logEntry})
                                 AnswerHttpRequest.wrong(res, rentResult.error)
                             }
