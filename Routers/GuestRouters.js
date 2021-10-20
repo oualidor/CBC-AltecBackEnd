@@ -18,7 +18,6 @@ const YitLogger = require("../Apis/YitLogger");
 const {RechargeCodeOperations} = require("../Actors/RechargeCodeOperations");
 const {adminMail} = require("../Apis/Config");
 const {adminPassword} = require("../Apis/Config");
-Client.hasOne(ClientWallet, {as : 'Wallet', foreignKey : 'clientId'});
 
 const GuestRouters = express.Router();
 GuestRouters.use(async (req, res, next)=>{
