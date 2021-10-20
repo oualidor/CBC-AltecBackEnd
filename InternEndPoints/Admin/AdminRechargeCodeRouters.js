@@ -4,7 +4,6 @@ const bcrypt = require("bcrypt");
 const codeGenerator = require("../../Apis/CodeGenerator");
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 const RechargeCode = require("../../Schemas/RechargeCode");
-const _EndPoints = require("./_EndPoints");
 const {RechargeCodeOperations} = require("../../Actors/RechargeCodeOperations");
 
 
@@ -18,17 +17,26 @@ AdminRechargeCodeRouters.post('/create', async (req, res) => {
             const hashedCode = await codeGenerator.toString()
             data.push({partnerId,  hashedCode, amount, stat})
         }
-        let code = await RechargeCodeOperations.bulkCreate(data)
-        if(code){
+        let createOp = await RechargeCodeOperations.bulkCreate(data)
+
+        if(createOp.finalResult){
             AnswerHttpRequest.done(res, "done")
         }else {
-            AnswerHttpRequest.wrong(res, "Request failed")
+            let error  = createOp.error
+            if(error.name.match(/Sequelize/)){
+                error = error.errors[0].message
+                AnswerHttpRequest.wrong(res, error)
+            }else {
+
+            }
+
         }
     }catch (error){
         if(error.name.match(/Sequelize/)){
             error = error.errors[0].message
-        }
-        AnswerHttpRequest.wrong(res, error)
+            AnswerHttpRequest.wrong(res, error)
+        }else  AnswerHttpRequest.wrong(res, error)
+
     }
 })
 

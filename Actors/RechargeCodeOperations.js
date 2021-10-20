@@ -19,10 +19,10 @@ const  RechargeCodeOperations = {
     bulkCreate : async (data) => {
         try {
             await CurrentActor.bulkCreate(data);
-            return true
+            return GlOpResult(true, "Multiple create success")
         }catch (error) {
             console.log(error)
-            return  false
+            return  GlOpResult(false, error)
         }
     },
 
