@@ -16,12 +16,8 @@ const ErrorLog = {
         rent: (stationId, powerBankId, clientId, details)=>{
             return (JSON.stringify({stationId, powerBankId, clientId, details}))
         },
-        recharge: (clientId, operation, details)=>{
-            return (JSON.stringify({clientId: clientId, operation: operation, details}))
-        },
-
-        reFund: (clientId,  oldBalance, details)=>{
-            return (JSON.stringify({clientId: clientId, oldBalance,  details}))
+        recharge: (clientId, reCodeId, details)=>{
+            return (JSON.stringify({clientId, reCodeId, details}))
         },
     }
 }

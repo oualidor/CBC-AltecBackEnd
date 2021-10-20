@@ -11,6 +11,8 @@ const {RechargeCodeOperations} = require("../Actors/RechargeCodeOperations");
 const {ClientWalletGlobalOperations} = require("../Actors/ClientWalletOperations");
 const ClientGlobalOperations = require("../Actors/ClientOperations");
 const YitAuthenticator = require("../Apis/YitAuthenticator");
+const ErrorLog = require("../Structures/ErrorLog");
+const YitLogger = require("../Apis/YitLogger");
 const ClientRouter = express.Router();
 
 ClientRouter.use((req, res, next)=>{
@@ -61,7 +63,13 @@ ClientRouter.post('/recharge', async (req, res) => {
                                         {dataTitle: "rechargeCodeId", dataValue: rechargeCode.id},
                                     ]
                                 )
-                                if(rentTransactionsResults.finalResult === false){
+                                if(rentTransactionsResults.finalResult === true){
+                                    let logEntry = ErrorLog.Transaction.recharge(
+                                        client.id,
+                                        rechargeCode.id,
+                                        "Client wallet charged but transaction writes failed"
+                                    )
+                                    YitLogger.error({ message: logEntry})
                                     //TODO treat wallet updated transaction no created
                                 }
                                 AnswerHttpRequest.done(res, walletUpdateOperation.result)
