@@ -10,6 +10,7 @@ const TransactionOperations= require("../../Actors/TransactionOperations");
 const StationOperations = require("../../Actors/StationOperations");
 const SettingOperations = require("../../Actors/SettingOperations");
 const SettingsMiddleware = require("../../Apis/SettingsMiddleware");
+const YitLogger = require("../../Apis/YitLogger");
 const  ClientStationRouters = express.Router()
 
 
@@ -34,7 +35,7 @@ ClientStationRouters.post(
                     if(currentBalance >= rentFees){
                         let newBalance = currentBalance - rentFees
                         let walletUpdateOperation = await ClientWalletGlobalOperations.update(currentClient.Wallet.id, {balance: newBalance})
-                        if(walletUpdateOperation.finalResult){
+                        if(!walletUpdateOperation.finalResult){
                             let rentResult = await StationOperations.rentPowerBank(stationPublicId)
                             if(rentResult.finalResult === true){
                                 let rentTransactionsResults = await TransactionOperations.create(
@@ -58,6 +59,7 @@ ClientStationRouters.post(
                                 AnswerHttpRequest.wrong(res, rentResult.error)
                             }
                         }else {
+                            YitLogger.alert({level: 'info', message: "Failed to update client wallet while rent request"})
                             AnswerHttpRequest.wrong(res, walletUpdateOperation.error)
                         }
                     }else {
