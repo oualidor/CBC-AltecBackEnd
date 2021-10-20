@@ -28,7 +28,7 @@ AdminRechargeCodeRouters.post('/create', async (req, res) => {
                 error = error.errors[0].message
                 AnswerHttpRequest.wrong(res, error)
             }else {
-
+                AnswerHttpRequest.wrong(res, "Operation failed")
             }
 
         }
@@ -36,7 +36,7 @@ AdminRechargeCodeRouters.post('/create', async (req, res) => {
         if(error.name.match(/Sequelize/)){
             error = error.errors[0].message
             AnswerHttpRequest.wrong(res, error)
-        }else  AnswerHttpRequest.wrong(res, error)
+        }else   AnswerHttpRequest.wrong(res, "Operation failed")
 
     }
 })
