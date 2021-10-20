@@ -29,7 +29,6 @@ ClientStationRouters.post(
             if(clientFindOperation.finalResult){
                 let stationFindOperation = await StationOperations.getOneByPublicId(stationPublicId)
                 if(stationFindOperation.finalResult){
-                    let currentStation = stationFindOperation.result
                     let currentClient = clientFindOperation.result
                     let currentBalance  = parseInt(currentClient.Wallet.balance)
                     let getFeesOp =  await SettingOperations.getOne("rentFees")
@@ -50,7 +49,7 @@ ClientStationRouters.post(
                                 )
                                 if(rentTransactionsResults.finalResult === true){
                                     let logEntry = ErrorLog.Transaction.rent(
-                                        currentStation,
+                                        stationFindOperation.result,
                                         rentResult.data.powerBankId,
                                         clientId
                                     )
