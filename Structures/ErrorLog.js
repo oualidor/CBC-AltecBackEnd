@@ -14,7 +14,7 @@ const ErrorLog = {
 
     Transaction:{
         rent: (stationId, powerBankId, clientId)=>{
-            return (JSON.stringify({clientId, powerBankId, clientId}))
+            return (JSON.stringify({stationId, powerBankId, clientId}))
         },
         recharge: (clientId, operation, details)=>{
             return (JSON.stringify({clientId: clientId, operation: operation, details}))
