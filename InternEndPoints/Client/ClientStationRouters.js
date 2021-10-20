@@ -51,7 +51,8 @@ ClientStationRouters.post(
                                     let logEntry = ErrorLog.Transaction.rent(
                                         stationFindOperation.result.id,
                                         rentResult.data.powerBankId,
-                                        clientId
+                                        clientId,
+                                        "Could not write transaction to DB after success rent operation"
                                     )
                                     YitLogger.error({ message: logEntry})
                                 }
