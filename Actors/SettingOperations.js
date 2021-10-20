@@ -42,6 +42,7 @@ const SettingOperations = {
                 GlOpResult(false, "no setting with this name")
             }
         } catch (err) {
+            console.log(err)
             GlOpResult(false, "Operation failed")
         }
     },
