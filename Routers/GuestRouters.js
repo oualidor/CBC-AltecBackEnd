@@ -42,7 +42,7 @@ GuestRouters.post('/adminLogin', async (req, res) => {
             if(mail === adminMail){
                 if(bcrypt.compareSync('16026363', adminPassword)) {
                     const accessToken = jwt.sign({mail: mail, userType:"Admin", fullName: adminName}, jwtPrivateKey);
-                    await res.json({"finalResult": true, token: accessToken})
+                    await res.json({"finalResult": true, admin: adminName, token: accessToken})
                 } else {
                     // Passwords don't match
                 }
