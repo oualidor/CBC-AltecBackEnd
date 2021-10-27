@@ -3,8 +3,9 @@ const PORT = 8080
 const TCP_SERVER = "http://164.132.59.129:3000/"
 //const TCP_SERVER = "http://localhost:3000/"
 const adminMail = "walid.khial@gmail.com"
+const adminName = "Oualid KHIAL"
 const adminPassword  = bcrypt.hashSync('16026363', 10);
 const jwtPrivateKey = "lkjlfngrpgjefvml,s:;vnsomvfijv";
 
 
-module.exports = {PORT, TCP_SERVER, adminMail, adminPassword, jwtPrivateKey}
+module.exports = {PORT, TCP_SERVER, adminMail,adminName, adminPassword, jwtPrivateKey}

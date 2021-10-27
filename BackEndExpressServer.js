@@ -5,6 +5,8 @@ const GuestRouters = require("./Routers/GuestRouters");
 const AdminRouters = require("./Routers/AdminRouters");
 const ClientRouter = require("./Routers/ClientRouters");
 const AnswerHttpRequest = require("./Structures/AnswerHttpRequest");
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swaggerDocument');
 const PORT = process.env.PORT || 8080;
 
 
@@ -32,7 +34,7 @@ class BackEndExpressServer extends EventEmitter{
             this.app.use(express.urlencoded({ extended: true }))
             this.app.use(express.json());
             if(this.logger !== undefined) this.app.use(this.logger)
-
+            this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
             return true

@@ -15,6 +15,7 @@ const RechargeCode = require("../Schemas/RechargeCode");
 const TransactionTypes = require("../Structures/TransactionTypes");
 const ErrorLog = require("../Structures/ErrorLog");
 const YitLogger = require("../Apis/YitLogger");
+const {adminName} = require("../Apis/Config");
 const {RechargeCodeOperations} = require("../Actors/RechargeCodeOperations");
 const {adminMail} = require("../Apis/Config");
 const {adminPassword} = require("../Apis/Config");
@@ -40,7 +41,7 @@ GuestRouters.post('/adminLogin', async (req, res) => {
         try {
             if(mail === adminMail){
                 if(bcrypt.compareSync('16026363', adminPassword)) {
-                    const accessToken = jwt.sign({mail: mail, userType:"Admin"}, jwtPrivateKey);
+                    const accessToken = jwt.sign({mail: mail, userType:"Admin", fullName: adminName}, jwtPrivateKey);
                     await res.json({"finalResult": true, token: accessToken})
                 } else {
                     // Passwords don't match
