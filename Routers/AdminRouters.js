@@ -6,6 +6,7 @@ const AdminRechargeCodeRouters = require("../InternEndPoints/Admin/AdminRecharge
 const AdminRentTransactionRouter = require("../InternEndPoints/Admin/AdminTransactionRouter");
 const AdminSettingRouter = require("../InternEndPoints/Admin/AdminSettingRouter");
 const YitAuthenticator = require("../Apis/YitAuthenticator");
+const AdminAdsRouter = require("../InternEndPoints/Admin/AdminAdsRouters.ts");
 
 const AdminRouters = express.Router();
 
@@ -19,6 +20,7 @@ AdminRouters.use("/Partner", AdminPartnerRouters)
 AdminRouters.use("/RechargeCode", AdminRechargeCodeRouters)
 AdminRouters.use("/RentTransactions", AdminRentTransactionRouter)
 AdminRouters.use("/Setting", AdminSettingRouter)
+AdminRouters.use("/Ads", AdminAdsRouter)
 
 
 
