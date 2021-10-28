@@ -62,7 +62,7 @@ class globalOperations{
     searchBy =  async (attribute, value) => {
         let data = {where: {[attribute]: {[seq.Op.like]: '%' + value + '%'}}};
         try {
-        let result = await this.CurrentActor.findAll(data);
+        let result = await this.CurrentActor.findAndCountAll(data);
         return GlOpResult(true, result)
         } catch (e) {
             console.log(e)
