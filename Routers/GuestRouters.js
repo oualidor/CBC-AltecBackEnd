@@ -102,19 +102,18 @@ GuestRouters.post('/clientLogin', async (req, res) => {
 //Client SignUp
 GuestRouters.post('/clientSignUp', async (req, res) => {
     let data = req.body
-    let gor = await ClientGlobalOperations.create(data)
-    if(gor.finalResult === false){
-        AnswerHttpRequest.wrong(res, gor.error)
+    let createClientOp = await ClientGlobalOperations.create(data)
+    if(createClientOp.finalResult === false){
+        AnswerHttpRequest.wrong(res, createClientOp.error)
     }else {
-        let client = gor.result
-        let wallet = ClientWalletGlobalOperations.create(client.id)
+        let client = createClientOp.result
+        let wallet = await ClientWalletGlobalOperations.create(client.id)
         if(wallet !== false){
             AnswerHttpRequest.done(res, client)
         }else {
             client.destroy()
             AnswerHttpRequest.wrong(res, "Could not create user")
         }
-        AnswerHttpRequest.done(res, client)
     }
 })
 

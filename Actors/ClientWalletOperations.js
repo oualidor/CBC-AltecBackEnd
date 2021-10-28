@@ -11,7 +11,8 @@ const  ClientWalletGlobalOperations = {
     create : async (clientId) => {
         let client = ClientGlobalOperations.findByPk(clientId)
         if(client != false){
-            CurrentActor.create({clientId})
+            await CurrentActor.create({clientId})
+            return true
         }else {
             return false
         }
