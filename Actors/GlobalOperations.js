@@ -87,6 +87,16 @@ class globalOperations{
             return GlOpResult(false, "Operation failed")
         }
     }
+
+    delete= async (id)=>{
+        try{
+            let actor = await this.CurrentActor.findByPk(id)
+            await actor.destroy()
+            return GlOpResult(true, "Deleted")
+        }catch (error){
+            return GlOpResult(false, "Operation failed")
+        }
+    }
 }
 
 module.exports = globalOperations

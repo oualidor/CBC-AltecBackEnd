@@ -4,9 +4,9 @@ const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 const GlobalOperations = require("../../Actors/GlobalOperations");
 
 
-const _EndPoints = (Schema)=>{
+const _EndPoints = (Model)=>{
     const router = express.Router();
-    const globalOperations = new GlobalOperations(Schema)
+    const globalOperations = new GlobalOperations(Model)
 
     router.post('/create', async (req, res) => {
         let data  = req.body
@@ -65,6 +65,16 @@ const _EndPoints = (Schema)=>{
             AnswerHttpRequest.done(res, countOp.result)
         }else {
             AnswerHttpRequest.wrong(res, countOp.error)
+        }
+    })
+
+    router.get('/delete/:id', async (req, res)=>{
+        let {id } = req.params
+        let deleteOp = await globalOperations.delete(id)
+        if(deleteOp.finalResult){
+            AnswerHttpRequest.done(res, deleteOp.result)
+        }else {
+            AnswerHttpRequest.wrong(res, deleteOp.error)
         }
     })
 
