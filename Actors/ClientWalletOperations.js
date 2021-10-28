@@ -9,7 +9,7 @@ const {UpdateData} = require("../Apis/UpdateData");
 
 const  ClientWalletGlobalOperations = {
     create : async (clientId) => {
-        let client = ClientGlobalOperations.getOne(clientId)
+        let client = ClientGlobalOperations.findByPk(clientId)
         if(client != false){
             CurrentActor.create({clientId})
         }else {
