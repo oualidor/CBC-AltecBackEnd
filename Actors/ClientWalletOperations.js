@@ -9,13 +9,19 @@ const {UpdateData} = require("../Apis/UpdateData");
 
 const  ClientWalletGlobalOperations = {
     create : async (clientId) => {
-        let client = ClientGlobalOperations.findByPk(clientId)
-        if(client != false){
-            await CurrentActor.create({clientId})
-            return true
-        }else {
+        try{
+            let client = ClientGlobalOperations.findByPk(clientId)
+            if(client !== false){
+                await CurrentActor.create({clientId})
+                return true
+            }else {
+                return false
+            }
+        }catch (error){
+            console.log(error)
             return false
         }
+
     },
 
     update : async (id, data) => {

@@ -14,7 +14,6 @@ const ClientWallet = db.define('ClientWallet', {
     },
     balance: {
         type: Sequelize.STRING,
-        unique: true,
         allowNull: false,
         defaultValue: "0"
     },
