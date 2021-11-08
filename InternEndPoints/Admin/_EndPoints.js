@@ -30,10 +30,8 @@ const _EndPoints = (Model)=>{
 
     router.get('/getAll/:offset/:limit', async (req, res) => {
         let {offset, limit} = req.params
-        console.log(offset)
         let getAllOp = await globalOperations.getAll(offset, limit)
         if(getAllOp.finalResult){
-            console.log(getAllOp.result)
             AnswerHttpRequest.done(res, getAllOp.result)
         }else {
             AnswerHttpRequest.wrong(res, getAllOp.error)
