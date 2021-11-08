@@ -15,6 +15,7 @@ const RechargeCode = require("../Schemas/RechargeCode");
 const TransactionTypes = require("../Structures/TransactionTypes");
 const ErrorLog = require("../Structures/ErrorLog");
 const YitLogger = require("../Apis/YitLogger");
+const ClientsMiddleware = require("../Apis/Middlewares/ClientsMiddleware");
 const {adminName} = require("../Apis/Config");
 const {RechargeCodeOperations} = require("../Actors/RechargeCodeOperations");
 const {adminMail} = require("../Apis/Config");
@@ -75,20 +76,16 @@ GuestRouters.post('/clientLogin', async (req, res) => {
         res.send({'finalResult': false,  'error': dataError});
     }else{
         try{
-            let clients = await Client.findAll(
-                {
-                    where: {
-                        mail: mail
+            let client = await Client.findOne({where: {mail: mail}})
+            if(client !== null){
+                ClientsMiddleware.byPassStat(client, req, res, async ()=>{
+                    if(bcrypt.compareSync(password, client.hashedPassword)) {
+                        const accessToken = jwt.sign({id: client.id, mail: mail, userType:"Client"}, jwtPrivateKey);
+                        await res.json({"finalResult": true, token: accessToken})
+                    } else {
+                        res.json({finalResult: false, error: "wrong email or password"})
                     }
                 })
-            if(clients.length > 0){
-                let client = clients[0]
-                if(bcrypt.compareSync(password, client.hashedPassword)) {
-                    const accessToken = jwt.sign({id: client.id, mail: mail, userType:"Client"}, jwtPrivateKey);
-                    await res.json({"finalResult": true, token: accessToken})
-                } else {
-                    res.json({finalResult: false, error: "wrong email or password"})
-                }
             }else{
                 res.json({finalResult: false, error: "wrong email or password"})
             }

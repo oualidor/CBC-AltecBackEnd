@@ -5,6 +5,7 @@
   "main": "BackEndExpressServer.js",
   "scripts": {
     "start": "node app.js",
+    "start_ts": "ts-node app.js",
     "dev": "clear && npx kill-port 8080 && nodemon app.js",
     "update": "git reset --hard origin/master"
   },

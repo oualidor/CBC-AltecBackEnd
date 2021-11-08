@@ -25,7 +25,7 @@ const db = new Sequelize('ppdb', 'postgres', 'kn?t!CkNht@khut', {
     host: host,
     dialect: 'postgres',
     port: "5432",
-    operatorsAliases: false,
+    operatorsAliases: 0,
     logging: false
 });
 

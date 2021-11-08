@@ -24,6 +24,8 @@ const YitAuthenticator = {
         }
     },
 
+
+
     authAdmin:  (req, res, next) => {
         const authHead = req.headers['authorization'];
         const token = authHead && authHead.split(' ')[1];
@@ -49,7 +51,6 @@ const YitAuthenticator = {
         if (token == null) {
             res.send({finalResult: false, error: "UnAuthorised"});
         } else {
-
             jwt.verify(token, jwtPrivateKey, (err, data) => {
                 if (err) res.send({finalResult: false, error: err});
                 if (data.userType === "Client") {

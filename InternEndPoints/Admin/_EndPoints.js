@@ -29,8 +29,6 @@ const _EndPoints = (Model)=>{
     })
 
     router.get('/getAll/:offset/:limit', async (req, res) => {
-        console.log("hi")
-
         let {offset, limit} = req.params
         console.log(offset)
         let getAllOp = await globalOperations.getAll(offset, limit)

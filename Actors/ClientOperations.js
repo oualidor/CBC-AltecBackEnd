@@ -41,6 +41,10 @@ const  ClientOperations = {
 
     update : async (id, data) => {
         const preparedData = UpdateData(data)
+        if("password" in preparedData){
+            const hashedPassword = bcrypt.hashSync(preparedData.password, 10);
+            preparedData['hashedPassword'] = hashedPassword
+        }
         try {
             let currentActor = await Client.findByPk(id);
             if(currentActor != null){

@@ -3,6 +3,7 @@ const Partner = require("../Schemas/Partner");
 const Validator = require("../Apis/DataValidator");
 const Station = require("../Schemas/Station");
 const bcrypt = require("bcrypt");
+const AnswerHttpRequest = require("../Structures/AnswerHttpRequest");
 const {UpdateData} = require("../Apis/UpdateData");
 Partner.hasMany(Station, {foreignKey: "currentPartner", as: "Stations"})
 
@@ -74,23 +75,19 @@ const  PartnerOperations = {
     },
 
     getOne :  async (req, res) => {
-        const id = parseInt(req.params.id);
-        Partner.findByPk(id, {
-                include: [
-                    {
-                        model: Station,
-                        as: "Stations",
-                    },
-                ]
+        try{
+            const id = parseInt(req.params.id);
+            let partner = await Partner.findByPk(id, {
+                include: [{model: Station, as: "Stations"}]
             })
-            .then(partner =>
-                res.send({'finalResult': true, 'result': partner})
-            )
-            .catch(err =>{
-                console.log(err)
-                res.send({'finalResult': false, 'error': err})
+            if(partner !== null){
+                AnswerHttpRequest.done(res, partner)
+            }else {
+                AnswerHttpRequest.wrong(res, "No partner with such ID")
             }
-            );
+        }catch (error){
+            AnswerHttpRequest.wrong(res, "Operation failed")
+        }
     },
 
     getOneByAttribute : async (req, res) => {

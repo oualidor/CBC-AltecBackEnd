@@ -1,5 +1,5 @@
-const SettingOperations = require("../Actors/SettingOperations");
-const AnswerHttpRequest = require("../Structures/AnswerHttpRequest");
+const SettingOperations = require("../../Actors/SettingOperations");
+const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 const SettingsMiddleware = async (name, value, req, res, next) => {
     try {
         let getOneOp = await SettingOperations.getOne(name)

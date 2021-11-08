@@ -1,24 +1,25 @@
 const express = require('express');
 const ClientClientRouters = require("../InternEndPoints/Client/ClientClientRouters");
 const ClientStationRouters = require("../InternEndPoints/Client/ClientStationRouters");
-const AnswerHttpRequest = require("../Structures/AnswerHttpRequest");
 const YitAuthenticator = require("../Apis/YitAuthenticator");
+const ClientsMiddleware = require("../Apis/Middlewares/ClientsMiddleware");
+const ClientPartnerRouter = require("../InternEndPoints/Client/ClientPartnerRouter");
 const ClientRouter = express.Router();
 
-ClientRouter.use((req, res, next)=>{
-    YitAuthenticator.authAll(req, res, ()=>{
-        YitAuthenticator.authClient(req, res, next)
-    }).then(()=> {})
-})
+ClientRouter.use((req, res, next)=>{YitAuthenticator.authAll(req, res, next).then(()=> {})})
+ClientRouter.use((req, res, next)=>{YitAuthenticator.authClient(req, res, next)})
 
-ClientRouter.get('/heartBit',   (req, res) =>{
-    AnswerHttpRequest.done(res, "Hi there")
+ClientRouter.use((req, res, next)=> {
+    ClientsMiddleware.validateExistence(req.body.id, req, res, (client)=>{
+        ClientsMiddleware.byPassStat(client, req, res, next)
+    }).then()
 })
-
 
 //Station
+ClientRouter.use("/Client",   ClientClientRouters)
 ClientRouter.use("/Station",   ClientStationRouters)
-ClientRouter.use("/Client",   ClientClientRouters.getOne)
+ClientRouter.use("/Partner",   ClientPartnerRouter)
+
 
 
 
