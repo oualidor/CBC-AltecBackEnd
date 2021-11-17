@@ -20,6 +20,7 @@ const {adminName} = require("../Apis/Config");
 const {RechargeCodeOperations} = require("../Actors/RechargeCodeOperations");
 const {adminMail} = require("../Apis/Config");
 const {adminPassword} = require("../Apis/Config");
+const GuestPartnerRouter = require("../InternEndPoints/Guest/GuestPartnerRouter");
 
 const GuestRouters = express.Router();
 GuestRouters.use(async (req, res, next)=>{
@@ -99,6 +100,7 @@ GuestRouters.post('/clientLogin', async (req, res) => {
 //Client SignUp
 GuestRouters.post('/clientSignUp', async (req, res) => {
     let data = req.body
+    data['stat'] = 0, data['type'] = 0;
     let createClientOp = await ClientGlobalOperations.create(data)
     if(createClientOp.finalResult === false){
         AnswerHttpRequest.wrong(res, createClientOp.error)
@@ -113,7 +115,6 @@ GuestRouters.post('/clientSignUp', async (req, res) => {
         }
     }
 })
-
 
 //Recharge
 GuestRouters.post('/recharge', async (req, res) => {
@@ -193,4 +194,5 @@ GuestRouters.post('/recharge', async (req, res) => {
     }
 });
 
+GuestRouters.use("/Partner",   GuestPartnerRouter)
 module.exports = GuestRouters

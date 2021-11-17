@@ -85,24 +85,21 @@ ClientStationRouters.post(
     }
 )
 
-ClientStationRouters.get('/returnPowerBank/:stationId', async (req, res) => {
+ClientStationRouters.get('/returnPowerBank/', async (req, res) => {
     let clientId = req.body.id;
-    let StationId = req.params.id;
+    let StationId = req.body.StationId
     let powerBankId = req.body.powerBankId
     try{
-
         let rentTransactionsResults = await TransactionOperations.create({
             StationId, clientId, powerBankId, type: TransactionTypes.station.return
         })
         if(rentTransactionsResults === true){
             res.send( res.send({'finalResult': true, result: "Power bank rented successfully"}))
-
         }else {
             res.send( res.send({'finalResult': false, error: "power bank rented but failed to crate transaction"}))
         }
-
     }catch (e){
-        res.send({'finalResult': false, 'error': "Could not rent due to an error try again later"})
+        res.send({'finalResult': false, 'error': "Request failed"})
     }
 })
 

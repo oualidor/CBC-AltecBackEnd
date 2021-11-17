@@ -21,15 +21,22 @@ const  ClientOperations = {
                 validatedData = false;
                 dataError = dataError+'email: wrong email';
             }
+            if(!Validator.password(data.password)){
+                validatedData = false;
+                dataError = dataError+'Password: bad password';
+            }
             if(!validatedData){
                 return GlOpResult(false, dataError)
-            }else {
+            }
+
+            else {
                 const hashedPassword = bcrypt.hashSync(password, 10);
                 let data = {mail, phone, hashedPassword, fullName, stat, type};
                 let client = await Client.create(data);
                 return GlOpResult(true, client)
             }
-        }catch (error) {
+        }
+        catch (error) {
             console.log(error)
             if(error.name.match(/Sequelize/)){
                 error = error.errors[0].message

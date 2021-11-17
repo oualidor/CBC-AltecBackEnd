@@ -14,7 +14,7 @@ const Client = db.define('Clients', {
     phone: {
         type: Sequelize.STRING,
         unique: true,
-        allowNull: false
+        allowNull: true
     },
     hashedPassword: {
         type: Sequelize.STRING,
