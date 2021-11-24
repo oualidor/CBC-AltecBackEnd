@@ -14,7 +14,6 @@ ClientTransactionRouter.get('/getAll/:operation/:offset/:limit', async (req, res
             transactions.forEach(transaction => {
                 let metaDataList = transaction['MetaData'], relevant = false
                 metaDataList.forEach(metaData => {
-                    console.log(req.body.client.id)
                     if(metaData.dataTitle === "clientId" && parseInt(metaData.dataValue) === req.body.client.id){
                         relevant = true
                     }
