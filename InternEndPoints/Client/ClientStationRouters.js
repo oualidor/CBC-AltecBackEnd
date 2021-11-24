@@ -14,7 +14,9 @@ const YitLogger = require("../../Apis/YitLogger");
 const ErrorLog = require("../../Structures/ErrorLog");
 const  ClientStationRouters = express.Router()
 
-
+ClientStationRouters.get('/getRealTimeInfo/:id', async (req, res) => {
+    await StationOperations.getRealTimeInfo(req, res)
+}),
 
 ClientStationRouters.post(
     '/rentPowerBank/',
