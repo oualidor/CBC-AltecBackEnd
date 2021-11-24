@@ -4,26 +4,19 @@ const ClientStationRouters = require("../InternEndPoints/Client/ClientStationRou
 const YitAuthenticator = require("../Apis/YitAuthenticator");
 const ClientsMiddleware = require("../Apis/Middlewares/ClientsMiddleware");
 const ClientPartnerRouter = require("../InternEndPoints/Client/ClientPartnerRouter");
-const ClientTransactionRouter = require("../InternEndPoints/Client/ClientTransactionRouter");
-const ClientRouter = express.Router();
+const PartnerRouter = express.Router();
 
-ClientRouter.use((req, res, next)=>{YitAuthenticator.authAll(req, res, next).then(()=> {})})
-ClientRouter.use((req, res, next)=>{YitAuthenticator.authClient(req, res, next)})
+PartnerRouter.use((req, res, next)=>{YitAuthenticator.authAll(req, res, next).then(()=> {})})
 
-ClientRouter.use((req, res, next)=> {
+PartnerRouter.use((req, res, next)=> {
     ClientsMiddleware.validateExistence(req.body.id, req, res, (client)=>{
         ClientsMiddleware.byPassStat(client, req, res, next)
     }).then()
 })
 
 //Station
-ClientRouter.use("/Client",   ClientClientRouters)
-ClientRouter.use("/Station",   ClientStationRouters)
-ClientRouter.use("/Partner",   ClientPartnerRouter)
-ClientRouter.use("/Transaction",   ClientTransactionRouter)
+PartnerRouter.use("/Client",   ClientClientRouters)
+PartnerRouter.use("/Station",   ClientStationRouters)
+PartnerRouter.use("/Partner",   ClientPartnerRouter)
 
-
-
-
-
-module.exports = ClientRouter
+module.exports = PartnerRouter

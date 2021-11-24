@@ -5,6 +5,7 @@ const Partner = require("../../Schemas/Partner");
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 const {latLangDistance} = require("../../Apis/Functions");
 const  GuestPartnerRouter = express.Router()
+
 GuestPartnerRouter.get('/getOne/:id',  async (req, res) => {
     await PartnerOperations.getOne(req, res)
 }),
@@ -38,8 +39,6 @@ GuestPartnerRouter.get('/getAllInRange/:lat/:long/:distance', async (req, res)=>
     }catch (error){
         AnswerHttpRequest.wrong(res, "Request failed")
     }
-
-
 })
 
 

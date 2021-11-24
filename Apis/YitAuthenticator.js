@@ -24,8 +24,6 @@ const YitAuthenticator = {
         }
     },
 
-
-
     authAdmin:  (req, res, next) => {
         const authHead = req.headers['authorization'];
         const token = authHead && authHead.split(' ')[1];
@@ -64,8 +62,6 @@ const YitAuthenticator = {
             })
         }
     }
-
-
 }
 
 module.exports = YitAuthenticator;

@@ -53,10 +53,10 @@ const TransactionOperations = {
         }
     },
 
-    getOne: async (req, res) => {
-        const {id} = req.params
+    getOne: async (id) => {
+
         try {
-            let station = await Transaction.findByPk(
+            let transaction = await Transaction.findByPk(
                 id,
                 {
                     include : [
@@ -67,13 +67,13 @@ const TransactionOperations = {
                     ],
                 }
                 );
-            if (station != null) {
-                res.send({'finalResult': true, 'result': station})
+            if (transaction != null) {
+                return GlOpResult(true, transaction)
             } else {
-                res.send({'finalResult': false, 'error': "no station found with id: " +id})
+                return GlOpResult(false, "No transaction with such id")
             }
         } catch (err) {
-            res.send({'finalResult': false, 'error': err})
+            return GlOpResult(true, "Operation Failed")
         }
     },
 
