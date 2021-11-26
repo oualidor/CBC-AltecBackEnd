@@ -29,7 +29,7 @@ GuestRouters.use(async (req, res, next)=>{
 
 //Admin Login
 GuestRouters.post('/adminLogin', async (req, res) => {
-    const {mail} = req.body;
+    const {mail, password} = req.body;
     let validatedData = true;
     let dataError = "";
     if(!Validator.email(mail)){

@@ -1,5 +1,6 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
+const  firebase  = require("@firebase");
+const  { getFirestore, collection, getDocs } = require('firebase/firestore/lite');
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -12,6 +13,10 @@ const firebaseConfig = {
     messagingSenderId: "48510265085",
     appId: "1:48510265085:web:8837542fa278e9ae0bc094"
 };
-
+const firebaseSequelizer = require("firestore-sequelizer");
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const fireBaseApp = firebase.initializeApp(firebaseConfig);
+
+const fireStore = fireBaseApp.firestore()
+
+module.exports = fireStore
