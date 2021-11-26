@@ -44,7 +44,6 @@ function main(allowNoTcp, logger){
         }
     }
 }
-const  { getFirestore, collection, getDocs, set} = require( 'firebase/firestore/lite');
 
 main(true, yitLogger)
 
