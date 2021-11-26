@@ -46,25 +46,5 @@ function main(allowNoTcp, logger){
 }
 const  { getFirestore, collection, getDocs, set} = require( 'firebase/firestore/lite');
 
-//main(true, yitLogger)
+main(true, yitLogger)
 
-
-const fireStore = require("./Apis/FireBaseConnection")
-
-async function getCities(db) {
-    const citiesCol = collection(db, 'Ads');
-    const citySnapshot = await getDocs(citiesCol);
-    const cityList = citySnapshot.docs.map(doc => doc.data());
-    console.log(cityList)
-}
-
-async function setData(db) {
-    const citiesCol = collection(db, 'Ads');
-    const citySnapshot = await getDocs(citiesCol);
-    set({name: "hihi"})
-}
-
-//getCities(fireStore).then(r => {})
-
-
-setData(fireStore)
