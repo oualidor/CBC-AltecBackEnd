@@ -49,8 +49,7 @@ GuestRouters.post('/adminLogin', async (req, res) => {
                     const accessToken = jwt.sign({mail: mail, userType:"Admin", fullName: adminName}, jwtPrivateKey);
                     await res.json({"finalResult": true, admin: adminName, token: accessToken})
                 } else {
-                    // Passwords don't match
-                }
+                    res.send({'finalResult': false,  'error': 'wrong password'})
             }else {
                 await res.json({'finalResult': false, 'error': "wrong email or password"})
             }
