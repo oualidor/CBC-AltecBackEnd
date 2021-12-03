@@ -21,6 +21,7 @@ const {RechargeCodeOperations} = require("../Actors/RechargeCodeOperations");
 const {adminMail} = require("../Apis/Config");
 const {adminPassword} = require("../Apis/Config");
 const GuestPartnerRouter = require("../InternEndPoints/Guest/GuestPartnerRouter");
+const Partner = require("../Schemas/Partner");
 
 const GuestRouters = express.Router();
 GuestRouters.use(async (req, res, next)=>{
@@ -95,6 +96,50 @@ GuestRouters.post('/clientLogin', async (req, res) => {
         }catch (e){
             console.log(e)
             res.send({finalResult: false, error: e})
+        }
+    }
+});
+
+GuestRouters.post('/partnerLogin', async (req, res) => {
+    const {mail, password} = req.body;
+    let validatedData = true;
+    let dataError = "";
+    if(!Validator.email(mail)){
+        console.log(mail)
+        validatedData = false;
+        dataError = dataError+'email: wrong email';
+    }
+    if(!Validator.password(password)){
+        console.log("wrong")
+        console.log(mail)
+        validatedData = false;
+        dataError = dataError+' pass: mal password';
+    }
+    if(!validatedData){
+        res.send({'finalResult': false,  'error': dataError});
+    }else{
+        try{
+            let partner = await Partner.findOne({where: {mail: mail}})
+
+            if(partner !== null){
+
+                try{
+                    if(bcrypt.compareSync(password, partner.hashedPassword)) {
+                        const accessToken = jwt.sign({id: partner.id, userType:"partner"}, jwtPrivateKey);
+                        await res.json({"finalResult": true, token: accessToken})
+                    } else {
+                        res.json({finalResult: false, error: "wrong email or password"})
+                    }
+                }catch (error){
+                    console.log(error)
+                }
+
+            }else{
+                res.json({finalResult: false, error: "wrong email or password"})
+            }
+        }catch (error){
+            console.log(error)
+            res.send({finalResult: false, error: error})
         }
     }
 });

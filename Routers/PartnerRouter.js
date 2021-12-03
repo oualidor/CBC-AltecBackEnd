@@ -4,19 +4,20 @@ const ClientStationRouters = require("../InternEndPoints/Client/ClientStationRou
 const YitAuthenticator = require("../Apis/YitAuthenticator");
 const ClientsMiddleware = require("../Apis/Middlewares/ClientsMiddleware");
 const ClientPartnerRouter = require("../InternEndPoints/Client/ClientPartnerRouter");
+const PartnerMiddleware = require("../Apis/PartnerMiddleware");
+const PartnerRechargeCodeRouter = require("../InternEndPoints/Partner/PartnerRechargeCodeRouter");
+const PartnerPartnerRouter = require("../InternEndPoints/Partner/PartnerPartnerRouter");
 const PartnerRouter = express.Router();
 
 PartnerRouter.use((req, res, next)=>{YitAuthenticator.authAll(req, res, next).then(()=> {})})
-
+PartnerRouter.use((req, res, next)=>{YitAuthenticator.authPartner(req, res, next)})
 PartnerRouter.use((req, res, next)=> {
-    ClientsMiddleware.validateExistence(req.body.id, req, res, (client)=>{
-        ClientsMiddleware.byPassStat(client, req, res, next)
+    PartnerMiddleware.validateExistence(req.body.id, req, res, (partner)=>{
+        PartnerMiddleware.byPassStat(partner, req, res, next)
     }).then()
 })
 
-//Station
-PartnerRouter.use("/Client",   ClientClientRouters)
-PartnerRouter.use("/Station",   ClientStationRouters)
-PartnerRouter.use("/Partner",   ClientPartnerRouter)
+PartnerRouter.use("/Partner",   PartnerPartnerRouter)
+PartnerRouter.use("/RechargeCode",   PartnerRechargeCodeRouter)
 
 module.exports = PartnerRouter

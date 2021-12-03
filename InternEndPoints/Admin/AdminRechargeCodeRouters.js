@@ -57,7 +57,21 @@ AdminRechargeCodeRouters.get('/update/:id/:stat', async (req, res) => {
 AdminRechargeCodeRouters.get('/getAll/:offset/:limit', async (req, res) => {
     try{
         let {offset, limit} = req.params
-        let gor = await RechargeCodeOperations.getAll(offset, limit)
+        let gor = await RechargeCodeOperations.getAll({offset: offset, limit: limit})
+        if(gor.finalResult){
+            AnswerHttpRequest.done(res, gor.result)
+        }else {
+            AnswerHttpRequest.wrong(res, gor.error)
+        }
+    }catch (error){
+        AnswerHttpRequest.wrong(res, "Request failed")
+    }
+})
+
+AdminRechargeCodeRouters.get('/getAll/:offset/:limit/:partnerId', async (req, res) => {
+    try{
+        let {offset, limit, partnerId} = req.params
+        let gor = await RechargeCodeOperations.getAll({offset: offset, limit: limit, where : {partnerId}})
         if(gor.finalResult){
             AnswerHttpRequest.done(res, gor.result)
         }else {

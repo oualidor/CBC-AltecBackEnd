@@ -4,6 +4,7 @@ const {UpdateData} = require("../Apis/UpdateData");
 
 
 
+
 const  RechargeCodeOperations = {
 
     create : async (data) => {
@@ -43,15 +44,17 @@ const  RechargeCodeOperations = {
         }
     },
 
-    getAll :  async (offset, limit) => {
+    getAll :  async (options) => {
+        if(options === undefined){
+            options = {offset: 0, limit: 50}
+        }
         try{
-            let rechargeCodes = await CurrentActor.findAll({offset: offset, limit: limit})
+            let rechargeCodes = await CurrentActor.findAndCountAll(options)
             return  GlOpResult(true, rechargeCodes)
         }catch (error){
             console.log(error)
-            return  GlOpResult(false, "request failed")
+            return  GlOpResult(false, "Operation failed")
         }
-
     },
 
     getOne :  async (id) => {

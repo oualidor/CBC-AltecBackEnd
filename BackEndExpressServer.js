@@ -8,6 +8,7 @@ const ClientRouter = require("./Routers/ClientRouters");
 const AnswerHttpRequest = require("./Structures/AnswerHttpRequest");
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swaggerDocument');
+const PartnerRouter = require("./Routers/PartnerRouter");
 const PORT = process.env.PORT || 8080;
 
 
@@ -58,6 +59,7 @@ class BackEndExpressServer extends EventEmitter{
 
             this.app.use("/Guest", GuestRouters)
             this.app.use("/Client", ClientRouter)
+            this.app.use("/Partner", PartnerRouter)
             this.app.use((req, res)=> {
                 res.status(404);
                 AnswerHttpRequest.wrong(res, "end point unknown")
