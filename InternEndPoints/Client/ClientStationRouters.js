@@ -25,61 +25,69 @@ ClientStationRouters.post(
     },
     async (req, res) => {
         try{
-            let clientId = req.body.id;
-            let stationPublicId = req.body.StationId
-            let clientFindOperation = await ClientGlobalOperations.findByPk(clientId)
-            if(clientFindOperation.finalResult){
-                let stationFindOperation = await StationOperations.getOneByPublicId(stationPublicId)
-                if(stationFindOperation.finalResult){
-                    let currentClient = clientFindOperation.result
-                    let currentBalance  = parseInt(currentClient.Wallet.balance)
-                    let getFeesOp =  await SettingOperations.getOne("rentFees")
-                    let rentFees = getFeesOp.result.dataValue
-                    if(currentBalance >= rentFees){
-                        let newBalance = currentBalance - rentFees
-                        let walletUpdateOperation = await ClientWalletGlobalOperations.update(currentClient.Wallet.id, {balance: newBalance})
-                        if(walletUpdateOperation.finalResult){
-                            let rentResult = await StationOperations.rentPowerBank(stationPublicId)
-                            if(rentResult.finalResult === true){
-                                let rentTransactionsResults = await TransactionOperations.create(
-                                    TransactionTypes.station.rent,
-                                    [
-                                        {dataTitle: "stationId", dataValue: stationFindOperation.result.systemId},
-                                        {dataTitle: "clientId", dataValue: clientId},
-                                        {dataTitle: "powerBankId", dataValue: rentResult.data.powerBankId},
-                                    ]
-                                )
-                                if(rentTransactionsResults.finalResult === false){
-                                    let logEntry = ErrorLog.Transaction.rent(
-                                        stationFindOperation.result.id,
-                                        rentResult.data.powerBankId,
-                                        clientId,
-                                        "Could not write transaction to DB after success rent operation"
+            let client = req.body.client
+            console.log(client)
+            if(client.type === 0){
+                let clientId = req.body.id;
+                let stationPublicId = req.body.StationId
+                let clientFindOperation = await ClientGlobalOperations.findByPk(clientId)
+                if(clientFindOperation.finalResult){
+                    let stationFindOperation = await StationOperations.getOneByPublicId(stationPublicId)
+                    if(stationFindOperation.finalResult){
+                        let currentClient = clientFindOperation.result
+                        let currentBalance  = parseInt(currentClient.Wallet.balance)
+                        let getFeesOp =  await SettingOperations.getOne("rentFees")
+                        let rentFees = getFeesOp.result.dataValue
+                        if(currentBalance >= rentFees){
+                            let newBalance = currentBalance - rentFees
+                            let walletUpdateOperation = await ClientWalletGlobalOperations.update(currentClient.Wallet.id, {balance: newBalance})
+                            if(walletUpdateOperation.finalResult){
+                                let rentResult = await StationOperations.rentPowerBank(stationPublicId)
+                                if(rentResult.finalResult === true){
+                                    let rentTransactionsResults = await TransactionOperations.create(
+                                        TransactionTypes.station.rent,
+                                        [
+                                            {dataTitle: "stationId", dataValue: stationFindOperation.result.systemId},
+                                            {dataTitle: "clientId", dataValue: clientId},
+                                            {dataTitle: "powerBankId", dataValue: rentResult.data.powerBankId},
+                                        ]
                                     )
-                                    YitLogger.error({ message: logEntry})
+                                    if(rentTransactionsResults.finalResult === false){
+                                        let logEntry = ErrorLog.Transaction.rent(
+                                            stationFindOperation.result.id,
+                                            rentResult.data.powerBankId,
+                                            clientId,
+                                            "Could not write transaction to DB after success rent operation"
+                                        )
+                                        YitLogger.error({ message: logEntry})
+                                    }
+
+                                    client.update({type: 1})
+                                    AnswerHttpRequest.done(res, "Power bank rented successfully")
                                 }
-                                AnswerHttpRequest.done(res, "Power bank rented successfully")
-                            }
-                            else {
-                                newBalance = newBalance + rentFees
-                                await ClientWalletGlobalOperations.update(currentClient.Wallet.id, {balance: newBalance})
-                                let logEntry = ErrorLog.WalletUpdate.reFund(clientId, currentBalance, "wallet refund failed after charge for rent")
-                                YitLogger.error({ message: logEntry})
-                                AnswerHttpRequest.wrong(res, rentResult.error)
+                                else {
+                                    newBalance = newBalance + rentFees
+                                    await ClientWalletGlobalOperations.update(currentClient.Wallet.id, {balance: newBalance})
+                                    let logEntry = ErrorLog.WalletUpdate.reFund(clientId, currentBalance, "wallet refund failed after charge for rent")
+                                    YitLogger.error({ message: logEntry})
+                                    AnswerHttpRequest.wrong(res, rentResult.error)
+                                }
+                            }else {
+                                YitLogger.error({ message: ErrorLog.WalletUpdate.rent(clientId, "charge")})
+                                AnswerHttpRequest.wrong(res, walletUpdateOperation.error)
                             }
                         }else {
-                            YitLogger.error({ message: ErrorLog.WalletUpdate.rent(clientId, "charge")})
-                            AnswerHttpRequest.wrong(res, walletUpdateOperation.error)
+                            AnswerHttpRequest.wrong(res, "Insufficient balance")
                         }
-                    }else {
-                        AnswerHttpRequest.wrong(res, "Insufficient balance")
                     }
-                }
-                else {
-                    AnswerHttpRequest.wrong(res, "Unknown Station")
+                    else {
+                        AnswerHttpRequest.wrong(res, "Unknown Station")
+                    }
+                }else {
+                    AnswerHttpRequest.wrong(res, clientFindOperation.error)
                 }
             }else {
-                AnswerHttpRequest.wrong(res, clientFindOperation.error)
+                AnswerHttpRequest.wrong(res, "you already have power bank")
             }
         }catch (error){
             AnswerHttpRequest.wrong(res, "request failed")
@@ -88,17 +96,16 @@ ClientStationRouters.post(
 )
 
 ClientStationRouters.get('/returnPowerBank/', async (req, res) => {
-    let clientId = req.body.id;
-    let StationId = req.body.StationId
-    let powerBankId = req.body.powerBankId
     try{
+        let {clientId,StationId, powerBankId,client} = req.body;
         let rentTransactionsResults = await TransactionOperations.create({
             StationId, clientId, powerBankId, type: TransactionTypes.station.return
         })
         if(rentTransactionsResults === true){
-            res.send( res.send({'finalResult': true, result: "Power bank rented successfully"}))
+            client.update({type: 0})
+            res.send( res.send({'finalResult': true, result: "Power bank returned successfully"}))
         }else {
-            res.send( res.send({'finalResult': false, error: "power bank rented but failed to crate transaction"}))
+            res.send( res.send({'finalResult': false, error: "power bank returned but failed to create transaction"}))
         }
     }catch (e){
         res.send({'finalResult': false, 'error': "Request failed"})
