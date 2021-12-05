@@ -50,12 +50,14 @@ const StationOperations = {
     },
 
     getRealTimeInfo:  async (req, res) => {
+        console.log("hihi")
         let {id} = req.params
         let requestAddress = TCP_SERVER+'Station/QueryInfo/'+id
         try {
             const request  = await axios({url: requestAddress, method: "get", responseType: 'json'})
             res.send(request.data)
         }catch (e){
+            console.log("error")
             res.send({finalResult: false, error: e})
         }
     },

@@ -4,6 +4,7 @@ const TransactionMetaData = require("../Schemas/TransactionMetaData");
 Transaction.hasMany(TransactionMetaData, {as : 'MetaData', foreignKey : 'transactionId'});
 //StationId, clientId, powerBankId,
 const TransactionOperations = {
+
     create : async (operation, metaData) => {
         try {
             let validatedData = true;
@@ -50,6 +51,26 @@ const TransactionOperations = {
             return GlOpResult(true, rentTransactions)
         }else {
             GlOpResult(true, [])
+        }
+    },
+
+    getAllForStation: async (stationId, operation, offset, limit)=>{
+        let getAllOp = await TransactionOperations.getAll(operation, offset, limit)
+        if(getAllOp.finalResult){
+            let result = [], rentTransactions = getAllOp.result
+            rentTransactions.forEach(transaction =>{
+                let accepted = false
+                for(let metaEntry in transaction['MetaData']){
+                    if(metaEntry['dataTitle'] === 'stationId' && metaEntry['dataValue'] == stationId)
+                        accepted = true
+                    break
+                }
+                if(accepted) result.push(transaction)
+            })
+            return GlOpResult(true, result)
+        }
+        else{
+            GlOpResult(false, "Operation failed")
         }
     },
 
@@ -101,6 +122,7 @@ const TransactionOperations = {
             }
         }
     }
+
 }
 
 module.exports = TransactionOperations

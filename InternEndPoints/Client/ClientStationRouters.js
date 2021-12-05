@@ -26,7 +26,6 @@ ClientStationRouters.post(
     async (req, res) => {
         try{
             let client = req.body.client
-            console.log(client)
             if(client.type === 0){
                 let clientId = req.body.id;
                 let stationPublicId = req.body.StationId
@@ -62,7 +61,7 @@ ClientStationRouters.post(
                                         YitLogger.error({ message: logEntry})
                                     }
 
-                                    client.update({type: 1})
+                                    client.update({type: 0})
                                     AnswerHttpRequest.done(res, "Power bank rented successfully")
                                 }
                                 else {
@@ -90,6 +89,7 @@ ClientStationRouters.post(
                 AnswerHttpRequest.wrong(res, "you already have power bank")
             }
         }catch (error){
+            console.log(error)
             AnswerHttpRequest.wrong(res, "request failed")
         }
     }

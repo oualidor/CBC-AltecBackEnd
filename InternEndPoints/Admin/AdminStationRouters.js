@@ -4,6 +4,7 @@ const TransactionOperations = require("../../Actors/TransactionOperations");
 const StationOperations = require("../../Actors/StationOperations");
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 const Station = require("../../Schemas/Station");
+const Transaction = require("../../Schemas/Transaction");
 const _EndPoints = require("../../InternEndPoints/Admin/_EndPoints");
 const AdminStationRouters = express.Router();
 
@@ -61,11 +62,13 @@ AdminStationRouters.post('/returnPowerBank/', async (req, res) => {
             {dataTitle: "stationId", dataValue: stationId},
             {dataTitle: "powerBankId", dataValue: powerBankId},
         ]
+
         let rentTransactionsResults = await TransactionOperations.create(RentTransactionTypes.station.return, metaData)
         res.send(rentTransactionsResults)
-    }catch (e){
-        console.log(e)
-        res.send({'finalResult': false, 'error': e})
+    }
+    catch(error){
+        console.log(error)
+        res.send({'finalResult': false, 'error': error})
     }
 }),
 
