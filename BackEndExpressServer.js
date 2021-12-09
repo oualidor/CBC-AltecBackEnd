@@ -9,6 +9,9 @@ const AnswerHttpRequest = require("./Structures/AnswerHttpRequest");
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swaggerDocument');
 const PartnerRouter = require("./Routers/PartnerRouter");
+const Transaction = require("./Schemas/Transaction");
+const TransactionMetaData = require("./Schemas/TransactionMetaData");
+const {Op} = require("sequelize");
 const PORT = process.env.PORT || 8080;
 
 
@@ -54,6 +57,32 @@ class BackEndExpressServer extends EventEmitter{
 
             this.app.get("/HeartBit", (req, res) => {
                 res.send({finalResult: true, result: true})
+            })
+
+            this.app.get("/test", async (req, res) => {
+                let r = await Transaction.findOne({
+                    where : {
+                        operation : 0,
+                    },
+                    order: [
+                        // Will escape title and validate DESC against a list of valid direction parameters
+                        ['createdAt', 'DESC'],
+                    ],
+                    include : [
+                        {
+                            model: TransactionMetaData,
+                            as: "MetaData",
+                            where: {
+                                [Op.or]: [
+                                    {[Op.and]: [{ dataTitle: "powerBankId" }, { dataValue: "524c33480b100845" }]},
+                                    {dataTitle : "clientId"}
+                                ]
+
+                            },
+                        }
+                    ],
+                })
+                res.send({finalResult: true, result: r})
             })
             this.app.use("/Admin",  AdminRouters)
 

@@ -102,7 +102,7 @@ ClientStationRouters.get('/returnPowerBank/', async (req, res) => {
             StationId, clientId, powerBankId, type: TransactionTypes.station.return
         })
         if(rentTransactionsResults === true){
-            client.update({type: 0})
+            client.update({type: 1})
             res.send( res.send({'finalResult': true, result: "Power bank returned successfully"}))
         }else {
             res.send( res.send({'finalResult': false, error: "power bank returned but failed to create transaction"}))

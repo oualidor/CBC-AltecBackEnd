@@ -5,7 +5,9 @@ const Station = require("../Schemas/Station");
 const bcrypt = require("bcrypt");
 const AnswerHttpRequest = require("../Structures/AnswerHttpRequest");
 const {UpdateData} = require("../Apis/UpdateData");
+const PartnerImages = require("../Schemas/PartnerImages");
 Partner.hasMany(Station, {foreignKey: "currentPartner", as: "Stations"})
+Partner.hasMany(PartnerImages, {foreignKey: "partnerId", as: "Images"})
 
 const  PartnerOperations = {
 
@@ -78,7 +80,10 @@ const  PartnerOperations = {
         try{
             const id = parseInt(req.params.id);
             let partner = await Partner.findByPk(id, {
-                include: [{model: Station, as: "Stations"}]
+                include: [
+                    {model: Station, as: "Stations"},
+                    {model: PartnerImages, as: "Images"},
+                ]
             })
             if(partner !== null){
                 AnswerHttpRequest.done(res, partner)

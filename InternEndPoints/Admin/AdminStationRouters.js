@@ -5,7 +5,11 @@ const StationOperations = require("../../Actors/StationOperations");
 const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 const Station = require("../../Schemas/Station");
 const Transaction = require("../../Schemas/Transaction");
+const Client = require("../../Schemas/Client");
+const TransactionMetaData = require("../../Schemas/TransactionMetaData");
 const _EndPoints = require("../../InternEndPoints/Admin/_EndPoints");
+const {Op} = require("sequelize");
+
 const AdminStationRouters = express.Router();
 
 AdminStationRouters.post('/update/:id', async (req, res) => {
@@ -62,9 +66,48 @@ AdminStationRouters.post('/returnPowerBank/', async (req, res) => {
             {dataTitle: "stationId", dataValue: stationId},
             {dataTitle: "powerBankId", dataValue: powerBankId},
         ]
+        let r = await Transaction.findOne({
 
-        let rentTransactionsResults = await TransactionOperations.create(RentTransactionTypes.station.return, metaData)
-        res.send(rentTransactionsResults)
+            where : {
+                operation : 0,
+            },
+            order: [
+                // Will escape title and validate DESC against a list of valid direction parameters
+                ['createdAt', 'DESC'],
+            ],
+            include : [
+                {
+                    model: TransactionMetaData,
+                    as: "MetaData",
+                    where: {
+                        [Op.or]: [
+                            {[Op.and]: [{ dataTitle: "powerBankId" }, { dataValue: powerBankId }]},
+                            {dataTitle : "clientId"}
+                        ]
+
+                    },
+                }
+            ],
+        })
+        if(r!= null){
+            r = r.toJSON()
+            if(r['MetaData'].length === 2){
+                let clientId = r['MetaData'][0]["dataValue"]
+                metaData.push({dataTitle: "clientId", dataValue: clientId},)
+                let rentTransactionsResults = await TransactionOperations.create(RentTransactionTypes.station.return, metaData)
+                let client = await Client.findByPk(clientId)
+                console.log(client)
+                client.update({type: 0})
+                res.send(rentTransactionsResults)
+            }else {
+                AnswerHttpRequest.wrong(res, "Cant find teh client that take teh power Bank")
+            }
+
+        }else{
+            AnswerHttpRequest.wrong(res, "Cant find teh client that take teh power Bank")
+        }
+
+
     }
     catch(error){
         console.log(error)

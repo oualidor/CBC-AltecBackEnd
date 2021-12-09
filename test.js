@@ -1,9 +1,9 @@
 const TransactionOperations = require("./Actors/TransactionOperations");
+const Transaction = require("./Schemas/Transaction");
 
 async function run(){
-
-    let r = await TransactionOperations.getAll( "0", 0, 9999)
-    console.log(r['Transaction'])
+    let r = await Transaction.findAll()
+    console.log(r)
 }
 
 run()
