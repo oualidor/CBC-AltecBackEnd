@@ -33,20 +33,22 @@ ClientStationRouters.post(
                 if(clientFindOperation.finalResult){
                     let stationFindOperation = await StationOperations.getOneByPublicId(stationPublicId)
                     if(stationFindOperation.finalResult){
+                        let currentStation = stationFindOperation.result
                         let currentClient = clientFindOperation.result
                         let currentBalance  = parseInt(currentClient.Wallet.balance)
                         let getFeesOp =  await SettingOperations.getOne("rentFees")
-                        let rentFees = getFeesOp.result.dataValue
+                        // let rentFees = getFeesOp.result.dataValue
+                        let rentFees = currentStation.price
                         if(currentBalance >= rentFees){
                             let newBalance = currentBalance - rentFees
-                            let walletUpdateOperation = await ClientWalletGlobalOperations.update(currentClient.Wallet.id, {balance: newBalance})
+                            let walletUpdateOperation = await ClientWalletGlobalOperations.update(currentClient['Wallet'].id, {balance: newBalance})
                             if(walletUpdateOperation.finalResult){
                                 let rentResult = await StationOperations.rentPowerBank(stationPublicId)
                                 if(rentResult.finalResult === true){
                                     let rentTransactionsResults = await TransactionOperations.create(
                                         TransactionTypes.station.rent,
                                         [
-                                            {dataTitle: "stationId", dataValue: stationFindOperation.result.systemId},
+                                            {dataTitle: "stationId", dataValue: currentStation.systemId},
                                             {dataTitle: "clientId", dataValue: clientId},
                                             {dataTitle: "powerBankId", dataValue: rentResult.data.powerBankId},
                                         ]

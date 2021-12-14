@@ -67,7 +67,8 @@ const StationOperations = {
         try {
             const request = await axios({url: requestAddress, method: "get", responseType: 'json'})
             return request.data
-        } catch (error) {
+        }
+        catch (error) {
             console.log(error)
             return {finalResult: false, error: "Operation failed"}
         }
