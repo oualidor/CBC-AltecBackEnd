@@ -12,17 +12,6 @@ const {Op} = require("sequelize");
 
 const AdminStationRouters = express.Router();
 
-AdminStationRouters.post('/update/:id', async (req, res) => {
-    let {id} = req.params
-    req.body['systemId'] = null
-    let updateOp = await StationOperations.update(id, req.body)
-    if(updateOp.finalResult){
-        AnswerHttpRequest.done(res, updateOp.result)
-    }else {
-        AnswerHttpRequest.wrong(res, updateOp.error)
-    }
-}),
-
 AdminStationRouters.get('/getOne/:id', async (req, res) => {
     let {id} = req.params
     let stationGeOneOp = await StationOperations.getOne(id)
