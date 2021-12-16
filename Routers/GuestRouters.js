@@ -146,10 +146,9 @@ GuestRouters.post('/partnerLogin', async (req, res) => {
 
 //Client SignUp
 GuestRouters.post('/clientSignUp', async (req, res) => {
-
+    let data = req.body
+    data['stat'] = 0, data['type'] = 0;
     try{
-        let data = req.body
-        data['stat'] = 0, data['type'] = 0;
         let createClientOp = await ClientGlobalOperations.create(data)
         if(createClientOp.finalResult === false){
             AnswerHttpRequest.wrong(res, createClientOp.error)

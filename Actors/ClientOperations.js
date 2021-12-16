@@ -37,7 +37,6 @@ const  ClientOperations = {
             }
         }
         catch (error) {
-            console.log(error)
             if(error.name.match(/Sequelize/)){
                 error = error.errors[0].message
                 return GlOpResult(false, error)
