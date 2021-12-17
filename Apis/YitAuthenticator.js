@@ -72,7 +72,7 @@ const YitAuthenticator = {
             jwt.verify(token, jwtPrivateKey, (err, data) => {
                 if (err) res.send({finalResult: false, error: err});
                 if (data.userType === "partner") {
-                    req.body.id = data.id;
+                    req.body.partner = data.id;
                     req.body.userType = data.userType;
                     next()
                 } else {
