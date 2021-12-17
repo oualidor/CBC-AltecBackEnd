@@ -22,6 +22,7 @@ const {adminMail} = require("../Apis/Config");
 const {adminPassword} = require("../Apis/Config");
 const GuestPartnerRouter = require("../InternEndPoints/Guest/GuestPartnerRouter");
 const Partner = require("../Schemas/Partner");
+const SettingsMiddleware = require("../Apis/Middlewares/SettingsMiddleware");
 
 const GuestRouters = express.Router();
 GuestRouters.use(async (req, res, next)=>{
@@ -145,7 +146,12 @@ GuestRouters.post('/partnerLogin', async (req, res) => {
 });
 
 //Client SignUp
-GuestRouters.post('/clientSignUp', async (req, res) => {
+GuestRouters.post(
+    '/clientSignUp',
+    (req, res, next )=>{
+        SettingsMiddleware("clientSignUp", true, req, res, next).then()
+    },
+    async (req, res) => {
     let data = req.body
     data['stat'] = 0, data['type'] = 0;
     try{

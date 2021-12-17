@@ -64,6 +64,7 @@ ClientStationRouters.post(
                                         {dataTitle: "stationId", dataValue: currentStation.systemId},
                                         {dataTitle: "clientId", dataValue: clientId},
                                         {dataTitle: "powerBankId", dataValue: rentResult.data.powerBankId},
+                                        {dataTitle: "amount", dataValue: rentFees},
                                     ]
                                 )
                                 if(rentTransactionsResults.finalResult === false){
@@ -75,7 +76,6 @@ ClientStationRouters.post(
                                     )
                                     YitLogger.error({ message: logEntry})
                                 }
-
                                 client.update({type: 0})
                                 AnswerHttpRequest.done(res, "Power bank rented successfully")
                             }
@@ -101,7 +101,7 @@ ClientStationRouters.post(
             }
         }catch (error){
             console.log(error)
-            AnswerHttpRequest.wrong(res, "request failed")
+            AnswerHttpRequest.wrong(res, "Request failed")
         }
     }
 )
