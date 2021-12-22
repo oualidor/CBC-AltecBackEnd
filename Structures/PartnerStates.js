@@ -10,6 +10,10 @@ const PartnerStates = {
     trusted : {
         label: "trusted",
         id: 2,
+    },
+    frozen : {
+        label: "frozen",
+        id: 10,
     }
 }
 

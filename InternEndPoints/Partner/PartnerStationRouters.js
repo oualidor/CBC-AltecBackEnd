@@ -41,8 +41,9 @@ PartnerStationRouters.post(
     },
     async (req, res) => {
         try{
-            let partner = req.body.client
-            if(partner.type === PartnerStates.trusted.id){
+            let partner = req.body.partner
+            console.log(partner.stat)
+            if(partner.stat === PartnerStates.trusted.id){
                 let stationPublicId = req.body.StationId
                 let currentStation = req.station
                     let rentResult = await StationOperations.rentPowerBank(stationPublicId)
@@ -70,15 +71,11 @@ PartnerStationRouters.post(
                         AnswerHttpRequest.done(res, "Power bank rented successfully")
                     }
                     else {
-                        newBalance = newBalance + rentFees
-                        await ClientWalletGlobalOperations.update(currentClient['Wallet'].id, {balance: newBalance})
-                        let logEntry = ErrorLog.WalletUpdate.reFund(clientId, currentBalance, "wallet refund failed after charge for rent")
-                        YitLogger.error({ message: logEntry})
                         AnswerHttpRequest.wrong(res, rentResult.error)
                     }
 
             }else {
-                AnswerHttpRequest.wrong(res, "you already have power bank")
+                AnswerHttpRequest.wrong(res, "You are not allowed to rent power banks")
             }
         }catch (error){
             console.log(error)

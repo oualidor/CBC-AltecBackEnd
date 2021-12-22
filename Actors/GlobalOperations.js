@@ -7,7 +7,6 @@ class globalOperations{
     }
 
     create = async (data) => {
-        console.log("hihihi")
         try {
             let validatedData = true;
             let dataError = "";

@@ -18,6 +18,7 @@ const StationMiddleware = {
             }
         }
         catch (error){
+            console.log("hkjhdfkjhsdfkjsdhfkjsdf")
             AnswerHttpRequest.wrong(res, "Operation failed")
         }
     },
@@ -28,6 +29,7 @@ const StationMiddleware = {
             if(stationFindOperation.finalResult){
                 let station = stationFindOperation.result
                 req.station = station
+
                 next()
             } else {
                 AnswerHttpRequest.wrong(res, stationFindOperation.error)

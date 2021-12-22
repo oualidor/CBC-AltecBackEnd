@@ -6,6 +6,8 @@ const bcrypt = require("bcrypt");
 const AnswerHttpRequest = require("../Structures/AnswerHttpRequest");
 const {UpdateData} = require("../Apis/UpdateData");
 const PartnerImages = require("../Schemas/PartnerImages");
+const GlOpResult = require("../Structures/GlOpResult");
+const TransactionMetaData = require("../Schemas/TransactionMetaData");
 Partner.hasMany(Station, {foreignKey: "currentPartner", as: "Stations"})
 Partner.hasMany(PartnerImages, {foreignKey: "partnerId", as: "Images"})
 
@@ -126,6 +128,43 @@ const  PartnerOperations = {
             res.send({'finalResult': false, 'error': "some thing went wrong"})
         }
     },
+
+    addImages :  async (partnerId, imagesData) => {
+        let validatedData = true;
+        let dataError = "";
+        if(!validatedData){
+            return GlOpResult(false, dataError)
+        }else{
+            let preparedData = []
+            imagesData.forEach(entry =>{
+                preparedData.push(
+                    {
+                        partnerId,
+                        link: entry,
+                    }
+                )
+            })
+            try {
+                let addImagesResult = await PartnerImages.bulkCreate(preparedData);
+                return GlOpResult(true, addImagesResult)
+            }catch (e) {
+
+                return GlOpResult(false, "Bad Image link provided")
+            }
+        }
+    },
+
+    removeImage :  async (imageId) => {
+        try {
+            let partnerImage = await PartnerImages.findByPk(imageId);
+            partnerImage.destroy()
+            return GlOpResult(true, "image removed")
+        }catch (e) {
+
+            return GlOpResult(false, "Bad Image link provided")
+        }
+
+    }
 }
 
 module.exports = PartnerOperations
