@@ -24,6 +24,7 @@ const {adminPassword} = require("../Apis/Config");
 const GuestPartnerRouter = require("../InternEndPoints/Guest/GuestPartnerRouter");
 const Partner = require("../Schemas/Partner");
 const SettingsMiddleware = require("../Apis/Middlewares/SettingsMiddleware");
+const ClientStat = require("../Structures/ClientStat");
 
 const GuestRouters = express.Router();
 GuestRouters.use(async (req, res, next)=>{
@@ -154,7 +155,7 @@ GuestRouters.post(
     },
     async (req, res) => {
     let data = req.body
-    data['stat'] = 1, data['type'] = 0;
+    data['stat'] = ClientStat.active.value, data['type'] = 0;
     try{
         let createClientOp = await ClientGlobalOperations.create(data)
         if(createClientOp.finalResult === false){
