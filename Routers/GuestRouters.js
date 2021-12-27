@@ -1,5 +1,6 @@
 const  {Op} = require("sequelize");
 const ClientWallet  = require ("../Schemas/ClientWallet");
+const Message  = require ("../Schemas/Message");
 const TransactionOperations = require("../Actors/TransactionOperations");
 const express = require('express');
 const jwt  = require('jsonwebtoken');
@@ -153,7 +154,7 @@ GuestRouters.post(
     },
     async (req, res) => {
     let data = req.body
-    data['stat'] = 0, data['type'] = 0;
+    data['stat'] = 1, data['type'] = 0;
     try{
         let createClientOp = await ClientGlobalOperations.create(data)
         if(createClientOp.finalResult === false){
@@ -253,6 +254,24 @@ GuestRouters.post('/recharge', async (req, res) => {
         AnswerHttpRequest.wrong(res, "Request failed")
     }
 });
+
+
+//Client SignUp
+GuestRouters.post(
+    '/sendMessage',
+
+    async (req, res) => {
+        try{
+            let data = req.body
+            console.log(data)
+            let message = Message.create(data);
+            AnswerHttpRequest.done(res, "messages saved")
+        }
+        catch (e){
+            AnswerHttpRequest.done(res, "request failed")
+        }
+
+    })
 
 GuestRouters.use("/Partner",   GuestPartnerRouter)
 module.exports = GuestRouters
