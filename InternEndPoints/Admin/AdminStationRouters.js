@@ -89,9 +89,14 @@ AdminStationRouters.post('/returnPowerBank/', async (req, res) => {
                 client.update({type: 0})
                 res.send(rentTransactionsResults)
             }else {
-                AnswerHttpRequest.wrong(res, "Cant find teh client that take teh power Bank")
+                let rentTransactionsResults = await TransactionOperations.create(RentTransactionTypes.station.return, metaData)
+                if(rentTransactionsResults.finalResult){
+                    AnswerHttpRequest.done(res, "Partner return success")
+                }
+                else {
+                    AnswerHttpRequest.wrong(res, "Could not write return transaction correctly")
+                }
             }
-
         }else{
             AnswerHttpRequest.wrong(res, "Cant find teh client that take teh power Bank")
         }

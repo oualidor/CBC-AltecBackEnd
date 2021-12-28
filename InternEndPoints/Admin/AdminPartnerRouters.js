@@ -27,18 +27,16 @@ AdminPartnerRouters.post('/addImages/:id',  async (req, res) => {
         AnswerHttpRequest.wrong(res, addOp.error)
     }
 }),
+AdminPartnerRouters.get('/deleteImages/:id',  async (req, res) => {
 
-    AdminPartnerRouters.get('/deleteImages/:id',  async (req, res) => {
-
-        let imageId = req.params.id
-        let removeOp = await PartnerOperations.removeImage(imageId)
-        if(removeOp.finalResult){
-            AnswerHttpRequest.done(res, "done")
-        }else {
-            AnswerHttpRequest.wrong(res, removeOp.error)
-        }
-    }),
-
+    let imageId = req.params.id
+    let removeOp = await PartnerOperations.removeImage(imageId)
+    if(removeOp.finalResult){
+        AnswerHttpRequest.done(res, "done")
+    }else {
+        AnswerHttpRequest.wrong(res, removeOp.error)
+    }
+}),
 AdminPartnerRouters.use('/', _EndPoints(Partner)),
 
 module.exports = AdminPartnerRouters;
