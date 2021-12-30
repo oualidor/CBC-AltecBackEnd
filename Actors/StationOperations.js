@@ -9,7 +9,7 @@ const {TCP_SERVER} = require("../Apis/Config");
 CurrentActor.belongsTo(Partner, {foreignKey: "currentPartner"})
 
 const StationOperations = {
-    
+
     getOne: async (id) => {
         try {
             let station = await CurrentActor.findByPk(
@@ -50,14 +50,12 @@ const StationOperations = {
     },
 
     getRealTimeInfo:  async (req, res) => {
-        console.log("hihi")
         let {id} = req.params
         let requestAddress = TCP_SERVER+'Station/QueryInfo/'+id
         try {
             const request  = await axios({url: requestAddress, method: "get", responseType: 'json'})
             res.send(request.data)
-        }catch (e){
-            console.log("error")
+        }catch (error){
             res.send({finalResult: false, error: e})
         }
     },
