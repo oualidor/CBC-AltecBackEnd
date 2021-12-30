@@ -29,7 +29,7 @@ ClientStationRouters.use(
     }
 )
 
-ClientStationRouters.get('/getRealTimeInfo/', async (req, res) => {
+ClientStationRouters.get('/getRealTimeInfo/:id', async (req, res) => {
     await StationOperations.getRealTimeInfo(req, res)
 }),
 
