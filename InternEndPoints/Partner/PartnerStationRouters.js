@@ -29,7 +29,7 @@ PartnerStationRouters.use(
     }
 )
 
-PartnerStationRouters.get('/getRealTimeInfo/', async (req, res) => {
+PartnerStationRouters.post('/getRealTimeInfo/', async (req, res) => {
     try{
         let stationPublicId = req.station.id
         let op = await StationOperations.getRealTimeInfo(stationPublicId)
