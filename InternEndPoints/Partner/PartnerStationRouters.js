@@ -19,8 +19,7 @@ const  PartnerStationRouters = express.Router()
 
 PartnerStationRouters.use(
     (req, res, next) =>{
-        let stationPublicId = req.body.StationId
-        StationMiddleware.validateExistence(stationPublicId, req, res, next).then()
+        StationMiddleware.validateExistence(req, res, next).then()
     }
 )
 
