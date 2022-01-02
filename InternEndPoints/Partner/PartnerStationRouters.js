@@ -54,7 +54,7 @@ PartnerStationRouters.post(
             let partner = req.body.partner
             console.log(partner.stat)
             if(partner.stat === PartnerStates.trusted.id){
-                let stationPublicId = req.body.StationId
+                let stationPublicId = req.body.stationId
                 let currentStation = req.station
                     let rentResult = await StationOperations.rentPowerBank(stationPublicId)
                     if(rentResult.finalResult === true){

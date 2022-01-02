@@ -34,7 +34,7 @@ const StationMiddleware = {
                 AnswerHttpRequest.wrong(res, stationFindOperation.error)
             }
         } catch (error) {
-            AnswerHttpRequest.wrong(res, "Opefdsfsdfdsfsdfsdfon failed")
+            AnswerHttpRequest.wrong(res, "Operation failed")
         }
     }
 }
