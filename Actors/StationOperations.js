@@ -53,10 +53,10 @@ const StationOperations = {
         let requestAddress = TCP_SERVER+'Station/QueryInfo/'+id
         try {
             const request  = await axios({url: requestAddress, method: "get", responseType: 'json'})
-            console.log(request)
-            return GlOpResult(true, request.data)
+            return request.data
         }catch (error){
-            return GlOpResult(true, "Operation failed")
+            console.log(error)
+            return GlOpResult(false, "Operation failed")
         }
     },
 
