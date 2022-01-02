@@ -52,7 +52,7 @@ ClientStationRouters.post(
             let client = req.body.client
             if(client.type === 0){
                 let clientId = req.body.id;
-                let stationPublicId = req.body.StationId
+                let stationPublicId = req.body.stationId
                 let clientFindOperation = await ClientGlobalOperations.findByPk(clientId)
                 if(clientFindOperation.finalResult){
                     let currentStation = req.station
