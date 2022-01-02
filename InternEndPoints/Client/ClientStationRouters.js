@@ -33,7 +33,7 @@ ClientStationRouters.post('/getRealTimeInfo/', async (req, res) => {
         let stationPublicId = req.station.id
         let op = await StationOperations.getRealTimeInfo(stationPublicId)
         if(op.finalResult){
-            AnswerHttpRequest.done(res, op.result)
+            AnswerHttpRequest.done(res, op.result.data)
         }else {
             AnswerHttpRequest.wrong(res, op.error)
         }
