@@ -37,9 +37,10 @@ AdminStationRouters.get('/getOneByPublicId/:id', async (req, res) => {
 AdminStationRouters.get('/getRealTimeInfo/:id', async (req, res) => {
     try{
         let stationPublicId = req.params.id
+        console.log(stationPublicId)
         let op = await StationOperations.getRealTimeInfo(stationPublicId)
         if(op.finalResult){
-            AnswerHttpRequest.done(res, op.result)
+            AnswerHttpRequest.done(res, op.result.data)
         }else {
             AnswerHttpRequest.wrong(res, op.error)
         }

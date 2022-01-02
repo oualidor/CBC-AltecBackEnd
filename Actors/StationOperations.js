@@ -60,7 +60,9 @@ const StationOperations = {
     },
 
     rentPowerBank: async (id) => {
+        console.log(id)
         let requestAddress = TCP_SERVER + 'Station/rent/'+id
+        console.log(requestAddress)
         try {
             const request = await axios({url: requestAddress, method: "get", responseType: 'json'})
             return request.data
