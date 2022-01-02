@@ -40,7 +40,8 @@ AdminStationRouters.get('/getRealTimeInfo/:id', async (req, res) => {
         console.log(stationPublicId)
         let op = await StationOperations.getRealTimeInfo(stationPublicId)
         if(op.finalResult){
-            AnswerHttpRequest.done(res, op.result.data)
+            res.send({finalResult: true, data: op.result.data})
+            // AnswerHttpRequest.done(res, op.result.data)
         }else {
             AnswerHttpRequest.wrong(res, op.error)
         }
