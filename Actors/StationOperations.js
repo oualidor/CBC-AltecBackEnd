@@ -49,14 +49,13 @@ const StationOperations = {
         }
     },
 
-    getRealTimeInfo:  async (req, res) => {
-        let {id} = req.params
+    getRealTimeInfo:  async (id) => {
         let requestAddress = TCP_SERVER+'Station/QueryInfo/'+id
         try {
             const request  = await axios({url: requestAddress, method: "get", responseType: 'json'})
-            res.send(request.data)
+            return GlOpResult(true, request.data)
         }catch (error){
-            res.send({finalResult: false, error: e})
+            return GlOpResult(true, "Operation failed")
         }
     },
 

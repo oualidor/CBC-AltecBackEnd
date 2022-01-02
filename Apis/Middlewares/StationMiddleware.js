@@ -18,24 +18,23 @@ const StationMiddleware = {
             }
         }
         catch (error){
-            console.log("hkjhdfkjhsdfkjsdhfkjsdf")
             AnswerHttpRequest.wrong(res, "Operation failed")
         }
     },
 
-    validateExistence :  async (stationPublicId, req, res, next) => {
+    validateExistence :  async (req, res, next) => {
         try {
-            let stationFindOperation = await StationOperations.getOneByPublicId(stationPublicId)
+            let stationId = req.body.stationId;
+            let stationFindOperation = await StationOperations.getOneByPublicId(stationId)
             if(stationFindOperation.finalResult){
                 let station = stationFindOperation.result
                 req.station = station
-
                 next()
             } else {
                 AnswerHttpRequest.wrong(res, stationFindOperation.error)
             }
         } catch (error) {
-            AnswerHttpRequest.wrong(res, "Operation failed")
+            AnswerHttpRequest.wrong(res, "Opefdsfsdfdsfsdfsdfon failed")
         }
     }
 }

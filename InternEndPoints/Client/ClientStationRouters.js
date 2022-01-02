@@ -18,8 +18,7 @@ const  ClientStationRouters = express.Router()
 
 ClientStationRouters.use(
     (req, res, next) =>{
-        let stationPublicId = req.body.StationId
-        StationMiddleware.validateExistence(stationPublicId, req, res, next).then()
+        StationMiddleware.validateExistence(req, res, next).then()
     }
 )
 
@@ -29,8 +28,18 @@ ClientStationRouters.use(
     }
 )
 
-ClientStationRouters.get('/getRealTimeInfo/:id', async (req, res) => {
-    await StationOperations.getRealTimeInfo(req, res)
+ClientStationRouters.post('/getRealTimeInfo/', async (req, res) => {
+    try{
+        let stationPublicId = req.station.id
+        let op = await StationOperations.getRealTimeInfo(stationPublicId)
+        if(op.finalResult){
+            AnswerHttpRequest.done(res, op.result)
+        }else {
+            AnswerHttpRequest.wrong(res, op.error)
+        }
+    }catch (error){
+        AnswerHttpRequest.wrong(res, "Request failed")
+    }
 }),
 
 ClientStationRouters.post(
@@ -106,7 +115,7 @@ ClientStationRouters.post(
     }
 )
 
-ClientStationRouters.get('/returnPowerBank/', async (req, res) => {
+ClientStationRouters.post('/returnPowerBank/', async (req, res) => {
     try{
         let {clientId,StationId, powerBankId,client} = req.body;
         let rentTransactionsResults = await TransactionOperations.create({

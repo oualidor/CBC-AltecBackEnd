@@ -35,7 +35,18 @@ AdminStationRouters.get('/getOneByPublicId/:id', async (req, res) => {
     }),
 
 AdminStationRouters.get('/getRealTimeInfo/:id', async (req, res) => {
-    await StationOperations.getRealTimeInfo(req, res)
+    try{
+        let stationPublicId = req.params.id
+        let op = await StationOperations.getRealTimeInfo(stationPublicId)
+        if(op.finalResult){
+            AnswerHttpRequest.done(res, op.result)
+        }else {
+            AnswerHttpRequest.wrong(res, op.error)
+        }
+    }catch (error){
+        AnswerHttpRequest.wrong(res, "Request failed")
+
+    }
 }),
 
 AdminStationRouters.get('/rentPowerBank/:stationId', async (req, res) => {
