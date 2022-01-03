@@ -33,12 +33,19 @@ PartnerStationRouters.post('/getRealTimeInfo/', async (req, res) => {
     try{
         let stationPublicId = req.station.id
         let op = await StationOperations.getRealTimeInfo(stationPublicId)
+        //console.log(op)
         if(op.finalResult){
-            AnswerHttpRequest.done(res, op.result.data)
+            // res.send({finalResult: true, data: op.result.data})
+            if(op.finalResult){
+                AnswerHttpRequest.done(res, op.data)
+            }else {
+                AnswerHttpRequest.wrong(res, op.result)
+            }
         }else {
             AnswerHttpRequest.wrong(res, op.error)
         }
     }catch (error){
+        console.log(error)
         AnswerHttpRequest.wrong(res, "Request failed")
 
     }
