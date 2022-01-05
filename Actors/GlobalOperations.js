@@ -1,6 +1,7 @@
 const seq = require('sequelize')
 const GlOpResult = require("../Structures/GlOpResult");
 const {UpdateData} = require("../Apis/UpdateData");
+const {Op} = require("sequelize");
 class globalOperations{
     constructor(CurrentActor) {
         this.CurrentActor = CurrentActor
@@ -70,7 +71,9 @@ class globalOperations{
         }
     }
 
-    count =  async (attribute, value) => {
+    count =  async (attribute, value, from, to) => {
+        console.log(value)
+        console.log(typeof value)
         try {
             let options = {
                 attributes: [
@@ -78,7 +81,11 @@ class globalOperations{
                 ]
             }
             if(attribute !== undefined && value !== undefined){
-                options.where = {[attribute]: {[seq.Op.like]: '%' + value.toString() + '%'}}
+                options.where = {
+                    [attribute]:   value,
+                    createdAt: {
+                        [Op.between]: [new Date(from), new Date(to)],
+                    }}
             }
             let total  = await this.CurrentActor.count(options);
             return GlOpResult(true, total)

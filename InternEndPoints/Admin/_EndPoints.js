@@ -58,9 +58,9 @@ const _EndPoints = (Model)=>{
         }
     })
 
-    router.get('/CountWhere/:attribute/:value', async (req, res)=>{
-        let {attribute, value} = req.params
-        let countOp = await globalOperations.count(attribute, value)
+    router.get('/CountWhere/:attribute/:value/:from/:to', async (req, res)=>{
+        let {attribute, value, from, to} = req.params
+        let countOp = await globalOperations.count(attribute, value, from, to)
         if(countOp.finalResult){
             AnswerHttpRequest.done(res, countOp.result)
         }else {
