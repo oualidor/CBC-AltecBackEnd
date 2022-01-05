@@ -78,7 +78,7 @@ class globalOperations{
                 ]
             }
             if(attribute !== undefined && value !== undefined){
-                options.where = {[attribute]: {[seq.Op.like]: '%' + value + '%'}}
+                options.where = {[attribute]: {[seq.Op.like]: '%' + value.toString() + '%'}}
             }
             let total  = await this.CurrentActor.count(options);
             return GlOpResult(true, total)
