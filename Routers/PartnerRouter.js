@@ -8,6 +8,7 @@ const PartnerMiddleware = require("../Apis/PartnerMiddleware");
 const PartnerRechargeCodeRouter = require("../InternEndPoints/Partner/PartnerRechargeCodeRouter");
 const PartnerPartnerRouter = require("../InternEndPoints/Partner/PartnerPartnerRouter");
 const PartnerStationRouters = require("../InternEndPoints/Partner/PartnerStationRouters");
+const PartnerStatsRouter = require("../InternEndPoints/Partner/PartnerStatsRouters");
 const PartnerRouter = express.Router();
 
 PartnerRouter.use((req, res, next)=>{YitAuthenticator.authAll(req, res, next).then(()=> {})})
@@ -21,5 +22,6 @@ PartnerRouter.use((req, res, next)=> {
 PartnerRouter.use("/Partner",   PartnerPartnerRouter)
 PartnerRouter.use("/Station",   PartnerStationRouters)
 PartnerRouter.use("/RechargeCode",   PartnerRechargeCodeRouter)
+PartnerRouter.use("/Stats",   PartnerStatsRouter)
 
 module.exports = PartnerRouter
