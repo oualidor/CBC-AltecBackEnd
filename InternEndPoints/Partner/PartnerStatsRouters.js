@@ -30,16 +30,9 @@ PartnerStatsRouter.get('/transaction/:operation/:from/:to', async (req, res) => 
                 for (let station of partner['Stations']){
                     partnerStations.push(station.systemId.toString())
                 }
-                let options = {
-                    attributes: [
-                        [fn('COUNT', col('id')), 'total']
-                    ],
-                    where : {
-                        operation: operation,
-                        createdAt: {
-                            [Op.between]: [new Date(from), new Date(to)],
-                        }}
-                }
+
+
+
                 let transactions  = await Transaction.findAndCountAll({
                     raw: true,
                     where: {'operation': operation},
@@ -50,7 +43,10 @@ PartnerStatsRouter.get('/transaction/:operation/:from/:to', async (req, res) => 
                             [Op.and]: [
                                 {"dataTitle": "stationId"},
                                 {"dataValue": {[Op.in]: partnerStations}}
-                            ]
+                            ],
+                            createdAt: {
+                                [Op.between]: [new Date(from), new Date(to)],
+                            }
                         }
 
                     }]

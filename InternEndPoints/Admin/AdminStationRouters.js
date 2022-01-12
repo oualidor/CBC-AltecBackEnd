@@ -69,8 +69,11 @@ AdminStationRouters.get('/rentPowerBank/:stationId', async (req, res) => {
 AdminStationRouters.post('/returnPowerBank/', async (req, res) => {
     let {stationId, powerBankId } = req.body
     try{
+        let station = await Station.findOne({where: {
+            id: stationId
+            }})
         let metaData = [
-            {dataTitle: "stationId", dataValue: stationId},
+            {dataTitle: "stationId", dataValue: station.systemId},
             {dataTitle: "powerBankId", dataValue: powerBankId},
         ]
         let r = await Transaction.findOne({
@@ -107,6 +110,7 @@ AdminStationRouters.post('/returnPowerBank/', async (req, res) => {
                 client.update({type: 0})
                 res.send(rentTransactionsResults)
             }else {
+                //metaData.push({dataTitle: "partnerId", dataValue: station.currentPartner},)
                 let rentTransactionsResults = await TransactionOperations.create(RentTransactionTypes.station.return, metaData)
                 if(rentTransactionsResults.finalResult){
                     AnswerHttpRequest.done(res, "Partner return success")
