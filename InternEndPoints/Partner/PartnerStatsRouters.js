@@ -9,6 +9,41 @@ const  PartnerStatsRouter = express.Router()
 
 
 
+PartnerStatsRouter.get('/transaction/:operation/:from/:to', async (req, res) => {
+    let {operation, from, to}  =req.params
+
+
+    try{
+        let options = {
+            attributes: [
+                [fn('COUNT', col('id')), 'total']
+            ],
+        }
+        let transactions  = await Transaction.findAndCountAll({
+            where: {
+                'operation': operation,
+                createdAt: {
+                    [Op.between]: [new Date(from), new Date(to)],
+                }},
+            include: [{
+                model: TransactionMetaData,
+                as: 'MetaData',
+            }]
+        });
+        AnswerHttpRequest.done(res, transactions.rows.length)
+    }
+    catch (error){
+        console.log(error)
+        AnswerHttpRequest.wrong(res, "Request failed")
+    }
+
+
+
+
+}),
+
+
+
 
 PartnerStatsRouter.get('/transaction/:stationPublicId/:operation/:from/:to', async (req, res) => {
     let {stationPublicId, operation, from, to}  =req.params
