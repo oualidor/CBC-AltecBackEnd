@@ -269,7 +269,6 @@ GuestRouters.post(
             AnswerHttpRequest.done(res, "messages saved")
         }
         catch (e){
-            console.log(e)
             AnswerHttpRequest.done(res, "request failed")
         }
 
