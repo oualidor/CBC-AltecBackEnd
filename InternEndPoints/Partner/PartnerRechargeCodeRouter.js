@@ -41,13 +41,13 @@ PartnerRechargeCodeRouter.get('/getAll/:offset/:limit', async (req, res) => {
 })
 
 PartnerRechargeCodeRouter.get('/searchBy/:attribute/:value/:offset/:limit', async (req, res) => {
-    console.log("hihi")
     let {attribute, value, offset, limit} = req.params
     let data = {
         offset: offset,
         limit: limit,
         where: {
-            [attribute]: value
+            partnerId: req.body.partner.id,
+            [attribute]: value,
         }
     };
     try {
