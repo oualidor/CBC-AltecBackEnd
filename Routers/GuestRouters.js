@@ -25,6 +25,7 @@ const GuestPartnerRouter = require("../InternEndPoints/Guest/GuestPartnerRouter"
 const Partner = require("../Schemas/Partner");
 const SettingsMiddleware = require("../Apis/Middlewares/SettingsMiddleware");
 const ClientStat = require("../Structures/ClientStat");
+const MeetingRequest = require("../Schemas/MeetingRequest");
 
 const GuestRouters = express.Router();
 GuestRouters.use(async (req, res, next)=>{
@@ -259,16 +260,16 @@ GuestRouters.post('/recharge', async (req, res) => {
 
 //Client SignUp
 GuestRouters.post(
-    '/sendMessage',
-
+    '/requestMeeting/create',
     async (req, res) => {
         try{
             let data = req.body
-            console.log(data)
-            let message = Message.create(data);
+            data.stat = 0
+            let message = await MeetingRequest.create(data);
             AnswerHttpRequest.done(res, "messages saved")
         }
         catch (e){
+            console.log(e)
             AnswerHttpRequest.done(res, "request failed")
         }
 

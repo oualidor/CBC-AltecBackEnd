@@ -77,7 +77,6 @@ AdminStationRouters.post('/returnPowerBank/', async (req, res) => {
             {dataTitle: "powerBankId", dataValue: powerBankId},
         ]
         let r = await Transaction.findOne({
-
             where : {
                 operation : 0,
             },

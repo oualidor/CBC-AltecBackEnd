@@ -1,13 +1,14 @@
 const TransactionOperations = require("./Actors/TransactionOperations");
 const Transaction = require("./Schemas/Transaction");
 const TransactionMetaData = require("./Schemas/TransactionMetaData");
+const RechargeCode = require("./Schemas/RechargeCode");
 const {Op} = require("sequelize");
 
 async function run(){
-    let r = await TransactionMetaData.findAll({raw: true, where: {[Op.and] : [{dataValue : "PRPH082108250019"}]}})
+    let r = await RechargeCode.findAll({raw: true, where: {"stat": 0}})
     for (let transaction of r){
-        let tr = await TransactionMetaData.findByPk(transaction.id)
-        tr.update({dataValue: "61"})
+        let tr = await RechargeCode.findByPk(transaction.id)
+        tr.update({stat: "1"})
     }
     console.log(r)
 

@@ -4,6 +4,7 @@ const AnswerHttpRequest = require("../../Structures/AnswerHttpRequest");
 const RechargeCode = require("../../Schemas/RechargeCode");
 const {RechargeCodeOperations} = require("../../Actors/RechargeCodeOperations");
 const RechargeCodeStates = require("../../Structures/rechargeCodeStates");
+const seq = require("sequelize");
 
 
 const PartnerRechargeCodeRouter = express.Router();
@@ -35,7 +36,25 @@ PartnerRechargeCodeRouter.get('/getAll/:offset/:limit', async (req, res) => {
             AnswerHttpRequest.wrong(res, gor.error)
         }
     }catch (error){
-        console.log(error)
+        AnswerHttpRequest.wrong(res, "Request failed")
+    }
+})
+
+PartnerRechargeCodeRouter.get('/searchBy/:attribute/:value/:offset/:limit', async (req, res) => {
+    console.log("hihi")
+    let {attribute, value, offset, limit} = req.params
+    let data = {
+        offset: offset,
+        limit: limit,
+        where: {
+            [attribute]: value
+        }
+    };
+    try {
+        let result = await RechargeCode.findAndCountAll(data);
+        AnswerHttpRequest.done(res, result)
+    } catch (e) {
+        console.log(e)
         AnswerHttpRequest.wrong(res, "Request failed")
     }
 })
