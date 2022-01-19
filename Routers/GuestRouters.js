@@ -273,12 +273,11 @@ GuestRouters.post(
             if(error.name.match(/Sequelize/)){
                 try{
                     error = error.errors[0].message
-                    return GlOpResult(false, error)
+                    AnswerHttpRequest.wrong(res, error)
                 }
                 catch (e){
                     AnswerHttpRequest.wrong(res, "request failed")
                 }
-
             }else {
                 AnswerHttpRequest.wrong(res, "request failed")
             }
