@@ -26,6 +26,7 @@ const Partner = require("../Schemas/Partner");
 const SettingsMiddleware = require("../Apis/Middlewares/SettingsMiddleware");
 const ClientStat = require("../Structures/ClientStat");
 const MeetingRequest = require("../Schemas/MeetingRequest");
+const GlOpResult = require("../Structures/GlOpResult");
 
 const GuestRouters = express.Router();
 GuestRouters.use(async (req, res, next)=>{
@@ -268,9 +269,20 @@ GuestRouters.post(
             let message = await MeetingRequest.create(data);
             AnswerHttpRequest.done(res, "messages saved")
         }
-        catch (e){
-            console.log(e)
-            AnswerHttpRequest.wrong(res, "request failed")
+        catch (error){
+            if(error.name.match(/Sequelize/)){
+                try{
+                    error = error.errors[0].message
+                    return GlOpResult(false, error)
+                }
+                catch (e){
+                    AnswerHttpRequest.wrong(res, "request failed")
+                }
+
+            }else {
+                AnswerHttpRequest.wrong(res, "request failed")
+            }
+
         }
 
     })
