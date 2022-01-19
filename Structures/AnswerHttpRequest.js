@@ -10,6 +10,9 @@ const AnswerHttpRequest  = {
     },
     wrong: (res, error)=>{
         res.send(ExpressResult(false, error))
+    },
+    error: (res, error)=>{
+        res.send(ExpressResult(false, error))
     }
 }
 module.exports = AnswerHttpRequest
