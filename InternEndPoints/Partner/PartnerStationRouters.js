@@ -49,7 +49,7 @@ PartnerStationRouters.post('/getRealTimeInfo/', async (req, res) => {
         AnswerHttpRequest.wrong(res, "Request failed")
 
     }
-}),
+})
 
 PartnerStationRouters.post(
     '/rentPowerBank/',
@@ -63,6 +63,7 @@ PartnerStationRouters.post(
             if(partner.stat === PartnerStates.trusted.id){
                 let stationPublicId = req.body.stationId
                 let currentStation = req.station
+                if(currentStation.currentPartner === partner.id){
                     let rentResult = await StationOperations.rentPowerBank(stationPublicId)
                     if(rentResult.finalResult === true){
                         let rentTransactionsResults = await TransactionOperations.create(
@@ -90,7 +91,10 @@ PartnerStationRouters.post(
                     else {
                         AnswerHttpRequest.wrong(res, rentResult.error)
                     }
-
+                }
+                else {
+                    AnswerHttpRequest.wrong(res, "You are not allowed to rent power banks from this station")
+                }
             }else {
                 AnswerHttpRequest.wrong(res, "You are not allowed to rent power banks")
             }
