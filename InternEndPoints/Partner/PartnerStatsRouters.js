@@ -90,7 +90,6 @@ PartnerStatsRouter.get('/transaction/:operation/:from/:to/:aa', async (req, res)
         })
         if(partner === null){
             AnswerHttpRequest.wrong(res, "No stations affected to this partner, no stats")
-
         }
         else {
             let dateFrom = new Date(from);

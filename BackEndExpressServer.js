@@ -60,19 +60,53 @@ class BackEndExpressServer extends EventEmitter{
             })
 
             this.app.get("/test", async (req, res) => {
+                let transaction = await Transaction.findOne({
+                    where : {
+                        operation : 0,
+                    },
+                    order: [
+                        // Will escape title and validate DESC against a list of valid direction parameters
+                        ['createdAt', 'DESC'],
+                    ],
+                    include : [
+                        {
+                            model: TransactionMetaData,
+                            as: "MetaData",
+                            where: {
+                                    [Op.and]: [{ dataTitle: "powerBankId" }, { dataValue: "5052504818100116" }],
+                            },
+                        }
+                    ],
+                })
+                if(transaction !== null){
+                    let fullTransaction  = await Transaction.findByPk(transaction.id, {
+                        include : [
+                            {
+                                model: TransactionMetaData,
+                                as: "MetaData",
+                            }
+                        ],
+                    })
+                    AnswerHttpRequest.done(res, fullTransaction)
+                }
 
             })
 
             this.app.use('/Images', express.static(__dirname + '/public/uploads'));
+
             this.app.use("/Admin",  AdminRouters)
 
             this.app.use("/Guest", GuestRouters)
+
             this.app.use("/Client", ClientRouter)
+
             this.app.use("/Partner", PartnerRouter)
+
             this.app.use((req, res)=> {
                 res.status(404);
                 AnswerHttpRequest.wrong(res, "end point unknown")
             });
+
             return true
         }catch (error){
             return false
