@@ -55,6 +55,7 @@ class globalOperations{
             return GlOpResult(true, result)
         }
         catch (error){
+            console.log(error)
             return GlOpResult(false , "Operation failed")
         }
 
