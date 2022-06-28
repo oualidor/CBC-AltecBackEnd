@@ -93,7 +93,6 @@ AdminStationRouters.post('/returnPowerBank/', async (req, res) => {
                             {[Op.and]: [{ dataTitle: "powerBankId" }, { dataValue: powerBankId }]},
                             {dataTitle : "clientId"}
                         ]
-
                     },
                 }
             ],

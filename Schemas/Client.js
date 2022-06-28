@@ -31,6 +31,11 @@ const Client = db.define('Clients', {
     type:{
         type: Sequelize.INTEGER,
         allowNull: false
+    },
+    currentPowerBank:{
+        type: Sequelize.STRING,
+        allowNull: true,
+        defaultValue: "FREE"
     }
 });
 
