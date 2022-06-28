@@ -32,11 +32,11 @@ const Client = db.define('Clients', {
         type: Sequelize.INTEGER,
         allowNull: false
     },
-    currentPowerBank:{
-        type: Sequelize.STRING,
-        allowNull: true,
-        defaultValue: "FREE"
-    }
+    // currentPowerBank:{
+    //     type: Sequelize.STRING,
+    //     allowNull: true,
+    //     defaultValue: "FREE"
+    // }
 });
 
 db.sync()
