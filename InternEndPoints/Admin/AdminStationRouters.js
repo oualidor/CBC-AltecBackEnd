@@ -9,6 +9,7 @@ const Client = require("../../Schemas/Client");
 const TransactionMetaData = require("../../Schemas/TransactionMetaData");
 const _EndPoints = require("../../InternEndPoints/Admin/_EndPoints");
 const {Op} = require("sequelize");
+const ClientOperations = require("../../Actors/ClientOperations");
 
 const AdminStationRouters = express.Router();
 
@@ -72,60 +73,53 @@ AdminStationRouters.post('/returnPowerBank/', async (req, res) => {
         let station = await Station.findOne({where: {
             id: stationId
             }})
-        let metaData = [
-            {dataTitle: "stationId", dataValue: station.systemId},
-            {dataTitle: "powerBankId", dataValue: powerBankId},
-        ]
-        let r = await Transaction.findOne({
-            where : {
-                operation : 0,
-            },
-            order: [
-                // Will escape title and validate DESC against a list of valid direction parameters
-                ['createdAt', 'DESC'],
-            ],
-            include : [
-                {
-                    model: TransactionMetaData,
-                    as: "MetaData",
-                    where: {
-                        [Op.or]: [
-                            {[Op.and]: [{ dataTitle: "powerBankId" }, { dataValue: powerBankId }]},
-                            {dataTitle : "clientId"}
+        if(station !== null){
+            try{
+                let clients = await Client.findAll({where: {currentPowerBank: powerBankId}})
+                if(clients.length > 0){
+                    for (const rowClient of clients) {
+                        let client  = rowClient.dataValues;
+                        rowClient.update({currentPowerBank: "FREE", type: 0})
+                        let metaData = [
+                            {dataTitle: "stationId", dataValue: station.systemId},
+                            {dataTitle: "powerBankId", dataValue: powerBankId},
+                            {dataTitle: "clientId", dataValue: client.clientId}
                         ]
-                    },
-                }
-            ],
-        })
-        if(r!= null){
-            r = r.toJSON()
-            if(r['MetaData'].length === 2){
-                let clientId = r['MetaData'][0]["dataValue"]
-                metaData.push({dataTitle: "clientId", dataValue: clientId},)
-                let rentTransactionsResults = await TransactionOperations.create(RentTransactionTypes.station.return, metaData)
-                let client = await Client.findByPk(clientId)
-                console.log(client)
-                client.update({type: 0})
-                res.send(rentTransactionsResults)
-            }else {
-                //metaData.push({dataTitle: "partnerId", dataValue: station.currentPartner},)
-                let rentTransactionsResults = await TransactionOperations.create(RentTransactionTypes.station.return, metaData)
-                if(rentTransactionsResults.finalResult){
-                    AnswerHttpRequest.done(res, "Partner return success")
+                        let TransactionCreateOp = await TransactionOperations.create(RentTransactionTypes.station.return, metaData)
+                        if(TransactionCreateOp.finalResult == true){
+                            AnswerHttpRequest.done(res, "Client return success")
+                        }else {
+                            //TODO write error log
+                            AnswerHttpRequest.wrong(res, "Could not write return transaction correctly after finding clients")
+                        }
+                    }
                 }
                 else {
-                    AnswerHttpRequest.wrong(res, "Could not write return transaction correctly")
+                    // No clients found, resuming powerBank taken by partner
+                    let metaData = [
+                        {dataTitle: "stationId", dataValue: station.systemId},
+                        {dataTitle: "powerBankId", dataValue: powerBankId},
+                    ]
+                    let TransactionCreateOp = await TransactionOperations.create(RentTransactionTypes.station.return, metaData)
+                    if(TransactionCreateOp.finalResult == true){
+                        AnswerHttpRequest.done(res, "Partner return success")
+                    }else {
+                        //TODO write error log
+                        AnswerHttpRequest.wrong(res, "Could not write return transaction correctly after finding clients")
+                    }
                 }
             }
-        }else{
-            AnswerHttpRequest.wrong(res, "Cant find teh client that take teh power Bank")
+            catch (e){
+                //TODO write error log
+                AnswerHttpRequest.wrong(res, "Could not write return transaction correctly after finding clients")
+            }
+        }else {
+            res.send({'finalResult': false, 'error': "could not the related power bank while admin return power bank"})
         }
-
-
     }
     catch(error){
         console.log(error)
-        res.send({'finalResult': false, 'error': error})
+        res.send({'finalResult': false, 'error': "Error while finding the related station in Admin return power bank"})
     }
 }),
 

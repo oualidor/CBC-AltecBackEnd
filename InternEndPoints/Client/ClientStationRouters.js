@@ -91,7 +91,7 @@ ClientStationRouters.post(
                                     )
                                     YitLogger.error({ message: logEntry})
                                 }
-                                client.update({type: 1})
+                                client.update({currentPowerBank: rentResult.data.powerBankId, type: 1})
                                 AnswerHttpRequest.done(res, "Power bank rented successfully")
                             }
                             else {
